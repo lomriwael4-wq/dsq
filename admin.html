@@ -3,721 +3,767 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Net Tech - Panel Admin</title>
+<title>Net Tech — Panel Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#080808;--surface:#111;--surface2:#1a1a1a;--border:#222;
-  --text:#f0f0f0;--muted:#666;--accent:#fff;
+  --bg:#080808;--surface:#111;--surface2:#1a1a1a;--surface3:#222;
+  --border:#252525;--text:#f0f0f0;--muted:#666;
   --danger:#ff4444;--success:#44ff88;--warn:#ffaa44;--info:#44aaff;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;padding:0 20px 40px;}
- 
-/* HEADER */
-.admin-header{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--border);margin-bottom:30px;flex-wrap:wrap;gap:15px;}
-.admin-header h1{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;}
-.admin-header h1 span{color:var(--muted);}
-.back-btn{padding:10px 20px;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:6px;cursor:pointer;font-family:'Syne',sans-serif;transition:all .2s;}
-.back-btn:hover{background:var(--surface);border-color:var(--muted);}
-.user-info{display:flex;align-items:center;gap:10px;padding:8px 15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
-.user-role.owner{color:var(--warn);}
-.user-role.admin{color:var(--info);}
- 
-/* TABS */
-.tabs{display:flex;gap:5px;border-bottom:1px solid var(--border);margin-bottom:30px;flex-wrap:wrap;}
-.tab-btn{padding:12px 24px;background:transparent;border:none;color:var(--muted);font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
-.tab-btn:hover{color:var(--text);}
-.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
- 
-/* SECTIONS */
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:20px;}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:30px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;}
-.stat-card h3{font-size:12px;color:var(--muted);margin-bottom:5px;}
-.stat-card .number{font-family:'Bebas Neue',sans-serif;font-size:42px;}
- 
-/* TABLEAUX */
-.table-container{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:20px;}
-table{width:100%;border-collapse:collapse;}
-th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--border);}
-th{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:1px;}
-tr:hover{background:rgba(255,255,255,.02);}
-.badge{display:inline-block;padding:4px 8px;border-radius:4px;font-size:11px;font-family:'DM Mono',monospace;}
-.badge.active{background:rgba(68,255,136,.15);color:var(--success);border:1px solid rgba(68,255,136,.3);}
-.badge.inactive{background:rgba(255,68,68,.15);color:var(--danger);border:1px solid rgba(255,68,68,.3);}
-.badge.owner{background:rgba(255,170,68,.15);color:var(--warn);}
-.badge.admin{background:rgba(68,170,255,.15);color:var(--info);}
-.badge.coming{background:rgba(255,170,68,.15);color:var(--warn);}
- 
-/* FORMULAIRES */
-.form-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:25px;margin-bottom:30px;}
-.form-group{margin-bottom:20px;}
-.form-group label{display:block;margin-bottom:8px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#444;}
-.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;}
-.btn-primary{padding:12px 24px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;}
-.btn-primary:hover{background:#ddd;}
-.btn-secondary{padding:10px 20px;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:6px;cursor:pointer;font-family:'Syne',sans-serif;}
-.btn-secondary:hover{background:var(--surface2);}
-.btn-danger{padding:8px 16px;background:transparent;border:1px solid var(--danger);color:var(--danger);border-radius:6px;cursor:pointer;font-size:12px;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+#login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px;width:100%;max-width:380px;text-align:center;}
+.login-logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:4px;margin-bottom:4px;}
+.login-logo span{color:var(--muted);}
+.login-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:28px;}
+.login-input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;outline:none;margin-bottom:10px;text-align:left;}
+.login-input::placeholder{color:var(--muted);}
+.login-input:focus{border-color:#444;}
+.login-btn{width:100%;padding:12px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
+.login-btn:hover{background:#ddd;}
+.login-err{color:var(--danger);font-size:12px;font-family:'DM Mono',monospace;margin-top:10px;display:none;}
+
+#admin-app{display:none;flex:1;flex-direction:column;}
+.top-bar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;}
+.top-bar-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;}
+.top-bar-logo span{color:var(--muted);}
+.top-bar-right{display:flex;align-items:center;gap:10px;}
+.online-pill{display:flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--border);border-radius:100px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.logged-chip{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);padding:4px 10px;border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;gap:7px;}
+.chip-role{padding:2px 6px;border-radius:3px;font-size:9px;}
+.chip-owner{background:rgba(255,170,68,.15);color:var(--warn);border:1px solid rgba(255,170,68,.3);}
+.chip-admin{background:rgba(68,170,255,.15);color:var(--info);border:1px solid rgba(68,170,255,.3);}
+.btn-bar{padding:5px 12px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;border-radius:4px;transition:all .2s;}
+.btn-bar:hover{color:var(--text);border-color:#555;}
+
+.admin-body{display:flex;flex:1;}
+
+.sidebar{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;min-height:calc(100vh - 56px);}
+.sidebar-section{padding:0 12px;margin-bottom:22px;}
+.sidebar-label{font-size:10px;color:var(--muted);letter-spacing:2px;font-family:'DM Mono',monospace;padding:0 8px;margin-bottom:8px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;}
+.sidebar-item:hover{background:var(--surface2);color:var(--text);}
+.sidebar-item.active{background:var(--surface2);color:var(--text);}
+.sidebar-item .icon{font-size:14px;width:18px;text-align:center;}
+.sidebar-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:10px;padding:2px 6px;border-radius:100px;font-family:'DM Mono',monospace;}
+.owner-only{display:none;}
+
+.main{flex:1;overflow-y:auto;padding:24px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:24px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;}
+.stat-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px;}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;}
+.stat-val.green{color:var(--success);}
+.stat-val.red{color:var(--danger);}
+.stat-val.blue{color:var(--info);}
+.stat-val.warn{color:var(--warn);}
+
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.panel-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;}
+.btn-add{padding:9px 18px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.btn-add:hover{background:#ddd;}
+.btn-danger{padding:9px 18px;background:transparent;color:var(--danger);border:1px solid var(--danger);border-radius:6px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
 .btn-danger:hover{background:rgba(255,68,68,.1);}
-.btn-small{padding:5px 12px;font-size:11px;}
- 
-/* TECH LISTE */
-.tech-list{display:flex;flex-direction:column;gap:10px;max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:10px;}
-.tech-item{display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid var(--border);}
-.tech-item:last-child{border-bottom:none;}
-.tech-item input[type="checkbox"]{width:18px;height:18px;cursor:pointer;accent-color:var(--success);}
-.tech-item label{flex:1;cursor:pointer;}
-.tech-status{font-size:10px;padding:2px 6px;border-radius:4px;}
- 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:2000;display:none;align-items:center;justify-content:center;}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:4px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;}
+.btn-sm:hover{color:var(--text);border-color:#555;}
+.btn-sm.red{border-color:rgba(255,68,68,.4);color:var(--danger);}
+.btn-sm.red:hover{background:rgba(255,68,68,.1);}
+.btn-sm.green{border-color:rgba(68,255,136,.4);color:var(--success);}
+.btn-sm.green:hover{background:rgba(68,255,136,.1);}
+.btn-sm.blue{border-color:rgba(68,170,255,.4);color:var(--info);}
+.btn-sm.blue:hover{background:rgba(68,170,255,.1);}
+
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+th{padding:11px 16px;text-align:left;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;border-bottom:1px solid var(--border);background:var(--surface2);}
+td{padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.015);}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-family:'DM Mono',monospace;}
+.badge.green{background:rgba(68,255,136,.08);color:var(--success);border:1px solid rgba(68,255,136,.2);}
+.badge.red{background:rgba(255,68,68,.08);color:var(--danger);border:1px solid rgba(255,68,68,.2);}
+.badge.blue{background:rgba(68,170,255,.08);color:var(--info);border:1px solid rgba(68,170,255,.2);}
+.badge.warn{background:rgba(255,170,68,.08);color:var(--warn);border:1px solid rgba(255,170,68,.2);}
+.mono{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);}
+.acell{display:flex;gap:6px;flex-wrap:wrap;}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
 .modal-overlay.open{display:flex;}
-.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:30px;width:100%;max-width:500px;}
-.modal-box h3{font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:20px;}
-.modal-buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
- 
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 18px;z-index:9998;transform:translateY(100px);opacity:0;transition:all .3s;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
+.modal-box h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;margin-bottom:20px;}
+.mcb{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;}
+.mcb:hover{color:var(--text);}
+.fg{margin-bottom:14px;}
+.fl{font-size:11px;font-weight:700;letter-spacing:.5px;margin-bottom:6px;display:block;color:var(--muted);}
+.fi{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:#444;}
+select.fi{cursor:pointer;}
+textarea.fi{resize:vertical;min-height:80px;}
+.ma{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
+
+/* Tech selection list */
+.tech-select-list{max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;background:var(--surface2);padding:8px;}
+.tech-select-item{display:flex;align-items:center;gap:10px;padding:8px;border-bottom:1px solid var(--border);cursor:pointer;}
+.tech-select-item:last-child{border-bottom:none;}
+.tech-select-item:hover{background:rgba(255,255,255,.05);}
+.tech-select-item input{width:18px;height:18px;cursor:pointer;accent-color:var(--success);}
+.tech-select-item label{flex:1;cursor:pointer;font-size:13px;}
+.tech-select-item .tech-status{font-size:9px;padding:2px 6px;border-radius:4px;}
+
+.settings-section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px;}
+.settings-section h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:16px;color:var(--muted);}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-save{padding:10px 22px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.btn-save:hover{background:#ddd;}
+
+.search-bar{width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:16px;}
+.search-bar:focus{border-color:#444;}
+.search-bar::placeholder{color:var(--muted);}
+
+.wh-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);}
+.wh-row:last-child{border-bottom:none;}
+.wh-info h4{font-size:13px;font-weight:700;margin-bottom:3px;}
+.wh-info p{font-size:12px;color:var(--muted);}
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.tslider{position:absolute;inset:0;background:var(--surface3);border-radius:100px;cursor:pointer;transition:.3s;border:1px solid var(--border);}
+.tslider::before{content:'';position:absolute;height:16px;width:16px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.3s;}
+.toggle input:checked+.tslider{background:rgba(68,255,136,.15);border-color:rgba(68,255,136,.4);}
+.toggle input:checked+.tslider::before{transform:translateX(18px);background:var(--success);}
+
+.log-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:12px;}
+.log-row:last-child{border-bottom:none;}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 18px;font-size:13px;z-index:9998;transform:translateY(100px);opacity:0;transition:all .3s;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast.success{border-color:rgba(68,255,136,.4);color:var(--success);}
 .toast.error{border-color:rgba(255,68,68,.4);color:var(--danger);}
- 
-/* CHECKBOX GROUP */
-.checkbox-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.checkbox-label{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;cursor:pointer;}
-.checkbox-label input{margin:0;width:auto;}
- 
+
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);}
+.empty-state{text-align:center;padding:48px;color:var(--muted);font-size:13px;}
 </style>
 </head>
 <body>
- 
-<div class="admin-header">
-  <h1>NET<span>TECH</span> · ADMIN</h1>
-  <div style="display:flex; gap:10px; align-items:center;">
-    <div class="user-info" id="admin-user-info"></div>
-    <button class="back-btn" onclick="window.location.href='index.html'">← Retour au site</button>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">NET<span>TECH</span></div>
+    <div class="login-sub">PANEL ADMINISTRATEUR</div>
+    <input class="login-input" type="text" id="a-user" placeholder="Nom d'utilisateur" onkeydown="if(event.key==='Enter')document.getElementById('a-pass').focus()" />
+    <input class="login-input" type="password" id="a-pass" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')adminLogin()" />
+    <button class="login-btn" onclick="adminLogin()">Accéder</button>
+    <div class="login-err" id="login-err">Identifiants incorrects.</div>
   </div>
 </div>
- 
-<div class="tabs">
-  <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
-  <button class="tab-btn" onclick="showTab('keys')">🔑 Gestion des clés</button>
-  <button class="tab-btn" onclick="showTab('techs')">🛠️ Gestion des Techs</button>
-  <button class="tab-btn" onclick="showTab('users')">👥 Utilisateurs</button>
-  <button class="tab-btn" onclick="showTab('settings')">⚙️ Paramètres</button>
-  <button class="tab-btn" onclick="showTab('logs')">📜 Logs</button>
-</div>
- 
-<!-- DASHBOARD -->
-<div id="tab-dashboard" class="tab-content active">
-  <div class="stats-grid">
-    <div class="stat-card"><h3>UTILISATEURS</h3><div class="number" id="stat-users">0</div></div>
-    <div class="stat-card"><h3>CLÉS ACTIVES</h3><div class="number" id="stat-keys-active">0</div></div>
-    <div class="stat-card"><h3>CLÉS UTILISÉES</h3><div class="number" id="stat-keys-used">0</div></div>
-    <div class="stat-card"><h3>TECHS DISPO</h3><div class="number" id="stat-techs">0</div></div>
-  </div>
-  <div class="form-card">
-    <h3 class="section-title">Actions rapides</h3>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn-primary" onclick="showTab('keys')">+ Générer une clé</button>
-      <button class="btn-primary" onclick="showTab('techs')">+ Ajouter une tech</button>
-      <button class="btn-secondary" onclick="refreshAll()">🔄 Rafraîchir</button>
+
+<div id="admin-app">
+  <div class="top-bar">
+    <div class="top-bar-logo">NET<span>TECH</span> <span style="font-size:10px;letter-spacing:2px;font-family:'DM Mono',monospace;">ADMIN</span></div>
+    <div class="top-bar-right">
+      <div class="online-pill"><span class="dot"></span><span id="online-display">—</span> en ligne</div>
+      <div class="logged-chip" id="logged-chip"></div>
+      <a href="index.html" class="btn-bar" style="text-decoration:none">← Site</a>
+      <button class="btn-bar" onclick="adminLogout()">Déconnexion</button>
     </div>
   </div>
-</div>
- 
-<!-- GESTION DES CLÉS -->
-<div id="tab-keys" class="tab-content">
-  <div class="form-card">
-    <h3 class="section-title">Générer une nouvelle clé</h3>
-    <div class="form-row">
-      <div class="form-group">
-        <label>CODE CLÉ (laisser vide pour génération auto)</label>
-        <input type="text" id="new-key-code" placeholder="XXX-XXX-XXX-XXX ou laisser vide">
+
+  <div class="admin-body">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Général</div>
+        <div class="sidebar-item active" onclick="showPanel('dashboard')" id="nav-dashboard"><span class="icon">📊</span> Dashboard</div>
+        <div class="sidebar-item" onclick="showPanel('logs')" id="nav-logs"><span class="icon">📡</span> Logs IP</div>
+        <div class="sidebar-item" onclick="showPanel('connlogs')" id="nav-connlogs"><span class="icon">🔐</span> Connexions</div>
       </div>
-      <div class="form-group">
-        <label>DURÉE</label>
-        <select id="new-key-duration">
-          <option value="monthly">30 jours (Mensuel)</option>
-          <option value="yearly">365 jours (Annuel)</option>
-          <option value="lifetime">À vie (Lifetime)</option>
-        </select>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Gestion</div>
+        <div class="sidebar-item" onclick="showPanel('users')" id="nav-users"><span class="icon">👥</span> Utilisateurs</div>
+        <div class="sidebar-item" onclick="showPanel('keys')" id="nav-keys"><span class="icon">🔑</span> Clés d'accès</div>
+        <div class="sidebar-item" onclick="showPanel('forgot')" id="nav-forgot"><span class="icon">🔒</span> MDP oubliés <span class="sidebar-badge" id="forgot-badge" style="display:none"></span></div>
+        <div class="sidebar-item owner-only" onclick="showPanel('admins')" id="nav-admins"><span class="icon">👑</span> Admins du site</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Contenu</div>
+        <div class="sidebar-item" onclick="showPanel('tech')" id="nav-tech"><span class="icon">⚙️</span> Cartes Tech</div>
+        <div class="sidebar-item owner-only" onclick="showPanel('webhook')" id="nav-webhook"><span class="icon">🔔</span> Webhook Discord</div>
+        <div class="sidebar-item owner-only" onclick="showPanel('settings')" id="nav-settings"><span class="icon">🎨</span> Personnaliser</div>
       </div>
     </div>
-    <div class="form-group">
-      <label>🎯 ACCÈS AUX TECHS (sélectionnez celles autorisées)</label>
-      <div class="tech-list" id="techs-for-key"></div>
-      <div style="margin-top:10px;">
-        <button class="btn-small btn-secondary" onclick="selectAllTechs(true)">✅ Toutes</button>
-        <button class="btn-small btn-secondary" onclick="selectAllTechs(false)">❌ Aucune</button>
-        <span style="font-size:11px; color:var(--muted); margin-left:10px;">(Si aucune n'est sélectionnée, la clé donne accès à TOUTES les techs)</span>
+
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="stats-row" id="dash-stats"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:12px;">DERNIERS LOGS IP</div>
+            <div class="table-wrap" id="dash-logs"></div>
+          </div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:12px;">DERNIÈRES CONNEXIONS</div>
+            <div class="table-wrap" id="dash-conn"></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <button class="btn-primary" onclick="generateKey()">🔑 Générer la clé</button>
-  </div>
-  
-  <div class="table-container">
-    <table>
-      <thead><tr><th>CODE CLÉ</th><th>DURÉE</th><th>STATUT</th><th>UTILISATEUR</th><th>DATE CRÉATION</th><th>TECHS ACCÈS</th><th>ACTION</th></tr></thead>
-      <tbody id="keys-list"></tbody>
-    </table>
-  </div>
-</div>
- 
-<!-- GESTION DES TECHS -->
-<div id="tab-techs" class="tab-content">
-  <div class="form-card">
-    <h3 class="section-title">Ajouter / Modifier une tech</h3>
-    <input type="hidden" id="edit-tech-id">
-    <div class="form-row">
-      <div class="form-group">
-        <label>TAG (ex: OUTIL 01)</label>
-        <input type="text" id="tech-tag" placeholder="OUTIL 01">
+
+      <!-- LOGS IP -->
+      <div class="panel" id="panel-logs">
+        <div class="panel-header">
+          <div class="panel-title">LOGS IP</div>
+          <button class="btn-danger" onclick="clearLogs()">Vider les logs</button>
+        </div>
+        <input class="search-bar" placeholder="Filtrer par IP, page..." id="log-search" oninput="renderLogs()" />
+        <div class="table-wrap">
+          <table><thead><tr><th>IP</th><th>PAGE</th><th>USER-AGENT</th><th>HEURE</th></tr></thead><tbody id="logs-body"></tbody></table>
+        </div>
       </div>
-      <div class="form-group">
-        <label>TITRE</label>
-        <input type="text" id="tech-title" placeholder="Tech Pro Scanner">
+
+      <!-- CONNEXIONS -->
+      <div class="panel" id="panel-connlogs">
+        <div class="panel-header">
+          <div class="panel-title">LOGS CONNEXIONS</div>
+          <button class="btn-danger" onclick="clearConnLogs()">Vider</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>USERNAME</th><th>RÔLE</th><th>ACTION</th><th>IP</th><th>HEURE</th></tr></thead><tbody id="conn-body"></tbody></table>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label>DESCRIPTION</label>
-      <textarea id="tech-desc" rows="3" placeholder="Description complète de l'outil..."></textarea>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>STATUT</label>
-        <select id="tech-status">
-          <option value="active">✅ Actif</option>
-          <option value="coming_soon">🚧 Arrive bientôt</option>
-        </select>
+
+      <!-- USERS -->
+      <div class="panel" id="panel-users">
+        <div class="panel-header"><div class="panel-title">UTILISATEURS</div></div>
+        <input class="search-bar" placeholder="Rechercher..." id="user-search" oninput="renderUsers()" />
+        <div class="table-wrap">
+          <table><thead><tr><th>USERNAME</th><th>EMAIL</th><th>IP</th><th>CLÉ</th><th>CRÉÉ LE</th><th>ACTIONS</th></tr></thead><tbody id="users-body"></tbody></table>
+        </div>
       </div>
+
+      <!-- KEYS -->
+      <div class="panel" id="panel-keys">
+        <div class="panel-header">
+          <div class="panel-title">CLÉS D'ACCÈS</div>
+          <button class="btn-add" onclick="openKeyModal()">+ Générer</button>
+        </div>
+        <input class="search-bar" placeholder="Rechercher une clé..." id="key-search" oninput="renderKeys()" />
+        <div class="table-wrap">
+          <table><thead><tr><th>CLÉ</th><th>DURÉE</th><th>STATUT</th><th>UTILISÉE PAR</th><th>DATE</th><th>TECHS AUTORISÉES</th><th>ACTIONS</th></tr></thead><tbody id="keys-body"></tbody></table>
+        </div>
+      </div>
+
+      <!-- FORGOT -->
+      <div class="panel" id="panel-forgot">
+        <div class="panel-header"><div class="panel-title">MOTS DE PASSE OUBLIÉS</div></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>USERNAME</th><th>IP</th><th>HEURE</th><th>ACTIONS</th></tr></thead><tbody id="forgot-body"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ADMINS -->
+      <div class="panel" id="panel-admins">
+        <div class="panel-header">
+          <div class="panel-title">ADMINS DU SITE</div>
+          <button class="btn-add" onclick="openAdminModal()">+ Ajouter un admin</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>USERNAME</th><th>RÔLE</th><th>CRÉÉ LE</th><th>ACTIONS</th></tr></thead><tbody id="admins-body"></tbody></table>
+        </div>
+      </div>
+
+      <!-- TECH -->
+      <div class="panel" id="panel-tech">
+        <div class="panel-header">
+          <div class="panel-title">CARTES TECH</div>
+          <button class="btn-add" onclick="openTechModal()">+ Ajouter</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>TAG</th><th>TITRE</th><th>DESCRIPTION</th><th>STATUT</th><th>ACTIONS</th></tr></thead><tbody id="tech-body"></tbody></table>
+        </div>
+      </div>
+
+      <!-- WEBHOOK -->
+      <div class="panel" id="panel-webhook">
+        <div class="panel-title" style="margin-bottom:20px;">WEBHOOK DISCORD</div>
+        <div class="settings-section">
+          <h3>CONFIGURATION</h3>
+          <div class="fg"><label class="fl">URL DU WEBHOOK DISCORD</label><input class="fi" id="wh-url" placeholder="https://discord.com/api/webhooks/..." /></div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+            <label class="fl" style="margin:0;">Activer les notifications</label>
+            <label class="toggle"><input type="checkbox" id="wh-enabled"><span class="tslider"></span></label>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-save" onclick="saveWebhook()">Sauvegarder</button>
+            <button class="btn-sm blue" onclick="testWebhook()" style="padding:10px 16px;">🔔 Tester le webhook</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>NOTIFICATIONS</h3>
+          <div class="wh-row"><div class="wh-info"><h4>🔐 Connexion</h4><p>Notifié à chaque connexion (admin ou utilisateur)</p></div><label class="toggle"><input type="checkbox" id="wh-login"><span class="tslider"></span></label></div>
+          <div class="wh-row"><div class="wh-info"><h4>👤 Inscription</h4><p>Notifié quand un nouvel utilisateur s'inscrit</p></div><label class="toggle"><input type="checkbox" id="wh-register"><span class="tslider"></span></label></div>
+          <div class="wh-row"><div class="wh-info"><h4>🔑 Activation de clé</h4><p>Notifié quand une clé est activée sur le site</p></div><label class="toggle"><input type="checkbox" id="wh-key"><span class="tslider"></span></label></div>
+          <div class="wh-row"><div class="wh-info"><h4>🔒 Mot de passe oublié</h4><p>Notifié lors d'une demande de reset MDP</p></div><label class="toggle"><input type="checkbox" id="wh-forgot"><span class="tslider"></span></label></div>
+          <div class="wh-row"><div class="wh-info"><h4>🆕 Génération de clés</h4><p>Notifié quand un admin génère de nouvelles clés</p></div><label class="toggle"><input type="checkbox" id="wh-keygen"><span class="tslider"></span></label></div>
+          <div style="margin-top:16px;"><button class="btn-save" onclick="saveWebhookNotifs()">Sauvegarder les préférences</button></div>
+        </div>
+        <div class="settings-section">
+          <h3>COMMENT OBTENIR L'URL</h3>
+          <p style="color:var(--muted);font-size:13px;line-height:1.8;">1. Va dans les <strong style="color:var(--text);">Paramètres du serveur Discord</strong><br>2. Clique sur <strong style="color:var(--text);">Intégrations → Webhooks</strong><br>3. Crée un <strong style="color:var(--text);">Nouveau Webhook</strong>, choisis le salon<br>4. Copie l'URL et colle-la ci-dessus</p>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="panel-title" style="margin-bottom:20px;">PERSONNALISER LE SITE</div>
+        <div class="settings-section">
+          <h3>PAGE D'ACCUEIL</h3>
+          <div class="settings-grid">
+            <div class="fg"><label class="fl">Badge texte</label><input class="fi" id="s-badge" /></div>
+            <div class="fg"><label class="fl">Sous-titre</label><input class="fi" id="s-sub" /></div>
+            <div class="fg"><label class="fl">Stat 1 — Valeur</label><input class="fi" id="s-s1" /></div>
+            <div class="fg"><label class="fl">Stat 1 — Label</label><input class="fi" id="s-s1l" /></div>
+            <div class="fg"><label class="fl">Stat 2 — Valeur</label><input class="fi" id="s-s2" /></div>
+            <div class="fg"><label class="fl">Stat 2 — Label</label><input class="fi" id="s-s2l" /></div>
+            <div class="fg"><label class="fl">Stat 3 — Valeur</label><input class="fi" id="s-s3" /></div>
+            <div class="fg"><label class="fl">Stat 3 — Label</label><input class="fi" id="s-s3l" /></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>DISCORD & TARIFS</h3>
+          <div class="fg"><label class="fl">Description Discord</label><textarea class="fi" id="s-discord"></textarea></div>
+          <div class="fg"><label class="fl">Sous-titre Tarifs</label><textarea class="fi" id="s-tarifs"></textarea></div>
+          <div class="fg"><label class="fl">Description activation clé</label><input class="fi" id="s-keydesc" /></div>
+        </div>
+        <button class="btn-save" onclick="saveSettings()">💾 Sauvegarder</button>
+      </div>
+
     </div>
-    <div style="display:flex; gap:10px;">
-      <button class="btn-primary" onclick="saveTech()">💾 Sauvegarder</button>
-      <button class="btn-secondary" onclick="clearTechForm()">🔄 Nouveau</button>
-    </div>
-  </div>
-  
-  <div class="table-container">
-    <table>
-      <thead><tr><th>ID</th><th>TAG</th><th>TITRE</th><th>STATUT</th><th>ACTIONS</th></tr></thead>
-      <tbody id="techs-list"></tbody>
-    </table>
   </div>
 </div>
- 
-<!-- UTILISATEURS -->
-<div id="tab-users" class="tab-content">
-  <div class="table-container">
-    <table>
-      <thead><tr><th>USERNAME</th><th>EMAIL</th><th>STATUT CLÉ</th><th>CLÉ EXPIRATION</th><th>DATE CRÉATION</th><th>ACTION</th></tr></thead>
-      <tbody id="users-list"></tbody>
-    </table>
-  </div>
-</div>
- 
-<!-- PARAMÈTRES -->
-<div id="tab-settings" class="tab-content">
-  <div class="form-card">
-    <h3 class="section-title">Paramètres du site</h3>
-    <div class="form-group"><label>Badge Accueil</label><input type="text" id="setting-badge" placeholder="Plateforme Tech Avancée"></div>
-    <div class="form-group"><label>Sous-titre</label><input type="text" id="setting-subtitle" placeholder="La plateforme de référence..."></div>
-    <div class="form-row">
-      <div class="form-group"><label>Stat 1 valeur</label><input type="text" id="setting-stat1"></div>
-      <div class="form-group"><label>Stat 1 label</label><input type="text" id="setting-stat1l"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>Stat 2 valeur</label><input type="text" id="setting-stat2"></div>
-      <div class="form-group"><label>Stat 2 label</label><input type="text" id="setting-stat2l"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>Stat 3 valeur</label><input type="text" id="setting-stat3"></div>
-      <div class="form-group"><label>Stat 3 label</label><input type="text" id="setting-stat3l"></div>
-    </div>
-    <div class="form-group"><label>Description Discord</label><input type="text" id="setting-discord-desc"></div>
-    <div class="form-group"><label>Description Tarifs</label><input type="text" id="setting-tarifs-sub"></div>
-    <div class="form-group"><label>Description Clé</label><input type="text" id="setting-key-desc"></div>
-    <button class="btn-primary" onclick="saveSettings()">💾 Sauvegarder les paramètres</button>
-  </div>
-  
-  <div class="form-card">
-    <h3 class="section-title">Webhook Discord</h3>
-    <div class="form-group"><label>URL du Webhook</label><input type="text" id="webhook-url" placeholder="https://discord.com/api/webhooks/..."></div>
-    <div class="form-row">
-      <div class="form-group"><label><input type="checkbox" id="webhook-login"> Connexions</label></div>
-      <div class="form-group"><label><input type="checkbox" id="webhook-register"> Inscriptions</label></div>
-      <div class="form-group"><label><input type="checkbox" id="webhook-key"> Activations de clés</label></div>
-      <div class="form-group"><label><input type="checkbox" id="webhook-forgot"> Demandes reset</label></div>
-    </div>
-    <button class="btn-primary" onclick="saveWebhook()">💾 Sauvegarder webhook</button>
-  </div>
-</div>
- 
-<!-- LOGS -->
-<div id="tab-logs" class="tab-content">
-  <div style="display:flex; gap:10px; margin-bottom:20px;">
-    <button class="btn-secondary" onclick="loadLogs('visits')">📊 Logs visites</button>
-    <button class="btn-secondary" onclick="loadLogs('connections')">🔐 Logs connexions</button>
-    <button class="btn-secondary" onclick="loadLogs('forgot')">📝 Demandes reset</button>
-  </div>
-  <div class="table-container">
-    <table><tbody id="logs-content"></tbody></table>
-  </div>
-</div>
- 
-<!-- MODAL CONFIRMATION -->
-<div class="modal-overlay" id="modal-confirm">
+
+<!-- MODAL KEY -->
+<div class="modal-overlay" id="modal-key">
   <div class="modal-box">
-    <h3 id="confirm-title">Confirmation</h3>
-    <p id="confirm-message">Êtes-vous sûr de vouloir effectuer cette action ?</p>
-    <div class="modal-buttons">
-      <button class="btn-secondary" onclick="closeConfirmModal()">Annuler</button>
-      <button class="btn-danger" id="confirm-action">Confirmer</button>
+    <button class="mcb" onclick="closeModal('modal-key')">✕</button>
+    <h3>GÉNÉRER UNE CLÉ</h3>
+    <div class="fg"><label class="fl">Clé (vide = auto)</label><input class="fi" id="k-key" placeholder="XXXX-XXXX-XXXX-XXXX" /></div>
+    <div class="fg"><label class="fl">Durée</label><select class="fi" id="k-dur"><option value="1h">1 Heure</option><option value="1d">1 Jour</option><option value="1w">1 Semaine</option><option value="1m">1 Mois</option><option value="lifetime" selected>À vie</option><option value="custom">Personnalisé...</option></select></div>
+    <div class="fg" id="k-custom-wrap" style="display:none;"><label class="fl">Durée personnalisée</label><input class="fi" id="k-custom" placeholder="ex: 3 mois..." /></div>
+    <div class="fg"><label class="fl">Quantité</label><input class="fi" id="k-qty" type="number" value="1" min="1" max="100" /></div>
+    <div class="fg"><label class="fl">🎯 ACCÈS AUX TECHS (sélectionnez celles autorisées)</label>
+      <div class="tech-select-list" id="techs-for-key"></div>
+      <div style="margin-top:8px;"><button class="btn-sm" type="button" onclick="selectAllTechs(true)">✅ Toutes</button> <button class="btn-sm" type="button" onclick="selectAllTechs(false)">❌ Aucune</button> <span style="font-size:10px;color:var(--muted);margin-left:8px;">(Aucune sélection = toutes les techs)</span></div>
     </div>
+    <div class="ma"><button class="btn-sm" onclick="closeModal('modal-key')">Annuler</button><button class="btn-add" onclick="generateKeys()">Générer</button></div>
   </div>
 </div>
- 
+
+<!-- MODAL TECH -->
+<div class="modal-overlay" id="modal-tech">
+  <div class="modal-box">
+    <button class="mcb" onclick="closeModal('modal-tech')">✕</button>
+    <h3 id="tech-modal-title">AJOUTER UNE CARTE</h3>
+    <input type="hidden" id="t-id" />
+    <div class="fg"><label class="fl">Tag</label><input class="fi" id="t-tag" placeholder="OUTIL 01" /></div>
+    <div class="fg"><label class="fl">Titre</label><input class="fi" id="t-title" placeholder="Nom de l'outil" /></div>
+    <div class="fg"><label class="fl">Description</label><textarea class="fi" id="t-desc" placeholder="Description..."></textarea></div>
+    <div class="fg"><label class="fl">Statut</label><select class="fi" id="t-status"><option value="active">✅ Actif</option><option value="coming_soon">🚧 Arrive bientôt</option></select></div>
+    <div class="ma"><button class="btn-sm" onclick="closeModal('modal-tech')">Annuler</button><button class="btn-add" onclick="saveTechItem()">Sauvegarder</button></div>
+  </div>
+</div>
+
+<!-- MODAL USER -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal-box">
+    <button class="mcb" onclick="closeModal('modal-user')">✕</button>
+    <h3>MODIFIER UTILISATEUR</h3>
+    <input type="hidden" id="u-id" />
+    <div class="fg"><label class="fl">Username</label><input class="fi" id="u-username" /></div>
+    <div class="fg"><label class="fl">Email</label><input class="fi" id="u-email" /></div>
+    <div class="fg"><label class="fl">Nouveau mot de passe</label><input class="fi" id="u-pass" type="password" placeholder="Laisser vide = inchangé" /></div>
+    <div class="fg"><label class="fl">Statut clé</label><select class="fi" id="u-key"><option value="false">Inactive</option><option value="true">Active</option></select></div>
+    <div class="fg"><label class="fl">Expiration clé</label><input class="fi" id="u-expiry" placeholder="ex: lifetime, 1m..." /></div>
+    <div class="ma"><button class="btn-sm" onclick="closeModal('modal-user')">Annuler</button><button class="btn-add" onclick="saveUser()">Sauvegarder</button></div>
+  </div>
+</div>
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="modal-admin">
+  <div class="modal-box">
+    <button class="mcb" onclick="closeModal('modal-admin')">✕</button>
+    <h3 id="admin-modal-title">AJOUTER UN ADMIN</h3>
+    <input type="hidden" id="ad-id" />
+    <div class="fg"><label class="fl">Username</label><input class="fi" id="ad-user" placeholder="admin_john" /></div>
+    <div class="fg"><label class="fl">Mot de passe</label><input class="fi" id="ad-pass" type="password" placeholder="••••••••" /></div>
+    <div class="fg"><label class="fl">Rôle</label><select class="fi" id="ad-role"><option value="admin">Admin</option><option value="owner">Owner</option></select></div>
+    <div style="padding:10px 14px;background:rgba(255,170,68,.05);border:1px solid rgba(255,170,68,.2);border-radius:6px;font-size:12px;color:var(--warn);font-family:'DM Mono',monospace;">⚠️ Les owners ont accès à tout (admins, webhook, personnalisation, settings).</div>
+    <div class="ma"><button class="btn-sm" onclick="closeModal('modal-admin')">Annuler</button><button class="btn-add" onclick="saveAdmin()">Sauvegarder</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 const DB={
   get(k){try{return JSON.parse(localStorage.getItem('nt_'+k));}catch{return null;}},
   set(k,v){localStorage.setItem('nt_'+k,JSON.stringify(v));},
   getArr(k){return this.get(k)||[];}
 };
- 
-let currentAdmin = null;
-let pendingAction = null;
-let selectedTechsForKey = [];
 
-function checkAuth(){
-  const admin = DB.get('current_admin');
-  if(!admin || admin.role !== 'owner'){
-    window.location.href = 'index.html';
-  }
-  currentAdmin = admin;
-  document.getElementById('admin-user-info').innerHTML = `<span class="user-role ${admin.role}">${admin.role.toUpperCase()}</span> ${admin.username}`;
+let currentAdmin=null;
+let selectedTechsForKey=[];
+
+// ===== INIT DATA =====
+if(!DB.get('admins')||!DB.getArr('admins').length){
+  DB.set('admins',[{id:1,username:'owner',password:'nitro06',role:'owner',created:new Date().toLocaleString('fr-FR')}]);
+}
+if(!DB.get('webhook_settings')){
+  DB.set('webhook_settings',{enabled:false,url:'',notif_login:true,notif_register:true,notif_key:true,notif_forgot:true,notif_keygen:true});
+}
+if(!DB.get('tech_items')){
+  DB.set('tech_items',[
+    {id:1,tag:'OUTIL 01',title:'Tech Pro Scanner',desc:'Scanner avancé avec détection IA, analyse réseau complète.',status:'active'},
+    {id:2,tag:'OUTIL 02',title:'Tech Optimizer',desc:'Optimiseur de performances système, booste votre PC.',status:'active'},
+    {id:3,tag:'OUTIL 03',title:'Tech Security',desc:'Suite de sécurité avancée avec firewall intelligent.',status:'active'},
+    {id:4,tag:'OUTIL 04',title:'Tech Network',desc:'Analyseur réseau professionnel, diagnostic complet.',status:'coming_soon'}
+  ]);
 }
 
-function showTab(tabId){
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-  document.querySelector(`.tab-btn[onclick="showTab('${tabId}')"]`).classList.add('active');
-  document.getElementById(`tab-${tabId}`).classList.add('active');
-  if(tabId === 'dashboard') refreshDashboard();
-  if(tabId === 'keys') loadKeys();
-  if(tabId === 'techs') loadTechs();
-  if(tabId === 'users') loadUsers();
-  if(tabId === 'settings') loadSettings();
+// ===== LOGIN =====
+function adminLogin(){
+  const u=document.getElementById('a-user').value.trim();
+  const p=document.getElementById('a-pass').value;
+  const err=document.getElementById('login-err');
+  err.style.display='none';
+  if(!u||!p){err.textContent='Remplis tous les champs.';err.style.display='block';return;}
+  const admins=DB.getArr('admins');
+  const found=admins.find(a=>a.username===u&&a.password===p);
+  if(!found){err.textContent='Identifiants incorrects.';err.style.display='block';setTimeout(()=>err.style.display='none',2500);return;}
+  currentAdmin=found;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('admin-app').style.display='flex';
+  const cl=DB.getArr('conn_logs');
+  cl.unshift({username:u,role:found.role,action:'connexion panel admin',ip:'—',time:new Date().toLocaleString('fr-FR'),ts:Date.now()});
+  DB.set('conn_logs',cl);
+  initAdmin();
+}
+document.getElementById('a-pass').addEventListener('keydown',e=>{if(e.key==='Enter')adminLogin();});
+
+function adminLogout(){
+  currentAdmin=null;
+  document.getElementById('admin-app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('a-user').value='';
+  document.getElementById('a-pass').value='';
 }
 
-function refreshAll(){
-  refreshDashboard();
-  loadKeys();
-  loadTechs();
-  loadUsers();
-  showToast('✅ Tout a été rafraîchi','success');
+function initAdmin(){
+  const roleClass=currentAdmin.role==='owner'?'chip-owner':'chip-admin';
+  document.getElementById('logged-chip').innerHTML=`<span class="chip-role ${roleClass}">${currentAdmin.role.toUpperCase()}</span>${currentAdmin.username}`;
+  if(currentAdmin.role==='owner')document.querySelectorAll('.owner-only').forEach(el=>el.style.display='flex');
+  renderDashboard();updateBadges();loadSettings();loadWebhookSettings();
+  const tick=()=>{const c=DB.get('online_count')||1;document.getElementById('online-display').textContent=c;};
+  tick();setInterval(tick,5000);
 }
 
-function refreshDashboard(){
-  const users = DB.getArr('users');
-  const keys = DB.getArr('keys');
-  const techs = DB.getArr('tech_items');
-  document.getElementById('stat-users').textContent = users.length;
-  document.getElementById('stat-keys-active').textContent = keys.filter(k => !k.used).length;
-  document.getElementById('stat-keys-used').textContent = keys.filter(k => k.used).length;
-  document.getElementById('stat-techs').textContent = techs.length;
+function updateBadges(){
+  const n=DB.getArr('forgot_requests').length;
+  const fb=document.getElementById('forgot-badge');
+  fb.textContent=n;fb.style.display=n?'inline':'none';
 }
 
-// ===== GESTION DES CLÉS =====
+function showPanel(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+  if(name==='dashboard') renderDashboard();
+  if(name==='logs') renderLogs();
+  if(name==='connlogs') renderConnLogs();
+  if(name==='users') renderUsers();
+  if(name==='keys') renderKeys();
+  if(name==='forgot') renderForgot();
+  if(name==='admins') renderAdmins();
+  if(name==='tech') renderTech();
+  if(name==='settings') loadSettings();
+  if(name==='webhook') loadWebhookSettings();
+}
+
+// ===== DASHBOARD =====
+function renderDashboard(){
+  const users=DB.getArr('users'),keys=DB.getArr('keys'),logs=DB.getArr('logs'),cl=DB.getArr('conn_logs'),forgot=DB.getArr('forgot_requests'),admins=DB.getArr('admins');
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label">UTILISATEURS</div><div class="stat-val blue">${users.length}</div></div>
+    <div class="stat-card"><div class="stat-label">CLÉS TOTALES</div><div class="stat-val">${keys.length}</div></div>
+    <div class="stat-card"><div class="stat-label">CLÉS ACTIVES</div><div class="stat-val green">${keys.filter(k=>k.used).length}</div></div>
+    <div class="stat-card"><div class="stat-label">CLÉS DISPO</div><div class="stat-val warn">${keys.filter(k=>!k.used).length}</div></div>
+    <div class="stat-card"><div class="stat-label">LOGS IP</div><div class="stat-val">${logs.length}</div></div>
+    <div class="stat-card"><div class="stat-label">MDP OUBLIÉS</div><div class="stat-val ${forgot.length?'red':''}">${forgot.length}</div></div>
+    <div class="stat-card"><div class="stat-label">EN LIGNE</div><div class="stat-val green">${DB.get('online_count')||1}</div></div>
+    <div class="stat-card"><div class="stat-label">ADMINS</div><div class="stat-val blue">${admins.length}</div></div>
+  `;
+  document.getElementById('dash-logs').innerHTML=logs.slice(0,6).map(l=>`<div class="log-row"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--info);min-width:110px;">${l.ip}</span><span style="font-size:11px;color:var(--muted);flex:1;">${l.page}</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);">${l.time}</span></div>`).join('')||'<div class="empty-state">Aucun log</div>';
+  document.getElementById('dash-conn').innerHTML=cl.slice(0,6).map(l=>{const rc=l.role==='owner'?'warn':l.role==='admin'?'blue':'green';return `<div class="log-row"><span style="font-size:12px;font-weight:600;min-width:80px;">${l.username}</span><span class="badge ${rc}" style="margin-right:6px;">${l.role}</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-left:auto;">${l.time}</span></div>`;}).join('')||'<div class="empty-state">Aucune connexion</div>';
+}
+
+// ===== LOGS IP =====
+function renderLogs(){
+  const f=(document.getElementById('log-search')||{}).value?.toLowerCase()||'';
+  const logs=DB.getArr('logs').filter(l=>!f||l.ip.includes(f)||l.page.includes(f));
+  document.getElementById('logs-body').innerHTML=logs.map(l=>`<tr><td><span class="mono" style="color:var(--info)">${l.ip}</span></td><td><span class="badge blue">${l.page}</span></td><td><span class="mono">${(l.ua||'—').substring(0,55)}${l.ua&&l.ua.length>55?'...':''}</span></td><td><span class="mono">${l.time}</span></td></tr>`).join('')||`<tr><td colspan="4" class="empty-state">Aucun log</td></tr>`;
+}
+function clearLogs(){if(!confirm('Vider tous les logs IP ?'))return;DB.set('logs',[]);renderLogs();showToast('Logs IP vidés.','success');}
+
+// ===== CONNEXIONS =====
+function renderConnLogs(){
+  const logs=DB.getArr('conn_logs');
+  document.getElementById('conn-body').innerHTML=logs.map(l=>{const rc=l.role==='owner'?'warn':l.role==='admin'?'blue':'green';return `<tr><td><strong>${l.username}</strong></td><td><span class="badge ${rc}">${l.role}</span></td><td><span class="mono">${l.action}</span></td><td><span class="mono" style="color:var(--info)">${l.ip||'—'}</span></td><td><span class="mono">${l.time}</span></td></tr>`;}).join('')||`<tr><td colspan="5" class="empty-state">Aucune connexion loggée</td></tr>`;
+}
+function clearConnLogs(){if(!confirm('Vider les logs connexions ?'))return;DB.set('conn_logs',[]);renderConnLogs();showToast('Logs connexions vidés.','success');}
+
+// ===== USERS =====
+function renderUsers(){
+  const f=(document.getElementById('user-search')||{}).value?.toLowerCase()||'';
+  const users=DB.getArr('users').filter(u=>!f||u.username.toLowerCase().includes(f)||u.email.toLowerCase().includes(f));
+  document.getElementById('users-body').innerHTML=users.map(u=>`<tr><td><strong>${u.username}</strong></td><td><span class="mono">${u.email}</span></td><td><span class="mono" style="color:var(--info)">${u.ip||'—'}</span></td><td><span class="badge ${u.keyActive?'green':'red'}">${u.keyActive?u.keyExpiry||'Active':'Inactive'}</span></td><td><span class="mono">${u.created||'—'}</span></td><td class="acell"><button class="btn-sm" onclick="openUserEdit('${u.id}')">Modifier</button><button class="btn-sm red" onclick="deleteUser('${u.id}')">Suppr.</button></td></tr>`).join('')||`<tr><td colspan="6" class="empty-state">Aucun utilisateur</td></tr>`;
+}
+function openUserEdit(id){
+  const u=DB.getArr('users').find(x=>String(x.id)===String(id));if(!u)return;
+  document.getElementById('u-id').value=u.id;
+  document.getElementById('u-username').value=u.username;
+  document.getElementById('u-email').value=u.email;
+  document.getElementById('u-pass').value='';
+  document.getElementById('u-key').value=String(u.keyActive||false);
+  document.getElementById('u-expiry').value=u.keyExpiry||'';
+  openModal('modal-user');
+}
+function saveUser(){
+  const id=document.getElementById('u-id').value;
+  const users=DB.getArr('users');
+  const idx=users.findIndex(x=>String(x.id)===String(id));if(idx===-1)return;
+  users[idx].username=document.getElementById('u-username').value;
+  users[idx].email=document.getElementById('u-email').value;
+  const np=document.getElementById('u-pass').value;if(np)users[idx].password=np;
+  users[idx].keyActive=document.getElementById('u-key').value==='true';
+  users[idx].keyExpiry=document.getElementById('u-expiry').value;
+  DB.set('users',users);closeModal('modal-user');renderUsers();showToast('Utilisateur mis à jour.','success');
+}
+function deleteUser(id){
+  if(!confirm('Supprimer cet utilisateur ?'))return;
+  DB.set('users',DB.getArr('users').filter(u=>String(u.id)!==String(id)));renderUsers();showToast('Supprimé.','success');
+}
+
+// ===== KEYS avec sélection des techs =====
 function loadTechsForKeySelect(){
-  const techs = DB.getArr('tech_items');
-  const container = document.getElementById('techs-for-key');
-  container.innerHTML = techs.map(t => `
-    <div class="tech-item">
-      <input type="checkbox" value="${t.id}" class="tech-checkbox" data-tech-id="${t.id}">
-      <label>${t.tag} - ${t.title}</label>
-      <span class="tech-status ${t.status === 'coming_soon' ? 'coming' : ''}">${t.status === 'coming_soon' ? '🚧 Arrive bientôt' : '✅ Disponible'}</span>
-    </div>
-  `).join('');
-  
-  document.querySelectorAll('.tech-checkbox').forEach(cb => {
-    cb.addEventListener('change', () => updateSelectedTechs());
-  });
+  const techs=DB.getArr('tech_items');
+  const container=document.getElementById('techs-for-key');
+  if(!container)return;
+  container.innerHTML=techs.map(t=>`<div class="tech-select-item"><input type="checkbox" value="${t.id}" class="tech-checkbox" id="tech_${t.id}"><label for="tech_${t.id}">${t.tag} - ${t.title}</label><span class="tech-status ${t.status==='coming_soon'?'badge warn':'badge green'}">${t.status==='coming_soon'?'🚧 Arrive bientôt':'✅ Disponible'}</span></div>`).join('');
+  document.querySelectorAll('.tech-checkbox').forEach(cb=>cb.addEventListener('change',updateSelectedTechs));
+  selectedTechsForKey=[];
 }
-
 function updateSelectedTechs(){
-  selectedTechsForKey = [];
-  document.querySelectorAll('.tech-checkbox:checked').forEach(cb => {
-    selectedTechsForKey.push(parseInt(cb.value));
-  });
+  selectedTechsForKey=[];
+  document.querySelectorAll('.tech-checkbox:checked').forEach(cb=>selectedTechsForKey.push(parseInt(cb.value)));
 }
-
 function selectAllTechs(selectAll){
-  document.querySelectorAll('.tech-checkbox').forEach(cb => {
-    cb.checked = selectAll;
-  });
+  document.querySelectorAll('.tech-checkbox').forEach(cb=>cb.checked=selectAll);
   updateSelectedTechs();
 }
-
-function generateKey(){
-  let keyCode = document.getElementById('new-key-code').value.trim().toUpperCase();
-  const duration = document.getElementById('new-key-duration').value;
-  
-  if(!keyCode){
-    const parts = [];
-    for(let i=0;i<4;i++){
-      parts.push(Math.random().toString(36).substring(2,6).toUpperCase());
+function renderKeys(){
+  const f=(document.getElementById('key-search')||{}).value?.toLowerCase()||'';
+  const keys=DB.getArr('keys').filter(k=>!f||k.key.toLowerCase().includes(f)||(k.usedBy||'').toLowerCase().includes(f));
+  const techs=DB.getArr('tech_items');
+  document.getElementById('keys-body').innerHTML=keys.map(k=>{
+    let techNames='✅ Toutes les techs';
+    if(k.allowedTechs && k.allowedTechs.length>0){
+      const allowed=techs.filter(t=>k.allowedTechs.includes(t.id));
+      techNames=allowed.length>0?allowed.map(t=>t.title).join(', '):'❌ Aucune tech';
     }
-    keyCode = parts.join('-');
-  }
-  
-  const keys = DB.getArr('keys');
-  if(keys.find(k => k.key === keyCode)){
-    showToast('Cette clé existe déjà','error');
-    return;
-  }
-  
-  const newKey = {
-    id: Date.now(),
-    key: keyCode,
-    duration: duration,
-    used: false,
-    usedBy: null,
-    created: Date.now(),
-    allowedTechs: [...selectedTechsForKey]
-  };
-  
-  keys.push(newKey);
-  DB.set('keys', keys);
-  showToast(`✅ Clé générée : ${keyCode}`, 'success');
-  document.getElementById('new-key-code').value = '';
-  document.getElementById('new-key-duration').value = 'monthly';
-  document.querySelectorAll('.tech-checkbox').forEach(cb => cb.checked = false);
-  selectedTechsForKey = [];
-  loadKeys();
-  refreshDashboard();
+    return `<tr><td><span class="mono" style="letter-spacing:1px;">${k.key}</span></td><td><span class="badge blue">${k.duration}</span></td><td><span class="badge ${k.used?'red':'green'}">${k.used?'Utilisée':'Disponible'}</span></td><td>${k.usedBy||'—'}</td><td><span class="mono">${k.created?new Date(k.created).toLocaleDateString('fr-FR'):''}</span></td><td style="font-size:11px;">${techNames}</td><td class="acell">${!k.used?`<button class="btn-sm green" onclick="copyKey('${k.key}')">Copier</button>`:''}<button class="btn-sm red" onclick="deleteKey('${k.key}')">Suppr.</button></td></tr>`;
+  }).join('')||`<tr><td colspan="7" class="empty-state">Aucune clé</td></tr>`;
 }
-
-function loadKeys(){
-  const keys = DB.getArr('keys');
-  const users = DB.getArr('users');
-  const techs = DB.getArr('tech_items');
-  const tbody = document.getElementById('keys-list');
-  
-  tbody.innerHTML = keys.map(k => {
-    const user = users.find(u => u.username === k.usedBy);
-    const techNames = k.allowedTechs && k.allowedTechs.length > 0 
-      ? techs.filter(t => k.allowedTechs.includes(t.id)).map(t => t.title).join(', ')
-      : '✅ Toutes les techs';
-    
-    return `
-      <tr>
-        <td><code style="font-family:'DM Mono'">${k.key}</code></td>
-        <td>${k.duration === 'monthly' ? '30 jours' : k.duration === 'yearly' ? '365 jours' : 'À vie'}</td>
-        <td><span class="badge ${k.used ? 'inactive' : 'active'}">${k.used ? 'Utilisée' : 'Disponible'}</span></td>
-        <td>${user ? user.username : '-'}</td>
-        <td>${new Date(k.created).toLocaleDateString('fr-FR')}</td>
-        <td><span style="font-size:11px;">${techNames}</span></td>
-        <td><button class="btn-danger btn-small" onclick="deleteKey(${k.id})">🗑️</button></td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function deleteKey(keyId){
-  pendingAction = () => {
-    const keys = DB.getArr('keys');
-    const newKeys = keys.filter(k => k.id !== keyId);
-    DB.set('keys', newKeys);
-    
-    // Révoquer l'accès pour l'utilisateur qui avait cette clé
-    const deletedKey = keys.find(k => k.id === keyId);
-    if(deletedKey && deletedKey.usedBy){
-      const users = DB.getArr('users');
-      const ui = users.findIndex(u => u.username === deletedKey.usedBy);
-      if(ui > -1){
-        users[ui].keyActive = false;
-        users[ui].keyId = null;
-        DB.set('users', users);
-      }
-    }
-    
-    loadKeys();
-    refreshDashboard();
-    showToast('Clé supprimée','success');
-  };
-  document.getElementById('confirm-message').textContent = `Supprimer la clé ? L'utilisateur perdra l'accès.`;
-  document.getElementById('confirm-title').textContent = 'Supprimer la clé';
-  document.getElementById('confirm-action').onclick = () => { pendingAction(); closeConfirmModal(); };
-  document.getElementById('modal-confirm').classList.add('open');
-}
-
-// ===== GESTION DES TECHS =====
-function loadTechs(){
-  const techs = DB.getArr('tech_items');
-  const tbody = document.getElementById('techs-list');
-  tbody.innerHTML = techs.map(t => `
-    <tr>
-      <td>${t.id}</td>
-      <td>${t.tag}</td>
-      <td>${t.title}</td>
-      <td><span class="badge ${t.status === 'coming_soon' ? 'coming' : 'active'}">${t.status === 'coming_soon' ? '🚧 Arrive bientôt' : '✅ Actif'}</span></td>
-      <td>
-        <button class="btn-secondary btn-small" onclick="editTech(${t.id})">✏️</button>
-        <button class="btn-danger btn-small" onclick="deleteTech(${t.id})">🗑️</button>
-      </td>
-    </tr>
-  `).join('');
+function openKeyModal(){
+  ['k-key','k-custom'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('k-dur').value='lifetime';
+  document.getElementById('k-qty').value='1';
+  document.getElementById('k-custom-wrap').style.display='none';
   loadTechsForKeySelect();
+  openModal('modal-key');
 }
-
-function editTech(id){
-  const techs = DB.getArr('tech_items');
-  const tech = techs.find(t => t.id === id);
-  if(tech){
-    document.getElementById('edit-tech-id').value = tech.id;
-    document.getElementById('tech-tag').value = tech.tag;
-    document.getElementById('tech-title').value = tech.title;
-    document.getElementById('tech-desc').value = tech.desc;
-    document.getElementById('tech-status').value = tech.status || 'active';
-  }
+document.getElementById('k-dur').addEventListener('change',function(){document.getElementById('k-custom-wrap').style.display=this.value==='custom'?'block':'none';});
+function gk(){const s=()=>Math.random().toString(36).substring(2,6).toUpperCase();return`${s()}-${s()}-${s()}-${s()}`;}
+function generateKeys(){
+  const rawKey=document.getElementById('k-key').value.trim().toUpperCase();
+  const dur=document.getElementById('k-dur').value;
+  const durF=dur==='custom'?document.getElementById('k-custom').value:dur;
+  const qty=parseInt(document.getElementById('k-qty').value)||1;
+  const keys=DB.getArr('keys');let added=0;
+  for(let i=0;i<qty;i++){const k=rawKey&&qty===1?rawKey:gk();if(!keys.find(x=>x.key===k)){keys.push({id:Date.now()+i,key:k,duration:durF,used:false,usedBy:null,created:Date.now(),allowedTechs:[...selectedTechsForKey]});added++;}}
+  DB.set('keys',keys);closeModal('modal-key');renderKeys();
+  showToast(`${added} clé(s) générée(s) !`,'success');
+  wh_send('keygen',{admin:currentAdmin.username,quantite:added,duree:durF});
 }
+function copyKey(k){navigator.clipboard.writeText(k).then(()=>showToast('Clé copiée !','success'));}
+function deleteKey(k){if(!confirm('Supprimer ?'))return;DB.set('keys',DB.getArr('keys').filter(x=>x.key!==k));renderKeys();showToast('Supprimée.','success');}
 
-function saveTech(){
-  const id = parseInt(document.getElementById('edit-tech-id').value);
-  const tag = document.getElementById('tech-tag').value.trim();
-  const title = document.getElementById('tech-title').value.trim();
-  const desc = document.getElementById('tech-desc').value.trim();
-  const status = document.getElementById('tech-status').value;
-  
-  if(!tag || !title){
-    showToast('Remplis le tag et le titre','error');
-    return;
-  }
-  
-  const techs = DB.getArr('tech_items');
-  
-  if(id && techs.find(t => t.id === id)){
-    const index = techs.findIndex(t => t.id === id);
-    techs[index] = {...techs[index], tag, title, desc, status};
-    showToast('Tech modifiée','success');
-  } else {
-    const newId = Date.now();
-    techs.push({id: newId, tag, title, desc, status});
-    showToast('Tech ajoutée','success');
-  }
-  
-  DB.set('tech_items', techs);
-  clearTechForm();
-  loadTechs();
-  refreshDashboard();
+// ===== FORGOT =====
+function renderForgot(){
+  const reqs=DB.getArr('forgot_requests');
+  document.getElementById('forgot-body').innerHTML=reqs.map((r,i)=>`<tr><td><strong>${r.username}</strong></td><td><span class="mono" style="color:var(--info)">${r.ip||'—'}</span></td><td><span class="mono">${r.time}</span></td><td class="acell"><button class="btn-sm green" onclick="resetPass('${r.username}',${i})">Reset MDP</button><button class="btn-sm red" onclick="dismissForgot(${i})">Ignorer</button></td></tr>`).join('')||`<tr><td colspan="4" class="empty-state">Aucune demande</td></tr>`;
+  updateBadges();
 }
-
-function deleteTech(id){
-  pendingAction = () => {
-    let techs = DB.getArr('tech_items');
-    techs = techs.filter(t => t.id !== id);
-    DB.set('tech_items', techs);
-    loadTechs();
-    refreshDashboard();
-    showToast('Tech supprimée','success');
-  };
-  document.getElementById('confirm-message').textContent = 'Supprimer cette tech ?';
-  document.getElementById('confirm-title').textContent = 'Supprimer la tech';
-  document.getElementById('confirm-action').onclick = () => { pendingAction(); closeConfirmModal(); };
-  document.getElementById('modal-confirm').classList.add('open');
+function resetPass(username,idx){
+  const np=prompt(`Nouveau mot de passe pour ${username} :`);if(!np)return;
+  const users=DB.getArr('users');const ui=users.findIndex(u=>u.username===username);
+  if(ui>-1){users[ui].password=np;DB.set('users',users);dismissForgot(idx);showToast(`MDP de ${username} changé !`,'success');}
 }
+function dismissForgot(idx){const r=DB.getArr('forgot_requests');r.splice(idx,1);DB.set('forgot_requests',r);renderForgot();}
 
-function clearTechForm(){
-  document.getElementById('edit-tech-id').value = '';
-  document.getElementById('tech-tag').value = '';
-  document.getElementById('tech-title').value = '';
-  document.getElementById('tech-desc').value = '';
-  document.getElementById('tech-status').value = 'active';
+// ===== ADMINS =====
+function renderAdmins(){
+  const admins=DB.getArr('admins');
+  document.getElementById('admins-body').innerHTML=admins.map(a=>{const rc=a.role==='owner'?'warn':'blue';const isMe=a.id===currentAdmin.id;return `<tr><td><strong>${a.username}</strong>${isMe?' <span class="mono" style="color:var(--success);font-size:10px;">(vous)</span>':''}</td><td><span class="badge ${rc}">${a.role.toUpperCase()}</span></td><td><span class="mono">${a.created||'—'}</span></td><td class="acell">${!isMe?`<button class="btn-sm" onclick="openAdminEdit(${a.id})">Modifier</button><button class="btn-sm red" onclick="deleteAdmin(${a.id})">Suppr.</button>`:'<span class="mono">—</span>'}</td></tr>`;}).join('')||`<tr><td colspan="4" class="empty-state">Aucun admin</td></tr>`;
 }
-
-// ===== UTILISATEURS =====
-function loadUsers(){
-  const users = DB.getArr('users');
-  const keys = DB.getArr('keys');
-  const tbody = document.getElementById('users-list');
-  
-  tbody.innerHTML = users.map(u => {
-    const userKey = keys.find(k => k.usedBy === u.username && k.used === true);
-    const expiryDate = u.keyExpiryDate ? new Date(u.keyExpiryDate).toLocaleDateString('fr-FR') : '-';
-    return `
-      <tr>
-        <td>${u.username}</td>
-        <td>${u.email || '-'}</td>
-        <td><span class="badge ${u.keyActive ? 'active' : 'inactive'}">${u.keyActive ? '✅ Actif' : '❌ Inactif'}</span></td>
-        <td style="font-size:12px;">${u.keyActive ? expiryDate : '-'}</td>
-        <td style="font-size:12px;">${u.created || '-'}</td>
-        <td>
-          ${u.keyActive ? `<button class="btn-danger btn-small" onclick="revokeUserKey('${u.username}')">🔒 Révoquer</button>` : ''}
-          <button class="btn-danger btn-small" onclick="deleteUser('${u.username}')">🗑️ Supprimer</button>
-        </td>
-      </tr>
-    `;
-  }).join('');
+function openAdminModal(){
+  document.getElementById('admin-modal-title').textContent='AJOUTER UN ADMIN';
+  ['ad-id','ad-user','ad-pass'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ad-role').value='admin';
+  openModal('modal-admin');
 }
-
-function revokeUserKey(username){
-  pendingAction = () => {
-    const users = DB.getArr('users');
-    const ui = users.findIndex(u => u.username === username);
-    if(ui > -1){
-      users[ui].keyActive = false;
-      users[ui].keyId = null;
-      DB.set('users', users);
-      
-      const keys = DB.getArr('keys');
-      const keyIndex = keys.findIndex(k => k.usedBy === username);
-      if(keyIndex > -1){
-        keys[keyIndex].used = false;
-        keys[keyIndex].usedBy = null;
-        DB.set('keys', keys);
-      }
-      
-      loadUsers();
-      refreshDashboard();
-      showToast(`Accès révoqué pour ${username}`, 'success');
-    }
-  };
-  document.getElementById('confirm-message').textContent = `Révoquer l'accès de ${username} ?`;
-  document.getElementById('confirm-title').textContent = 'Révoquer l\'accès';
-  document.getElementById('confirm-action').onclick = () => { pendingAction(); closeConfirmModal(); };
-  document.getElementById('modal-confirm').classList.add('open');
+function openAdminEdit(id){
+  const a=DB.getArr('admins').find(x=>x.id===id);if(!a)return;
+  document.getElementById('admin-modal-title').textContent='MODIFIER L\'ADMIN';
+  document.getElementById('ad-id').value=a.id;
+  document.getElementById('ad-user').value=a.username;
+  document.getElementById('ad-pass').value='';
+  document.getElementById('ad-role').value=a.role;
+  openModal('modal-admin');
 }
-
-function deleteUser(username){
-  pendingAction = () => {
-    let users = DB.getArr('users');
-    users = users.filter(u => u.username !== username);
-    DB.set('users', users);
-    
-    const keys = DB.getArr('keys');
-    const keyIndex = keys.findIndex(k => k.usedBy === username);
-    if(keyIndex > -1){
-      keys[keyIndex].used = false;
-      keys[keyIndex].usedBy = null;
-      DB.set('keys', keys);
-    }
-    
-    if(DB.get('current_user')?.username === username){
-      DB.set('current_user', null);
-    }
-    
-    loadUsers();
-    refreshDashboard();
-    showToast(`Utilisateur ${username} supprimé`, 'success');
-  };
-  document.getElementById('confirm-message').textContent = `Supprimer définitivement ${username} ?`;
-  document.getElementById('confirm-title').textContent = 'Supprimer l\'utilisateur';
-  document.getElementById('confirm-action').onclick = () => { pendingAction(); closeConfirmModal(); };
-  document.getElementById('modal-confirm').classList.add('open');
+function saveAdmin(){
+  const id=document.getElementById('ad-id').value;
+  const u=document.getElementById('ad-user').value.trim();
+  const p=document.getElementById('ad-pass').value;
+  const role=document.getElementById('ad-role').value;
+  if(!u){showToast('Username requis.','error');return;}
+  const admins=DB.getArr('admins');
+  if(id){const idx=admins.findIndex(a=>a.id===parseInt(id));if(idx>-1){admins[idx].username=u;admins[idx].role=role;if(p)admins[idx].password=p;}}
+  else{if(!p){showToast('MDP requis.','error');return;}if(admins.find(a=>a.username===u)){showToast('Username déjà pris.','error');return;}admins.push({id:Date.now(),username:u,password:p,role,created:new Date().toLocaleString('fr-FR')});}
+  DB.set('admins',admins);closeModal('modal-admin');renderAdmins();showToast('Admin sauvegardé !','success');
 }
+function deleteAdmin(id){if(id===currentAdmin.id){showToast('Tu ne peux pas te supprimer.','error');return;}if(!confirm('Supprimer cet admin ?'))return;DB.set('admins',DB.getArr('admins').filter(a=>a.id!==id));renderAdmins();showToast('Admin supprimé.','success');}
 
-// ===== PARAMÈTRES =====
-function loadSettings(){
-  const s = DB.get('site_settings') || {};
-  document.getElementById('setting-badge').value = s.badge || '';
-  document.getElementById('setting-subtitle').value = s.subtitle || '';
-  document.getElementById('setting-stat1').value = s.stat1 || '';
-  document.getElementById('setting-stat1l').value = s.stat1l || '';
-  document.getElementById('setting-stat2').value = s.stat2 || '';
-  document.getElementById('setting-stat2l').value = s.stat2l || '';
-  document.getElementById('setting-stat3').value = s.stat3 || '';
-  document.getElementById('setting-stat3l').value = s.stat3l || '';
-  document.getElementById('setting-discord-desc').value = s.discord_desc || '';
-  document.getElementById('setting-tarifs-sub').value = s.tarifs_sub || '';
-  document.getElementById('setting-key-desc').value = s.key_desc || '';
-  
-  const ws = DB.get('webhook_settings') || {enabled:false,url:'',notif_login:true,notif_register:true,notif_key:true,notif_forgot:true};
-  document.getElementById('webhook-url').value = ws.url || '';
-  document.getElementById('webhook-login').checked = ws.notif_login !== false;
-  document.getElementById('webhook-register').checked = ws.notif_register !== false;
-  document.getElementById('webhook-key').checked = ws.notif_key !== false;
-  document.getElementById('webhook-forgot').checked = ws.notif_forgot !== false;
+// ===== TECH =====
+function renderTech(){
+  const items=DB.getArr('tech_items');
+  document.getElementById('tech-body').innerHTML=items.map(i=>`<tr><td><span class="mono">${i.tag}</span></td><td><strong>${i.title}</strong></td><td style="max-width:260px;color:var(--muted);font-size:12px;">${i.desc}</td><td><span class="badge ${i.status==='coming_soon'?'warn':'green'}">${i.status==='coming_soon'?'🚧 Arrive bientôt':'✅ Actif'}</span></td><td class="acell"><button class="btn-sm" onclick="openTechEdit(${i.id})">Modifier</button><button class="btn-sm red" onclick="deleteTech(${i.id})">Suppr.</button></td></tr>`).join('')||`<tr><td colspan="5" class="empty-state">Aucune carte</td></tr>`;
 }
-
-function saveSettings(){
-  const settings = {
-    badge: document.getElementById('setting-badge').value,
-    subtitle: document.getElementById('setting-subtitle').value,
-    stat1: document.getElementById('setting-stat1').value,
-    stat1l: document.getElementById('setting-stat1l').value,
-    stat2: document.getElementById('setting-stat2').value,
-    stat2l: document.getElementById('setting-stat2l').value,
-    stat3: document.getElementById('setting-stat3').value,
-    stat3l: document.getElementById('setting-stat3l').value,
-    discord_desc: document.getElementById('setting-discord-desc').value,
-    tarifs_sub: document.getElementById('setting-tarifs-sub').value,
-    key_desc: document.getElementById('setting-key-desc').value,
-  };
-  DB.set('site_settings', settings);
-  showToast('Paramètres sauvegardés','success');
+function openTechModal(){
+  document.getElementById('tech-modal-title').textContent='AJOUTER UNE CARTE';
+  ['t-id','t-tag','t-title','t-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('t-status').value='active';
+  openModal('modal-tech');
 }
+function openTechEdit(id){
+  const item=DB.getArr('tech_items').find(i=>i.id===id);if(!item)return;
+  document.getElementById('tech-modal-title').textContent='MODIFIER LA CARTE';
+  document.getElementById('t-id').value=id;
+  document.getElementById('t-tag').value=item.tag;
+  document.getElementById('t-title').value=item.title;
+  document.getElementById('t-desc').value=item.desc;
+  document.getElementById('t-status').value=item.status||'active';
+  openModal('modal-tech');
+}
+function saveTechItem(){
+  const id=document.getElementById('t-id').value;
+  const tag=document.getElementById('t-tag').value.trim();
+  const title=document.getElementById('t-title').value.trim();
+  const desc=document.getElementById('t-desc').value.trim();
+  const status=document.getElementById('t-status').value;
+  if(!title){showToast('Titre requis.','error');return;}
+  const items=DB.getArr('tech_items');
+  if(id){const idx=items.findIndex(i=>i.id===parseInt(id));if(idx>-1)items[idx]={id:parseInt(id),tag,title,desc,status};}
+  else items.push({id:Date.now(),tag:tag||`OUTIL ${String(items.length+1).padStart(2,'0')}`,title,desc,status});
+  DB.set('tech_items',items);closeModal('modal-tech');renderTech();showToast('Carte sauvegardée !','success');
+}
+function deleteTech(id){if(!confirm('Supprimer ?'))return;DB.set('tech_items',DB.getArr('tech_items').filter(i=>i.id!==id));renderTech();showToast('Supprimée.','success');}
 
+// ===== WEBHOOK =====
+function loadWebhookSettings(){
+  const ws=DB.get('webhook_settings')||{};
+  document.getElementById('wh-url').value=ws.url||'';
+  document.getElementById('wh-enabled').checked=!!ws.enabled;
+  document.getElementById('wh-login').checked=ws.notif_login!==false;
+  document.getElementById('wh-register').checked=ws.notif_register!==false;
+  document.getElementById('wh-key').checked=ws.notif_key!==false;
+  document.getElementById('wh-forgot').checked=ws.notif_forgot!==false;
+  document.getElementById('wh-keygen').checked=ws.notif_keygen!==false;
+}
 function saveWebhook(){
-  const webhook = {
-    enabled: document.getElementById('webhook-url').value.trim() !== '',
-    url: document.getElementById('webhook-url').value,
-    notif_login: document.getElementById('webhook-login').checked,
-    notif_register: document.getElementById('webhook-register').checked,
-    notif_key: document.getElementById('webhook-key').checked,
-    notif_forgot: document.getElementById('webhook-forgot').checked,
-  };
-  DB.set('webhook_settings', webhook);
-  showToast('Webhook sauvegardé','success');
+  const ws=DB.get('webhook_settings')||{};
+  ws.url=document.getElementById('wh-url').value.trim();
+  ws.enabled=document.getElementById('wh-enabled').checked;
+  DB.set('webhook_settings',ws);showToast('Webhook sauvegardé !','success');
+}
+function saveWebhookNotifs(){
+  const ws=DB.get('webhook_settings')||{};
+  ws.notif_login=document.getElementById('wh-login').checked;
+  ws.notif_register=document.getElementById('wh-register').checked;
+  ws.notif_key=document.getElementById('wh-key').checked;
+  ws.notif_forgot=document.getElementById('wh-forgot').checked;
+  ws.notif_keygen=document.getElementById('wh-keygen').checked;
+  DB.set('webhook_settings',ws);showToast('Préférences sauvegardées !','success');
+}
+async function testWebhook(){
+  const ws=DB.get('webhook_settings')||{};
+  if(!ws.url){showToast('Entre d\'abord l\'URL du webhook.','error');return;}
+  const embed={title:'✅ Test Net Tech',color:5763719,description:'Le webhook fonctionne !',fields:[{name:'Admin',value:currentAdmin.username,inline:true},{name:'Rôle',value:currentAdmin.role,inline:true}],footer:{text:'Net Tech Admin • '+new Date().toLocaleString('fr-FR')},timestamp:new Date().toISOString()};
+  try{const r=await fetch(ws.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'Net Tech',embeds:[embed]})});r.ok?showToast('✓ Message envoyé sur Discord !','success'):showToast('Erreur '+r.status,'error');}catch{showToast('URL invalide ou Discord inaccessible.','error');}
+}
+async function wh_send(event,data){
+  const ws=DB.get('webhook_settings')||{};
+  if(!ws.enabled||!ws.url)return;
+  const notifMap={keygen:'notif_keygen'};
+  if(notifMap[event]&&!ws[notifMap[event]])return;
+  const colors={login:3447003,register:5763719,key_activated:16705372,forgot:15548997,keygen:16776960};
+  const titles={login:'🔐 Connexion',register:'👤 Inscription',key_activated:'🔑 Clé activée',forgot:'🔒 MDP oublié',keygen:'🆕 Clés générées'};
+  const embed={title:titles[event]||event,color:colors[event]||7506394,fields:Object.entries(data).map(([k,v])=>({name:k,value:String(v||'—'),inline:true})),footer:{text:'Net Tech • '+new Date().toLocaleString('fr-FR')},timestamp:new Date().toISOString()};
+  try{await fetch(ws.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'Net Tech',embeds:[embed]})});}catch{}
 }
 
-// ===== LOGS =====
-function loadLogs(type){
-  let logs = [];
-  if(type === 'visits') logs = DB.getArr('logs');
-  else if(type === 'connections') logs = DB.getArr('conn_logs');
-  else if(type === 'forgot') logs = DB.getArr('forgot_requests');
-  
-  const tbody = document.getElementById('logs-content');
-  if(logs.length === 0){
-    tbody.innerHTML = '<tr><td colspan="3">Aucun log</td></tr>';
-    return;
-  }
-  
-  tbody.innerHTML = logs.slice(0,100).map(log => {
-    if(type === 'visits') return `<tr><td>${log.ip}</td><td>${log.page}</td><td>${log.time}</td></tr>`;
-    if(type === 'connections') return `<tr><td>${log.username}</td><td>${log.role}</td><td>${log.action}</td><td>${log.ip}</td><td>${log.time}</td></tr>`;
-    return `<tr><td>${log.username}</td><td>${log.time}</td><td>${log.ip || '-'}</td></tr>`;
-  }).join('');
+// ===== SETTINGS =====
+function loadSettings(){
+  const s=DB.get('site_settings')||{};
+  const fields={badge:'s-badge',subtitle:'s-sub',stat1:'s-s1',stat1l:'s-s1l',stat2:'s-s2',stat2l:'s-s2l',stat3:'s-s3',stat3l:'s-s3l',discord_desc:'s-discord',tarifs_sub:'s-tarifs',key_desc:'s-keydesc'};
+  Object.entries(fields).forEach(([k,id])=>{const el=document.getElementById(id);if(el&&s[k]!==undefined)el.value=s[k];});
+}
+function saveSettings(){
+  const s=DB.get('site_settings')||{};
+  const fields={badge:'s-badge',subtitle:'s-sub',stat1:'s-s1',stat1l:'s-s1l',stat2:'s-s2',stat2l:'s-s2l',stat3:'s-s3',stat3l:'s-s3l',discord_desc:'s-discord',tarifs_sub:'s-tarifs',key_desc:'s-keydesc'};
+  Object.entries(fields).forEach(([k,id])=>{const el=document.getElementById(id);if(el)s[k]=el.value;});
+  DB.set('site_settings',s);showToast('Paramètres sauvegardés !','success');
 }
 
-// ===== UTILS =====
-function closeConfirmModal(){
-  document.getElementById('modal-confirm').classList.remove('open');
-  pendingAction = null;
-}
+// ===== MODALS =====
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 
+// ===== TOAST =====
 function showToast(msg,type=''){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast '+type+' show';
-  setTimeout(() => t.classList.remove('show'), 3000);
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
-
-// ===== INIT =====
-checkAuth();
-refreshDashboard();
-loadTechsForKeySelect();
 </script>
 </body>
 </html>
