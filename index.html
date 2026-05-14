@@ -85,11 +85,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:64px;
  
 /* TECH GRID */
 .tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
-.tech-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:26px;transition:all .2s;}
+.tech-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:26px;transition:all .2s;cursor:pointer;}
 .tech-card:hover{border-color:#3a3a3a;transform:translateY(-2px);}
+.tech-card.locked{opacity:0.7;position:relative;overflow:hidden;}
+.tech-card.locked::after{content:'🔒';position:absolute;top:20px;right:20px;font-size:20px;opacity:0.5;}
+.tech-card.unlocked{opacity:1;}
+.tech-card.unlocked::after{content:'✓';position:absolute;top:20px;right:20px;font-size:20px;color:var(--success);opacity:0.8;}
 .tech-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:10px;}
 .tech-card h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:6px;}
 .tech-card p{color:var(--muted);font-size:13px;line-height:1.6;}
+.tech-lock-message{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;grid-column:1/-1;}
+.tech-lock-message p{color:var(--muted);margin-bottom:20px;}
  
 /* AUTH MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
@@ -306,10 +312,10 @@ function initData(){
     DB.set('conn_logs',[]);
     DB.set('forgot_requests',[]);
     DB.set('tech_items',[
-      {id:1,tag:'OUTIL 01',title:'Tech',desc:'Description modifiable depuis le panel admin.'},
-      {id:2,tag:'OUTIL 02',title:'Tech',desc:'Description modifiable depuis le panel admin.'},
-      {id:3,tag:'OUTIL 03',title:'Tech',desc:'Description modifiable depuis le panel admin.'},
-      {id:4,tag:'OUTIL 04',title:'Tech',desc:'Description modifiable depuis le panel admin.'},
+      {id:1,tag:'OUTIL 01',title:'Tech Pro Scanner',desc:'Scanner avancé avec détection IA, analyse réseau complète et rapports détaillés.'},
+      {id:2,tag:'OUTIL 02',title:'Tech Optimizer',desc:'Optimiseur de performances système, nettoie et booste votre PC en un clic.'},
+      {id:3,tag:'OUTIL 03',title:'Tech Security',desc:'Suite de sécurité avancée avec firewall intelligent et anti-malware temps réel.'},
+      {id:4,tag:'OUTIL 04',title:'Tech Network',desc:'Analyseur réseau professionnel, surveillance des paquets et diagnostic complet.'},
     ]);
     DB.set('site_settings',{
       badge:'Plateforme Tech Avancée',
@@ -364,12 +370,44 @@ function showPage(name){
   logVisit(name);
 }
  
-// ===== TECH =====
+// ===== TECH (avec protection clé) =====
+function hasValidKey() {
+  if(currentAdmin) return true;
+  if(!currentUser) return false;
+  return currentUser.keyActive === true;
+}
+ 
 function renderTech(){
   const items=DB.getArr('tech_items');
-  document.getElementById('tech-grid').innerHTML=items.length?items.map(i=>`
-    <div class="tech-card"><div class="tech-tag">${i.tag}</div><h3>${i.title}</h3><p>${i.desc}</p></div>
-  `).join(''):'<p style="color:var(--muted);font-size:14px;">Aucun outil pour le moment.</p>';
+  const hasAccess = hasValidKey();
+  const grid = document.getElementById('tech-grid');
+  
+  if(!hasAccess) {
+    // Affiche un aperçu verrouillé
+    grid.innerHTML = `
+      <div class="tech-lock-message">
+        <p>🔒 Contenu verrouillé - Clé d'accès requise</p>
+        <p style="font-size:13px; margin-top:10px;">Les descriptions des outils sont cachées tant que vous n'avez pas activé votre clé.</p>
+        <button class="btn-primary" onclick="showPage('tarifs')" style="margin-top:15px;">Activer ma clé</button>
+      </div>
+      ${items.map(i => `
+        <div class="tech-card locked">
+          <div class="tech-tag">${i.tag}</div>
+          <h3>${i.title}</h3>
+          <p>🔒 Contenu protégé - Activez votre clé pour voir la description</p>
+        </div>
+      `).join('')}
+    `;
+  } else {
+    // Affiche le contenu complet
+    grid.innerHTML = items.map(i => `
+      <div class="tech-card unlocked">
+        <div class="tech-tag">${i.tag}</div>
+        <h3>${i.title}</h3>
+        <p>${i.desc}</p>
+      </div>
+    `).join('');
+  }
 }
  
 // ===== AUTH =====
@@ -447,6 +485,7 @@ function doLogin(){
     closeAuthModal();
     renderAuthArea();
     showToast('Bienvenue, '+u+' ('+foundAdmin.role+') !','success');
+    if(document.getElementById('page-tech').classList.contains('active')) renderTech();
     return;
   }
  
@@ -461,6 +500,7 @@ function doLogin(){
   closeAuthModal();
   renderAuthArea();
   showToast('Bienvenue, '+u+' !','success');
+  if(document.getElementById('page-tech').classList.contains('active')) renderTech();
 }
  
 function doRegister(){
@@ -502,11 +542,13 @@ function doForgot(){
 function logoutUser(){
   currentUser=null;DB.set('current_user',null);
   renderAuthArea();showToast('Déconnecté.','');
+  if(document.getElementById('page-tech').classList.contains('active')) renderTech();
 }
 function logoutAdmin(){
   logConn(currentAdmin.username,currentAdmin.role,'déconnexion');
   currentAdmin=null;DB.set('current_admin',null);
   renderAuthArea();showToast('Déconnecté.','');
+  if(document.getElementById('page-tech').classList.contains('active')) renderTech();
 }
  
 // ===== KEY ACTIVATION =====
@@ -528,6 +570,7 @@ function activateKey(){
   }
   sendWebhook('key_activated',{username:who,key:val,duration:keys[idx].duration,ip:userIP});
   showMsg(msg,'✓ Clé activée ! Durée : '+keys[idx].duration,'ok');
+  if(document.getElementById('page-tech').classList.contains('active')) renderTech();
 }
  
 function showMsg(el,txt,cls){el.textContent=txt;el.className='key-msg '+cls;el.style.display='block';}
