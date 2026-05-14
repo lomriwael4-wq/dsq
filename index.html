@@ -467,9 +467,33 @@ function renderAuthArea(){
       </div>
     </div>`;
   } else if(currentUser){
-    const hasKey = currentUser.keyActive ? '🔑' : '';
+    // Récupérer le statut de la clé depuis la DB
+    const users = DB.getArr('users');
+    const userData = users.find(u => u.username === currentUser.username);
+    const hasKey = userData?.keyActive === true;
+    
+    // Récupérer le code de la clé (optionnel)
+    let keyCode = '';
+    if(hasKey) {
+      const keys = DB.getArr('keys');
+      const foundKey = keys.find(k => k.usedBy === currentUser.username && k.used === true);
+      if(foundKey) {
+        keyCode = foundKey.key;
+        // Afficher seulement les 8 premiers et 4 derniers caractères
+        if(keyCode.length > 12) {
+          keyCode = keyCode.substring(0, 8) + '...' + keyCode.substring(keyCode.length - 4);
+        }
+      }
+    }
+    
     area.innerHTML=`<div class="user-menu">
-      <button class="user-btn" onclick="toggleMenu()">${hasKey} ${currentUser.username} <span>▾</span></button>
+      <button class="user-btn" onclick="toggleMenu()" style="display:flex; align-items:center; gap:8px;">
+        ${hasKey ? '<span style="color:var(--success); font-size:14px;">🔑</span>' : '<span style="color:var(--danger); font-size:14px;">🔒</span>'}
+        <span style="font-weight:600;">${currentUser.username}</span>
+        ${keyCode ? `<span style="font-size:10px; font-family:\'DM Mono\'; background:var(--surface2); padding:2px 6px; border-radius:4px; color:var(--muted);">${keyCode}</span>` : ''}
+        ${hasKey ? '<span style="font-size:10px; color:var(--success);">✓</span>' : '<span style="font-size:10px; color:var(--danger);">✗</span>'}
+        <span style="margin-left:4px;">▾</span>
+      </button>
       <div class="user-dropdown" id="user-dd">
         <a onclick="logoutUser()">Déconnexion</a>
       </div>
