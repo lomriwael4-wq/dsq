@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NET TECH | Moteur de recherche de fuites</title>
+    <title>NET TECH · Data Leak Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,12 +13,12 @@
         }
 
         body {
-            background: #0A0A0A;
+            background: #0B0B0B;
             font-family: 'Inter', sans-serif;
-            color: #FFFFFF;
+            color: #F0F0F0;
         }
 
-        /* Grille technique de fond */
+        /* Grille subtle */
         body::before {
             content: "";
             position: fixed;
@@ -26,9 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
@@ -51,401 +49,169 @@
             gap: 20px;
             border-bottom: 1px solid #222;
             padding-bottom: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
         }
-
         .logo {
             font-size: 28px;
             font-weight: 800;
             letter-spacing: 2px;
+            background: linear-gradient(135deg, #FFF, #AAA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        .logo span {
-            color: #CCC;
-            font-weight: 400;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 35px;
-        }
-        .nav-menu a {
-            color: #DDD;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            transition: 0.2s;
-        }
+        .nav-menu { display: flex; gap: 35px; }
+        .nav-menu a { color: #BBB; text-decoration: none; font-weight: 500; transition: 0.2s; cursor: pointer; }
         .nav-menu a:hover { color: white; }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .lang {
-            font-size: 14px;
-            font-weight: 500;
-            color: #AAA;
-            letter-spacing: 1px;
-        }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .lang { font-size: 13px; color: #888; letter-spacing: 1px; }
         .login-btn {
-            background: transparent;
-            border: 1px solid #333;
-            padding: 8px 24px;
-            border-radius: 30px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
+            background: transparent; border: 1px solid #333; padding: 8px 24px;
+            border-radius: 40px; color: white; font-weight: 600; cursor: pointer;
             transition: 0.2s;
         }
-        .login-btn:hover {
-            background: #1A1A1A;
-            border-color: #555;
-        }
+        .login-btn:hover { background: #1A1A1A; border-color: #666; }
 
         /* HERO */
-        .hero {
-            text-align: center;
-            margin: 50px 0 40px;
-        }
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 16px;
-        }
-        .hero p {
-            color: #999;
-            font-size: 18px;
-            max-width: 650px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
+        .hero { text-align: center; margin: 40px 0 35px; }
+        .hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 16px; }
+        .hero p { color: #999; font-size: 18px; max-width: 650px; margin: 0 auto; line-height: 1.5; }
+        .stats { display: flex; justify-content: center; gap: 60px; margin-top: 40px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 28px; font-weight: 800; }
+        .stat-label { font-size: 13px; color: #777; margin-top: 5px; letter-spacing: 1px; }
 
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            margin-top: 40px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-        }
-        .stat-label {
-            font-size: 13px;
-            color: #777;
-            letter-spacing: 1px;
-            margin-top: 5px;
-        }
-
-        /* CATEGORIES (Discord / Tarif / Tech) */
-        .categories {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 50px 0 35px;
-        }
+        /* CATEGORIES */
+        .categories { display: flex; justify-content: center; gap: 15px; margin: 45px 0 35px; }
         .cat-btn {
-            background: #111;
-            border: 1px solid #2A2A2A;
-            padding: 12px 32px;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 600;
-            color: #DDD;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: #111; border: 1px solid #2A2A2A; padding: 12px 32px;
+            border-radius: 40px; font-size: 15px; font-weight: 600; color: #DDD;
+            cursor: pointer; transition: 0.2s;
         }
-        .cat-btn.active {
-            background: white;
-            color: black;
-            border-color: white;
-        }
-        .cat-btn:hover:not(.active) {
-            background: #1C1C1C;
-            border-color: #444;
-        }
+        .cat-btn.active { background: white; color: black; border-color: white; }
+        .cat-btn:hover:not(.active) { background: #1C1C1C; border-color: #444; }
 
         /* PANELS */
-        .panel {
-            display: none;
-            animation: fade 0.25s ease;
-        }
-        .panel.active {
-            display: block;
-        }
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(8px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
+        .panel { display: none; animation: fade 0.25s ease; }
+        .panel.active { display: block; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
-            background: #0F0F0F;
-            border: 1px solid #222;
-            border-radius: 24px;
-            padding: 35px;
-            text-align: center;
+            background: #0F0F0F; border: 1px solid #232323; border-radius: 28px;
+            padding: 35px; text-align: center;
         }
 
-        /* Discord */
         .discord-btn {
-            display: inline-block;
-            background: #5865F2;
-            color: white;
-            text-decoration: none;
-            padding: 14px 40px;
-            border-radius: 40px;
-            font-weight: 600;
-            margin-top: 25px;
-            transition: 0.2s;
+            display: inline-block; background: #5865F2; color: white;
+            text-decoration: none; padding: 14px 40px; border-radius: 40px;
+            font-weight: 600; margin-top: 25px; transition: 0.2s;
         }
-        .discord-btn:hover {
-            background: #4752C4;
-            transform: scale(0.98);
-        }
+        .discord-btn:hover { background: #4752C4; transform: scale(0.98); }
 
-        /* Tarif / Clé */
-        .key-input-group {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
+        .key-input-group { display: flex; justify-content: center; gap: 12px; margin: 25px 0; flex-wrap: wrap; }
         .key-input {
-            background: #050505;
-            border: 1px solid #2C2C2C;
-            padding: 14px 24px;
-            border-radius: 60px;
-            width: 280px;
-            color: white;
-            font-family: monospace;
-            font-size: 14px;
+            background: #050505; border: 1px solid #2C2C2C; padding: 14px 24px;
+            border-radius: 60px; width: 280px; color: white; font-family: monospace;
         }
         .btn-primary {
-            background: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            color: black;
+            background: white; border: none; padding: 14px 32px; border-radius: 60px;
+            font-weight: 700; cursor: pointer; transition: 0.2s; color: black;
         }
-        .btn-primary:hover {
-            background: #E0E0E0;
-        }
+        .btn-primary:hover { background: #E0E0E0; }
 
         /* TECH GRID */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 22px;
-        }
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-top: 20px; }
         .tech-card {
-            background: #0C0C0C;
-            border: 1px solid #262626;
-            border-radius: 20px;
-            padding: 24px;
-            transition: 0.2s;
-            backdrop-filter: blur(2px);
+            background: #0C0C0C; border: 1px solid #262626; border-radius: 20px;
+            padding: 24px; transition: 0.2s; cursor: pointer; text-align: left;
         }
-        .tech-card.locked {
-            filter: blur(4px);
-            user-select: none;
-            pointer-events: none;
-            opacity: 0.7;
+        .tech-card.locked { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.6; }
+        .tech-card:not(.locked):hover { border-color: #666; transform: translateY(-3px); }
+        .tech-card h3 { font-size: 20px; margin-bottom: 12px; font-weight: 700; }
+        .tech-card p { color: #AAAAAA; font-size: 14px; line-height: 1.5; }
+        .lock-badge { display: inline-block; font-size: 11px; background: #1A1A1A; padding: 4px 12px; border-radius: 30px; margin-top: 12px; color: #888; }
+
+        /* MODAL TECH DETAIL */
+        .tech-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.96); backdrop-filter: blur(12px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1500; visibility: hidden; opacity: 0; transition: 0.2s;
         }
-        .tech-card h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-        .tech-card p {
-            color: #AAAAAA;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .lock-badge {
-            display: inline-block;
-            font-size: 12px;
-            background: #1A1A1A;
-            padding: 4px 12px;
-            border-radius: 30px;
-            margin-top: 12px;
-            color: #888;
+        .tech-modal.active { visibility: visible; opacity: 1; }
+        .tech-modal-content {
+            background: #111; border: 1px solid #2A2A2A; border-radius: 32px;
+            max-width: 550px; width: 90%; padding: 35px;
         }
 
         /* MODAL AUTH */
         .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s;
         }
-        .modal.active {
-            visibility: visible;
-            opacity: 1;
-        }
+        .modal.active { visibility: visible; opacity: 1; }
         .modal-box {
-            background: #111;
-            border: 1px solid #2A2A2A;
-            border-radius: 32px;
-            padding: 35px;
-            width: 420px;
-            max-width: 90%;
-        }
-        .modal-box h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            background: #111; border: 1px solid #2A2A2A; border-radius: 32px;
+            padding: 35px; width: 420px; max-width: 90%;
         }
         .modal-input {
-            width: 100%;
-            background: #050505;
-            border: 1px solid #2C2C2C;
-            padding: 14px;
-            border-radius: 30px;
-            color: white;
-            margin: 12px 0;
+            width: 100%; background: #050505; border: 1px solid #2C2C2C;
+            padding: 14px; border-radius: 30px; color: white; margin: 12px 0;
         }
-        .auth-switch {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .auth-switch button {
-            background: transparent;
-            border: none;
-            color: #AAA;
-            cursor: pointer;
-            font-weight: 500;
-            padding-bottom: 6px;
-        }
-        .auth-switch button.active {
-            color: white;
-            border-bottom: 2px solid white;
-        }
-        .google-btn {
-            width: 100%;
-            background: #1A1A1A;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 40px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 15px;
-        }
+        .auth-switch { display: flex; gap: 20px; margin: 20px 0; }
+        .auth-switch button { background: none; border: none; color: #AAA; cursor: pointer; padding-bottom: 6px; }
+        .auth-switch button.active { color: white; border-bottom: 2px solid white; }
+        .google-btn { width: 100%; background: #1A1A1A; border: 1px solid #333; padding: 12px; border-radius: 40px; color: white; margin-top: 15px; cursor: pointer; }
 
         /* ADMIN PANEL */
         .admin-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #070707;
-            z-index: 1100;
-            overflow-y: auto;
-            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #070707; z-index: 2000; overflow-y: auto; display: none;
         }
-        .admin-panel.open {
-            display: block;
-        }
+        .admin-panel.open { display: block; }
         .admin-header {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 30px;
-            background: #0F0F0F;
-            border-bottom: 1px solid #222;
+            display: flex; justify-content: space-between; padding: 20px 30px;
+            background: #0F0F0F; border-bottom: 1px solid #222; position: sticky; top: 0;
         }
         .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 25px;
-            padding: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px; padding: 30px;
         }
         .admin-card {
-            background: #0C0C0C;
-            border: 1px solid #252525;
-            border-radius: 24px;
-            padding: 24px;
+            background: #0C0C0C; border: 1px solid #252525; border-radius: 24px; padding: 24px;
         }
-        .admin-card h3 {
-            margin-bottom: 18px;
-            font-size: 18px;
-        }
-        .admin-input {
-            background: #010101;
-            border: 1px solid #2E2E2E;
-            padding: 12px;
-            border-radius: 30px;
-            width: 100%;
-            color: white;
-            margin: 8px 0;
+        .admin-card h3 { margin-bottom: 18px; font-size: 18px; }
+        .admin-input, .admin-select {
+            background: #010101; border: 1px solid #2E2E2E; padding: 12px;
+            border-radius: 30px; width: 100%; color: white; margin: 8px 0;
         }
         .admin-btn {
-            background: white;
-            color: black;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 5px 5px 0 0;
+            background: white; color: black; border: none; padding: 10px 18px;
+            border-radius: 40px; font-weight: 600; cursor: pointer; margin: 5px 5px 0 0;
         }
         .key-row {
-            background: #020202;
-            padding: 10px;
-            margin: 8px 0;
-            border-left: 3px solid white;
-            font-family: monospace;
-            display: flex;
-            justify-content: space-between;
+            background: #020202; padding: 10px; margin: 8px 0; border-left: 3px solid white;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
         .toast {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1A1A1A;
-            border: 1px solid #333;
-            padding: 10px 24px;
-            border-radius: 60px;
-            color: white;
-            z-index: 1200;
-            font-size: 14px;
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            background: #1A1A1A; border: 1px solid #444; padding: 10px 24px;
+            border-radius: 60px; color: white; z-index: 3000; font-size: 14px;
         }
-
-        button { cursor: pointer; }
         hr { border-color: #222; margin: 20px 0; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- HEADER style image -->
     <div class="header">
-        <div class="logo">NET TECH</div>
+        <div class="logo" id="siteTitle">NET TECH</div>
         <div class="nav-menu">
-            <a href="#">Accueil</a>
-            <a href="#" id="fakeSearchLink">Recherche</a>
-            <a href="#" id="fakeContactLink">Contact</a>
+            <a id="navAccueil">Accueil</a>
+            <a id="navRecherche">Recherche</a>
+            <a id="navContact">Contact</a>
         </div>
         <div class="header-right">
             <div class="lang">31 FR FR</div>
@@ -453,7 +219,6 @@
         </div>
     </div>
 
-    <!-- Hero section avec stats -->
     <div class="hero">
         <h1>Moteur de recherche de fuites de données</h1>
         <p>L'outil de recherche pour identités et ... Accédez à des milliards d'enregistrements. Recherche avancée par email, username, téléphone et +15 critères.</p>
@@ -464,49 +229,46 @@
         </div>
     </div>
 
-    <!-- CATEGORIES (Discord / Tarif / Tech) -->
     <div class="categories">
-        <button class="cat-btn active" data-panel="discord">🔓 Discord</button>
-        <button class="cat-btn" data-panel="tarif">⚡ Tarif / Clé</button>
-        <button class="cat-btn" data-panel="tech">🛡️ Tech Vault</button>
+        <button class="cat-btn active" data-panel="discord">Discord</button>
+        <button class="cat-btn" data-panel="tarif">Tarif / Clé</button>
+        <button class="cat-btn" data-panel="tech">Tech Vault</button>
     </div>
 
-    <!-- PANEL DISCORD -->
+    <!-- DISCORD -->
     <div id="panel-discord" class="panel active">
         <div class="card">
-            <h2 style="margin-bottom: 12px;">Rejoignez notre communauté</h2>
-            <p style="color: #888;">Support, updates et accès aux clés premium</p>
+            <h2 id="discordTitle">Rejoignez notre communauté Discord</h2>
+            <p id="discordSub" style="color:#888; margin:12px 0;">Accédez au support, aux mises à jour et aux clés</p>
             <a href="https://discord.gg/Cpd8ZPkWsM" target="_blank" class="discord-btn">REJOINDRE LE DISCORD</a>
         </div>
     </div>
 
-    <!-- PANEL TARIF / ACTIVATION CLÉ -->
+    <!-- TARIF / ACTIVATION CLÉ -->
     <div id="panel-tarif" class="panel">
         <div class="card">
-            <h2>Activation de clé unique</h2>
-            <p style="color:#aaa; margin: 10px 0;">Les clés sont disponibles sur Discord · usage unique</p>
+            <h2 id="tarifTitle">Obtenez votre clé d'accès</h2>
+            <p id="tarifDesc" style="color:#aaa; margin:10px 0;">Les clés sont disponibles sur notre Discord · usage unique</p>
             <div class="key-input-group">
-                <input type="text" id="activationKeyInput" class="key-input" placeholder="Entrez votre clé (ex: NET-XXXX)" autocomplete="off">
-                <button id="activateKeyBtn" class="btn-primary">Activer la clé</button>
+                <input type="text" id="activationKeyInput" class="key-input" placeholder="Entrez votre clé...">
+                <button id="activateKeyBtn" class="btn-primary">Activer</button>
             </div>
-            <div id="keyMessage" style="font-size: 14px; margin-top: 10px;"></div>
-            <hr>
-            <p style="font-size: 13px; color:#555;">💡 Une fois activée, débloquez l'accès complet aux "Tech Vault"</p>
+            <div id="keyMessage" style="font-size:14px;"></div>
         </div>
     </div>
 
-    <!-- PANEL TECH VAULT (verrouillé sans clé active) -->
+    <!-- TECH VAULT -->
     <div id="panel-tech" class="panel">
-        <div class="card" style="padding: 25px;">
-            <div id="techLockedInfo" style="text-align:center; padding: 30px;">
-                🔒 <strong>Zone sécurisée</strong><br><br>
-                Vous devez posséder une <strong>clé active</strong> (valide et à usage unique) pour visualiser le contenu technique.<br>
-                Rendez-vous dans l'onglet "Tarif / Clé" pour activer votre clé.
+        <div class="card" style="padding:25px;">
+            <div id="techLockedInfo" style="text-align:center; padding:40px;">
+                🔒 <strong>Accès restreint</strong><br><br>
+                Vous devez posséder une clé active (usage unique) pour visualiser le contenu technique.<br>
+                Activez une clé dans l'onglet "Tarif / Clé".
             </div>
-            <div id="techUnlockedContent" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2>📡 Données techniques (Tech Vault)</h2>
-                    <span style="background: #1A1A1A; padding: 5px 15px; border-radius: 30px; font-size: 12px;" id="activeKeyDisplay">Aucune clé</span>
+            <div id="techUnlockedContent" style="display:none;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                    <h2>📡 Base de données techniques</h2>
+                    <span id="activeKeyBadge" style="background:#1A1A1A; padding:5px 15px; border-radius:30px; font-size:12px;"></span>
                 </div>
                 <div class="tech-grid" id="techGridContainer"></div>
             </div>
@@ -514,12 +276,23 @@
     </div>
 </div>
 
-<!-- MODAL AUTH (Connexion / Inscription / Google) -->
+<!-- MODAL TECH DETAIL -->
+<div id="techDetailModal" class="tech-modal">
+    <div class="tech-modal-content">
+        <div style="display:flex; justify-content:space-between;">
+            <h3 id="modalTechTitle"></h3>
+            <button id="closeTechModal" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button>
+        </div>
+        <p id="modalTechDesc" style="margin-top:20px; color:#CCC; line-height:1.6;"></p>
+    </div>
+</div>
+
+<!-- MODAL AUTH -->
 <div id="authModal" class="modal">
     <div class="modal-box">
-        <div style="display: flex; justify-content: space-between;">
-            <h3>🔐 Compte NET TECH</h3>
-            <button id="closeModalBtn" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer;">&times;</button>
+        <div style="display:flex; justify-content:space-between;">
+            <h3>Compte NET TECH</h3>
+            <button id="closeModalBtn" style="background:none; border:none; color:white; font-size:28px;">&times;</button>
         </div>
         <div class="auth-switch">
             <button id="showLoginTab" class="active">Connexion</button>
@@ -534,314 +307,184 @@
         <div id="signupForm" style="display:none;">
             <input type="email" id="signupEmail" class="modal-input" placeholder="Email">
             <input type="password" id="signupPassword" class="modal-input" placeholder="Mot de passe (min 6)">
-            <button id="doSignup" class="btn-primary" style="width:100%;">Créer mon compte</button>
+            <button id="doSignup" class="btn-primary" style="width:100%;">Créer un compte</button>
         </div>
-        <div id="authMessage" style="margin-top: 18px; font-size: 13px; text-align: center; color: #aaa;"></div>
+        <div id="authMessage" style="margin-top:18px; font-size:13px; text-align:center;"></div>
     </div>
 </div>
 
-<!-- ADMIN PANEL (Ctrl+Shift+A) mot de passe: nitro06 -->
+<!-- ADMIN PANEL -->
 <div id="adminPanel" class="admin-panel">
     <div class="admin-header">
-        <h2>⚙️ PANEL ADMIN - NET TECH</h2>
-        <button id="closeAdminBtn" style="background:#1A1A1A; border:1px solid #333; padding: 8px 20px; border-radius:40px; color:white;">Fermer</button>
+        <h2>PANEL ADMINISTRATION</h2>
+        <button id="closeAdminBtn" style="background:#1A1A1A; border:1px solid #333; padding:8px 20px; border-radius:40px;">Fermer</button>
     </div>
     <div class="admin-grid">
         <div class="admin-card">
-            <h3>🔑 Gestion des clés (usage unique)</h3>
-            <input type="text" id="newKeyInput" class="admin-input" placeholder="Nouvelle clé (ex: NET-9F3A)">
-            <button id="adminCreateKey" class="admin-btn">➕ Créer clé</button>
-            <div id="adminKeyList" style="margin-top: 20px; max-height: 220px; overflow: auto;"></div>
+            <h3>🔑 Gestion des clés (usage unique + durée)</h3>
+            <input type="text" id="newKeyInput" class="admin-input" placeholder="Nouvelle clé">
+            <select id="keyDuration" class="admin-select">
+                <option value="1h">1 Heure</option><option value="24h">24 Heures</option>
+                <option value="7d">7 Jours</option><option value="30d">30 Jours</option>
+                <option value="365d">1 An</option><option value="forever">À vie</option>
+            </select>
+            <button id="adminCreateKey" class="admin-btn">Créer clé</button>
+            <div id="adminKeyList" style="margin-top:20px; max-height:250px; overflow:auto;"></div>
         </div>
         <div class="admin-card">
-            <h3>📝 Modifier les 6 cartes TECH</h3>
-            <select id="techSelectIndex" class="admin-input"></select>
+            <h3>📝 Modifier les Tech (titre + description détaillée)</h3>
+            <select id="techSelectIndex" class="admin-select"></select>
             <input type="text" id="techEditTitle" class="admin-input" placeholder="Nouveau titre">
-            <textarea id="techEditDesc" rows="2" class="admin-input" placeholder="Nouvelle description"></textarea>
-            <button id="saveTechModif" class="admin-btn">💾 Sauvegarder modification</button>
+            <textarea id="techEditDesc" rows="3" class="admin-input" placeholder="Description complète"></textarea>
+            <button id="saveTechModif" class="admin-btn">💾 Sauvegarder</button>
         </div>
         <div class="admin-card">
-            <h3>👥 Utilisateurs inscrits (local)</h3>
-            <button id="refreshUsersList" class="admin-btn">Rafraîchir</button>
-            <div id="usersListDisplay" style="margin-top: 15px; font-size: 13px; max-height: 180px; overflow: auto;"></div>
+            <h3>🌍 IPs visiteurs & logs</h3>
+            <div id="visitorIpsList" style="background:#020202; padding:12px; border-radius:16px; max-height:150px; overflow:auto; font-family:monospace; font-size:12px;"></div>
+            <button id="refreshIPs" class="admin-btn" style="margin-top:10px;">Rafraîchir IPs</button>
+            <hr>
+            <h4>Logs d'activation</h4>
+            <div id="adminLogsList" style="max-height:150px; overflow:auto; font-size:12px;"></div>
+            <button id="clearLogsBtn" class="admin-btn">Effacer logs</button>
+        </div>
+        <div class="admin-card">
+            <h3>🎨 Personnalisation du site</h3>
+            <input type="text" id="editSiteTitle" class="admin-input" placeholder="Nouveau titre">
+            <button id="changeSiteTitle" class="admin-btn">Modifier titre</button>
+            <input type="text" id="editDiscordText" class="admin-input" placeholder="Texte section Discord">
+            <button id="changeDiscordText" class="admin-btn">Modifier Discord</button>
+            <input type="text" id="editTarifText" class="admin-input" placeholder="Texte section Tarif">
+            <button id="changeTarifText" class="admin-btn">Modifier Tarif</button>
         </div>
     </div>
 </div>
 
 <script>
-    // ------------------------------------------------------------------
-    // STOCKAGE LOCAL : clés (usage unique) + utilisateurs + techs + session
-    // ------------------------------------------------------------------
-    let usedKeys = JSON.parse(localStorage.getItem('nettech_used_keys') || '[]');
-    let availableKeys = JSON.parse(localStorage.getItem('nettech_available_keys') || '[]');
-    let currentUser = JSON.parse(localStorage.getItem('nettech_current_user') || 'null');
-    let activeUserKey = localStorage.getItem('nettech_active_key') || null;
+    // ------------------- DATA STORAGE -------------------
+    let availableKeys = JSON.parse(localStorage.getItem('nt_keys')) || []; // {key, expiry}
+    let usedKeys = JSON.parse(localStorage.getItem('nt_used_keys')) || [];
+    let users = JSON.parse(localStorage.getItem('nt_users')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('nt_current_user')) || null;
+    let activeUserKeyObj = JSON.parse(localStorage.getItem('nt_active_key_obj')) || null;
+    let adminLogs = JSON.parse(localStorage.getItem('nt_admin_logs')) || [];
+    let visitors = JSON.parse(localStorage.getItem('nt_visitors')) || [];
 
-    // Contenu par défaut des 6 techs ( titre + description )
-    let techItems = JSON.parse(localStorage.getItem('nettech_tech_items')) || [
-        { title: "🔍 Data Leak Index", description: "Base de données massive d'emails / mots de passe compromises, mise à jour quotidienne." },
-        { title: "📡 IP Scanner v2", description: "Recherche avancée par adresse IP, localisation et FAI." },
-        { title: "🧬 Username OSINT", description: "Traçage d'identifiants sur +200 plateformes." },
-        { title: "📞 Phone2ID", description: "Corrélation numéro de téléphone → comptes全网." },
-        { title: "🌐 Darknet Crawler", description: "Extraction de données récentes depuis le dark web." },
-        { title: "⚙️ Hash Decryptor", description: "Décryptage MD5/SHA1 avec rainbow tables interne." }
+    let techItems = JSON.parse(localStorage.getItem('nt_tech_items')) || [
+        { title: "🔍 Data Leak Index", description: "Base massive d'emails/mots de passe compromis (2.1B d'entrées). Accès à l'API brute. Mise à jour quotidienne depuis les fuites publiques." },
+        { title: "📡 IP Scanner", description: "Scanner d'adresses IP avec géolocalisation précise, FAI, et corrélation avec bases de fuites." },
+        { title: "🧬 Username OSINT", description: "Traçage multi-plateforme (Twitter, Discord, GitHub, etc.) à partir d'un pseudo." },
+        { title: "📞 Phone2ID", description: "Corrélation numéro de téléphone → identifiants, comptes réseaux sociaux et historiques." },
+        { title: "🌐 Darknet Crawler", description: "Extraction en temps réel de fuites récentes depuis forums et marchés darknet." },
+        { title: "⚙️ Hash Decryptor", description: "Décryptage MD5/SHA1/SHA256 avec rainbow tables et dictionnaires (50M+ hashs)." }
     ];
 
-    // Utilisateurs stockés localement (email + password hash simple)
-    let users = JSON.parse(localStorage.getItem('nettech_users')) || [];
+    let siteTitle = localStorage.getItem('nt_site_title') || 'NET TECH';
+    let discordCustomText = localStorage.getItem('nt_discord_text') || '';
+    let tarifCustomText = localStorage.getItem('nt_tarif_text') || '';
 
-    // Helper sauvegardes
-    function saveKeys() {
-        localStorage.setItem('nettech_available_keys', JSON.stringify(availableKeys));
-        localStorage.setItem('nettech_used_keys', JSON.stringify(usedKeys));
-    }
-    function saveUsers() { localStorage.setItem('nettech_users', JSON.stringify(users)); }
-    function saveTechs() { localStorage.setItem('nettech_tech_items', JSON.stringify(techItems)); }
-    function setSession(user) { currentUser = user; localStorage.setItem('nettech_current_user', JSON.stringify(user)); }
-    function setActiveKey(key) { activeUserKey = key; if(key) localStorage.setItem('nettech_active_key', key); else localStorage.removeItem('nettech_active_key'); }
+    function saveKeys() { localStorage.setItem('nt_keys', JSON.stringify(availableKeys)); localStorage.setItem('nt_used_keys', JSON.stringify(usedKeys)); }
+    function saveUsers() { localStorage.setItem('nt_users', JSON.stringify(users)); }
+    function saveTechs() { localStorage.setItem('nt_tech_items', JSON.stringify(techItems)); }
+    function saveLogs() { localStorage.setItem('nt_admin_logs', JSON.stringify(adminLogs)); }
+    function saveVisitors() { localStorage.setItem('nt_visitors', JSON.stringify(visitors)); }
+    function addLog(msg) { adminLogs.unshift({msg, time: new Date().toLocaleString()}); if(adminLogs.length>40) adminLogs.pop(); saveLogs(); renderAdminLogs(); }
 
-    // Vérifier si la clé est encore valide (non utilisée)
-    function isKeyValid(key) {
-        return availableKeys.includes(key) && !usedKeys.includes(key);
-    }
-
-    // Activer une clé (usage unique)
-    function activateKey(key, userId) {
-        if(!isKeyValid(key)) return { success: false, message: "Clé invalide ou déjà utilisée." };
-        availableKeys = availableKeys.filter(k => k !== key);
-        usedKeys.push(key);
+    function isKeyValid(keyObj) { if(!keyObj) return false; if(keyObj.expiry === 'forever') return !usedKeys.includes(keyObj.key); return new Date(keyObj.expiry) > new Date() && !usedKeys.includes(keyObj.key); }
+    function activateKey(keyRaw) {
+        const keyData = availableKeys.find(k => k.key === keyRaw);
+        if(!keyData) return { success: false, msg: "Clé invalide" };
+        if(usedKeys.includes(keyRaw)) return { success: false, msg: "Clé déjà utilisée" };
+        if(keyData.expiry !== 'forever' && new Date(keyData.expiry) < new Date()) return { success: false, msg: "Clé expirée" };
+        usedKeys.push(keyRaw);
         saveKeys();
-        setActiveKey(key);
-        return { success: true, message: "Clé activée avec succès ! Accès Tech débloqué." };
+        activeUserKeyObj = { key: keyRaw, expiry: keyData.expiry };
+        localStorage.setItem('nt_active_key_obj', JSON.stringify(activeUserKeyObj));
+        addLog(`Utilisateur ${currentUser?.email} a activé la clé ${keyRaw}`);
+        return { success: true, msg: "Clé activée ! Accès Tech débloqué." };
     }
 
-    // Vérifier si l'utilisateur a une clé active
-    function hasActiveKey() {
-        return activeUserKey && usedKeys.includes(activeUserKey);
-    }
+    function hasActiveKey() { return activeUserKeyObj && !usedKeys.includes(activeUserKeyObj.key) && (activeUserKeyObj.expiry === 'forever' || new Date(activeUserKeyObj.expiry) > new Date()); }
 
-    // Mise à jour UI des techs (visible ou floutée selon clé)
+    // RENDER TECH GRID
     function renderTechGrid() {
         const container = document.getElementById('techGridContainer');
         if(!container) return;
-        const hasAccess = hasActiveKey() && currentUser !== null;
-        if(hasAccess) {
-            container.innerHTML = techItems.map((item, idx) => `
-                <div class="tech-card">
-                    <h3>${escapeHtml(item.title)}</h3>
-                    <p>${escapeHtml(item.description)}</p>
-                </div>
-            `).join('');
+        const access = hasActiveKey() && currentUser;
+        if(access) {
+            container.innerHTML = techItems.map((item, idx) => `<div class="tech-card" data-idx="${idx}"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description.substring(0, 80))}...</p></div>`).join('');
+            document.querySelectorAll('.tech-card').forEach(card => card.addEventListener('click', (e) => { const idx = card.getAttribute('data-idx'); openTechModal(idx); }));
         } else {
-            // Contenu verrouillé : on voit les cartes mais floutées + badge lock
-            container.innerHTML = techItems.map((item, idx) => `
-                <div class="tech-card locked">
-                    <h3>${escapeHtml(item.title)}</h3>
-                    <p>${escapeHtml(item.description)}</p>
-                    <div class="lock-badge">🔒 Verrouillé · clé requise</div>
-                </div>
-            `).join('');
+            container.innerHTML = techItems.map(item => `<div class="tech-card locked"><h3>${escapeHtml(item.title)}</h3><p>Contenu verrouillé 🔒</p><div class="lock-badge">Clé requise</div></div>`).join('');
         }
     }
 
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function openTechModal(idx) { if(!hasActiveKey() || !currentUser) return; document.getElementById('modalTechTitle').innerText = techItems[idx].title; document.getElementById('modalTechDesc').innerHTML = techItems[idx].description; document.getElementById('techDetailModal').classList.add('active'); }
+    document.getElementById('closeTechModal')?.addEventListener('click', () => document.getElementById('techDetailModal').classList.remove('active'));
 
-    // Mise à jour des panels TECH selon accès
     function updateTechPanelUI() {
-        const lockedDiv = document.getElementById('techLockedInfo');
-        const unlockedDiv = document.getElementById('techUnlockedContent');
-        const hasAccess = hasActiveKey() && currentUser !== null;
-        if(hasAccess && currentUser) {
-            lockedDiv.style.display = 'none';
-            unlockedDiv.style.display = 'block';
-            document.getElementById('activeKeyDisplay').innerText = `🔑 Clé: ${activeUserKey}`;
-        } else {
-            lockedDiv.style.display = 'block';
-            unlockedDiv.style.display = 'none';
-        }
+        const locked = document.getElementById('techLockedInfo'); const unlocked = document.getElementById('techUnlockedContent'); const has = hasActiveKey() && currentUser;
+        if(has) { locked.style.display = 'none'; unlocked.style.display = 'block'; document.getElementById('activeKeyBadge').innerHTML = `✅ Clé: ${activeUserKeyObj.key}`; } 
+        else { locked.style.display = 'block'; unlocked.style.display = 'none'; }
         renderTechGrid();
     }
 
-    // Remplir le select admin des techs
-    function populateTechSelect() {
-        const select = document.getElementById('techSelectIndex');
-        if(select) {
-            select.innerHTML = techItems.map((t, idx) => `<option value="${idx}">${idx+1} - ${t.title.substring(0,40)}</option>`).join('');
-        }
+    // IP & LOGS
+    async function fetchAndLogIP() { try { let r = await fetch('https://api.ipify.org?format=json'); let d = await r.json(); let ip = d.ip; visitors.unshift({ip, date: new Date().toLocaleString()}); if(visitors.length>30) visitors.pop(); saveVisitors(); renderVisitorIPs(); addLog(`Nouveau visiteur IP: ${ip}`); } catch(e){} }
+    function renderVisitorIPs() { let div = document.getElementById('visitorIpsList'); if(div) div.innerHTML = visitors.map(v=>`🌐 ${v.ip} — ${v.date}`).join('<br>') || 'Aucune IP'; }
+    function renderAdminLogs() { let div = document.getElementById('adminLogsList'); if(div) div.innerHTML = adminLogs.map(l=>`[${l.time}] ${l.msg}`).join('<br>') || 'Aucun log'; }
+    
+    // ADMIN UI KEYS
+    function renderAdminKeyList() { let container = document.getElementById('adminKeyList'); if(!container) return; let valid = availableKeys.filter(k => !usedKeys.includes(k.key)); container.innerHTML = `<strong>Clés disponibles (${valid.length}) :</strong>` + valid.map(k => `<div class="key-row">🔑 ${k.key} (${k.expiry === 'forever' ? '∞' : new Date(k.expiry).toLocaleString()}) <button class="delKeyBtn" data-key="${k.key}" style="background:#333; border:none; color:white; padding:2px 12px; border-radius:30px;">Supprimer</button></div>`).join('');
+        document.querySelectorAll('.delKeyBtn').forEach(btn => btn.addEventListener('click', (e) => { let key = btn.getAttribute('data-key'); availableKeys = availableKeys.filter(k => k.key !== key); saveKeys(); renderAdminKeyList(); addLog(`Clé ${key} supprimée`); }));
     }
+    function createKey(keyRaw, duration) { let expiry; if(duration === 'forever') expiry = 'forever'; else { let d = new Date(); if(duration === '1h') d.setHours(d.getHours()+1); if(duration === '24h') d.setDate(d.getDate()+1); if(duration === '7d') d.setDate(d.getDate()+7); if(duration === '30d') d.setDate(d.getDate()+30); if(duration === '365d') d.setFullYear(d.getFullYear()+1); expiry = d.toISOString(); } let keyObj = { key: keyRaw, expiry }; availableKeys.push(keyObj); saveKeys(); renderAdminKeyList(); addLog(`Clé créée: ${keyRaw} (${duration})`); }
 
-    // Admin : afficher liste clés disponibles
-    function renderAdminKeyList() {
-        const container = document.getElementById('adminKeyList');
-        if(!container) return;
-        const validKeys = availableKeys.filter(k => !usedKeys.includes(k));
-        container.innerHTML = `<strong>Clés disponibles (${validKeys.length}) :</strong>` + 
-            validKeys.map(k => `<div class="key-row">🔑 ${k} <button class="deleteKeyBtn" data-key="${k}" style="background:#333; border:none; color:white; padding:2px 12px; border-radius:30px;">Supprimer</button></div>`).join('');
-        document.querySelectorAll('.deleteKeyBtn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const key = btn.getAttribute('data-key');
-                availableKeys = availableKeys.filter(k => k !== key);
-                saveKeys();
-                renderAdminKeyList();
-                showToast(`Clé ${key} supprimée`);
-            });
-        });
-    }
+    // AUTH
+    function signup(email,pwd) { if(pwd.length<6) return false; if(users.find(u=>u.email===email)) return false; users.push({email,password:btoa(pwd)}); saveUsers(); currentUser={email}; localStorage.setItem('nt_current_user',JSON.stringify(currentUser)); return true; }
+    function login(email,pwd) { let u = users.find(u=>u.email===email && atob(u.password)===pwd); if(!u) return false; currentUser={email}; localStorage.setItem('nt_current_user',JSON.stringify(currentUser)); return true; }
+    function googleMock() { let fake = "google_"+Math.floor(Math.random()*99999)+"@temp.com"; if(!users.find(u=>u.email===fake)) users.push({email:fake,password:btoa("google")}); currentUser={email:fake}; localStorage.setItem('nt_current_user',JSON.stringify(currentUser)); return true; }
+    function logout() { currentUser=null; activeUserKeyObj=null; localStorage.removeItem('nt_current_user'); localStorage.removeItem('nt_active_key_obj'); updateTechPanelUI(); updateLoginButton(); addLog("Déconnexion"); }
+    function updateLoginButton() { let btn = document.getElementById('openAuthBtn'); if(currentUser) btn.innerText = currentUser.email.split('@')[0].substring(0,10)+" ▼"; else btn.innerText = "Connexion"; }
 
-    // Créer une clé (admin)
-    function createAdminKey(keyValue) {
-        let newKey = keyValue.trim();
-        if(!newKey) newKey = "NET-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-        if(availableKeys.includes(newKey) || usedKeys.includes(newKey)) { showToast("Clé déjà existante"); return false; }
-        availableKeys.push(newKey);
-        saveKeys();
-        renderAdminKeyList();
-        showToast(`Clé créée: ${newKey}`);
-        return true;
-    }
+    // UI Helpers
+    function populateTechSelect() { let sel = document.getElementById('techSelectIndex'); if(sel) sel.innerHTML = techItems.map((t,i)=>`<option value="${i}">${i+1} - ${t.title.substring(0,40)}</option>`).join(''); }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function showToast(msg) { let t = document.createElement('div'); t.className='toast'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
 
-    // Gestion utilisateurs (inscription / connexion)
-    function signup(email, password) {
-        if(password.length < 6) return { success: false, msg: "Mot de passe min 6 caractères" };
-        if(users.find(u => u.email === email)) return { success: false, msg: "Email déjà utilisé" };
-        const newUser = { email, password: btoa(password), uid: Date.now().toString() };
-        users.push(newUser);
-        saveUsers();
-        setSession({ email, uid: newUser.uid });
-        return { success: true };
-    }
-    function login(email, password) {
-        const user = users.find(u => u.email === email && atob(u.password) === password);
-        if(!user) return { success: false, msg: "Email ou mot de passe incorrect" };
-        setSession({ email: user.email, uid: user.uid });
-        return { success: true };
-    }
-    function googleMockLogin() {
-        const fakeEmail = "google_" + Math.floor(Math.random()*90000) + "@user.net";
-        if(!users.find(u => u.email === fakeEmail)) {
-            users.push({ email: fakeEmail, password: btoa("google_auth_fake"), uid: "g_"+Date.now() });
-            saveUsers();
-        }
-        setSession({ email: fakeEmail, uid: "g_"+Date.now() });
-        return true;
-    }
-    function logout() { setSession(null); setActiveKey(null); updateTechPanelUI(); showToast("Déconnecté"); }
+    // EVENT LISTENERS
+    document.getElementById('activateKeyBtn')?.addEventListener('click',()=>{ if(!currentUser){ document.getElementById('keyMessage').innerHTML='<span style="color:#ff8888;">Connectez-vous d\'abord</span>'; return; } let key=document.getElementById('activationKeyInput').value.trim(); let res=activateKey(key); document.getElementById('keyMessage').innerHTML=res.success?`<span style="color:#8aff8a;">✅ ${res.msg}</span>`:`<span style="color:#ff8888;">❌ ${res.msg}</span>`; if(res.success) updateTechPanelUI(); renderAdminKeyList(); });
+    document.querySelectorAll('.cat-btn').forEach(btn=>btn.addEventListener('click',()=>{ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.getElementById(`panel-${btn.getAttribute('data-panel')}`).classList.add('active'); }));
+    document.getElementById('openAuthBtn').addEventListener('click',()=>{ if(currentUser) logout(); else document.getElementById('authModal').classList.add('active'); });
+    document.getElementById('closeModalBtn').addEventListener('click',()=>document.getElementById('authModal').classList.remove('active'));
+    document.getElementById('showLoginTab').addEventListener('click',()=>{ document.getElementById('loginForm').style.display='block'; document.getElementById('signupForm').style.display='none'; });
+    document.getElementById('showSignupTab').addEventListener('click',()=>{ document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='block'; });
+    document.getElementById('doLogin').addEventListener('click',()=>{ let email=document.getElementById('loginEmail').value, pwd=document.getElementById('loginPassword').value; if(login(email,pwd)){ document.getElementById('authModal').classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast("Connecté"); } else document.getElementById('authMessage').innerText="Identifiants invalides"; });
+    document.getElementById('doSignup').addEventListener('click',()=>{ let email=document.getElementById('signupEmail').value, pwd=document.getElementById('signupPassword').value; if(signup(email,pwd)){ document.getElementById('authModal').classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast("Compte créé"); } else document.getElementById('authMessage').innerText="Email existe ou mot de passe trop court"; });
+    document.getElementById('googleAuthBtn').addEventListener('click',()=>{ googleMock(); document.getElementById('authModal').classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast("Google OK"); });
 
-    // Mettre à jour bouton login en header
-    function updateLoginButton() {
-        const btn = document.getElementById('openAuthBtn');
-        if(currentUser) {
-            btn.innerText = currentUser.email.split('@')[0] + " ▼";
-            btn.style.borderColor = "#555";
-        } else {
-            btn.innerText = "Connexion";
-        }
-    }
+    // ADMIN shortcuts
+    document.addEventListener('keydown',(e)=>{ if(e.ctrlKey && e.shiftKey && e.key==='A'){ e.preventDefault(); let pwd=prompt("Admin mot de passe:"); if(pwd==='nitro06'){ document.getElementById('adminPanel').classList.add('open'); renderAdminKeyList(); renderVisitorIPs(); renderAdminLogs(); populateTechSelect(); } else alert("refusé"); } });
+    document.getElementById('closeAdminBtn').addEventListener('click',()=>document.getElementById('adminPanel').classList.remove('active'));
+    document.getElementById('adminCreateKey').addEventListener('click',()=>{ let key=document.getElementById('newKeyInput').value.trim(); if(!key) key="NT-"+Math.random().toString(36).substring(2,8).toUpperCase(); let dur=document.getElementById('keyDuration').value; createKey(key,dur); document.getElementById('newKeyInput').value=''; showToast(`Clé ${key} créée`); });
+    document.getElementById('saveTechModif').addEventListener('click',()=>{ let idx=parseInt(document.getElementById('techSelectIndex').value); let title=document.getElementById('techEditTitle').value.trim(); let desc=document.getElementById('techEditDesc').value.trim(); if(title) techItems[idx].title=title; if(desc) techItems[idx].description=desc; saveTechs(); renderTechGrid(); populateTechSelect(); addLog(`Tech ${idx+1} modifiée`); showToast("Tech modifiée"); });
+    document.getElementById('refreshIPs').addEventListener('click',()=>{ fetchAndLogIP(); renderVisitorIPs(); });
+    document.getElementById('clearLogsBtn').addEventListener('click',()=>{ adminLogs=[]; saveLogs(); renderAdminLogs(); });
+    document.getElementById('changeSiteTitle').addEventListener('click',()=>{ let newTitle=document.getElementById('editSiteTitle').value.trim(); if(newTitle){ siteTitle=newTitle; localStorage.setItem('nt_site_title',newTitle); document.getElementById('siteTitle').innerText=newTitle; addLog(`Titre changé: ${newTitle}`); } });
+    document.getElementById('changeDiscordText').addEventListener('click',()=>{ let txt=document.getElementById('editDiscordText').value.trim(); if(txt){ discordCustomText=txt; localStorage.setItem('nt_discord_text',txt); document.getElementById('discordTitle').innerText=txt; } });
+    document.getElementById('changeTarifText').addEventListener('click',()=>{ let txt=document.getElementById('editTarifText').value.trim(); if(txt){ tarifCustomText=txt; localStorage.setItem('nt_tarif_text',txt); document.getElementById('tarifTitle').innerText=txt; } });
+    document.getElementById('navRecherche')?.addEventListener('click',()=>showToast("🔍 Module recherche bientôt dispo sur Discord"));
+    document.getElementById('navContact')?.addEventListener('click',()=>showToast("📧 Contact via Discord"));
+    document.getElementById('navAccueil')?.addEventListener('click',()=>{ document.querySelector('.cat-btn[data-panel="discord"]').click(); });
 
-    // Afficher la liste des utilisateurs dans admin
-    function renderUserListAdmin() {
-        const container = document.getElementById('usersListDisplay');
-        if(container) {
-            container.innerHTML = users.map(u => `<div style="padding:6px; border-bottom:1px solid #222;">📧 ${u.email}</div>`).join('') || "<div>Aucun utilisateur</div>";
-        }
-    }
-
-    // Toast rapide
-    function showToast(msg) {
-        let t = document.createElement('div');
-        t.className = 'toast';
-        t.innerText = msg;
-        document.body.appendChild(t);
-        setTimeout(() => t.remove(), 2500);
-    }
-
-    // EVENT LISTENERS UI
-    document.getElementById('activateKeyBtn')?.addEventListener('click', () => {
-        if(!currentUser) { document.getElementById('keyMessage').innerHTML = '<span style="color:#ff8888;">❌ Vous devez être connecté pour activer une clé.</span>'; return; }
-        const keyVal = document.getElementById('activationKeyInput').value.trim();
-        if(!keyVal) { document.getElementById('keyMessage').innerHTML = '<span style="color:#ff8888;">Entrez une clé</span>'; return; }
-        const result = activateKey(keyVal, currentUser.uid);
-        document.getElementById('keyMessage').innerHTML = result.success ? `<span style="color:#8aff8a;">✅ ${result.message}</span>` : `<span style="color:#ff8888;">❌ ${result.message}</span>`;
-        if(result.success) {
-            document.getElementById('activationKeyInput').value = '';
-            updateTechPanelUI();
-        }
-        renderAdminKeyList();
-    });
-
-    // CATEGORIES switching
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const panelId = btn.getAttribute('data-panel');
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.getElementById(`panel-${panelId}`).classList.add('active');
-        });
-    });
-
-    // Auth modal
-    const modal = document.getElementById('authModal');
-    document.getElementById('openAuthBtn').addEventListener('click', () => { if(currentUser) logout(); else modal.classList.add('active'); });
-    document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.remove('active'));
-    document.getElementById('showLoginTab').addEventListener('click', () => { document.getElementById('loginForm').style.display='block'; document.getElementById('signupForm').style.display='none'; document.getElementById('showLoginTab').classList.add('active'); document.getElementById('showSignupTab').classList.remove('active'); });
-    document.getElementById('showSignupTab').addEventListener('click', () => { document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='block'; document.getElementById('showSignupTab').classList.add('active'); document.getElementById('showLoginTab').classList.remove('active'); });
-    document.getElementById('doLogin').addEventListener('click', () => {
-        const email = document.getElementById('loginEmail').value, pwd = document.getElementById('loginPassword').value;
-        const res = login(email, pwd);
-        if(res.success) { modal.classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast(`Bienvenue ${email}`); } else document.getElementById('authMessage').innerText = res.msg;
-    });
-    document.getElementById('doSignup').addEventListener('click', () => {
-        const email = document.getElementById('signupEmail').value, pwd = document.getElementById('signupPassword').value;
-        const res = signup(email, pwd);
-        if(res.success) { modal.classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast(`Compte créé`); } else document.getElementById('authMessage').innerText = res.msg;
-    });
-    document.getElementById('googleAuthBtn').addEventListener('click', () => {
-        googleMockLogin(); modal.classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast("Connexion Google (mode démo)");
-    });
-
-    // Admin panel (Ctrl+Shift+A, mdp: nitro06)
-    document.addEventListener('keydown', (e) => {
-        if(e.ctrlKey && e.shiftKey && e.key === 'A') {
-            e.preventDefault();
-            const pwd = prompt("Mot de passe admin:");
-            if(pwd === 'nitro06') {
-                document.getElementById('adminPanel').classList.add('open');
-                renderAdminKeyList();
-                renderUserListAdmin();
-                populateTechSelect();
-            } else alert("Accès refusé");
-        }
-    });
-    document.getElementById('closeAdminBtn').addEventListener('click', () => document.getElementById('adminPanel').classList.remove('open'));
-    document.getElementById('adminCreateKey').addEventListener('click', () => {
-        const keyRaw = document.getElementById('newKeyInput').value;
-        createAdminKey(keyRaw);
-        document.getElementById('newKeyInput').value = '';
-    });
-    document.getElementById('saveTechModif').addEventListener('click', () => {
-        const idx = parseInt(document.getElementById('techSelectIndex').value);
-        const newTitle = document.getElementById('techEditTitle').value.trim();
-        const newDesc = document.getElementById('techEditDesc').value.trim();
-        if(newTitle) techItems[idx].title = newTitle;
-        if(newDesc) techItems[idx].description = newDesc;
-        saveTechs();
-        renderTechGrid();
-        populateTechSelect();
-        showToast("Tech mise à jour");
-    });
-    document.getElementById('refreshUsersList')?.addEventListener('click', renderUserListAdmin);
-    document.getElementById('fakeSearchLink')?.addEventListener('click', (e) => { e.preventDefault(); showToast("🔍 Recherche : bientôt disponible"); });
-    document.getElementById('fakeContactLink')?.addEventListener('click', (e) => { e.preventDefault(); showToast("📧 Contactez-nous sur Discord"); });
-
-    // initialisation
-    function init() {
-        updateLoginButton();
-        updateTechPanelUI();
-        renderTechGrid();
-        renderAdminKeyList();
-    }
-    init();
+    // INIT
+    fetchAndLogIP();
+    setInterval(fetchAndLogIP, 60000);
+    renderVisitorIPs();
+    if(discordCustomText) document.getElementById('discordTitle').innerText = discordCustomText;
+    if(tarifCustomText) document.getElementById('tarifTitle').innerText = tarifCustomText;
+    document.getElementById('siteTitle').innerText = siteTitle;
+    if(currentUser) updateLoginButton();
+    updateTechPanelUI();
 </script>
 </body>
 </html>
