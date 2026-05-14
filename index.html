@@ -2,14 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>XEYES · Moteur de fuites de données</title>
-    <!-- Police inspirée de l'image : géométrique / tech -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <!-- Firebase (auth + firestore) pour la gestion des comptes et clés -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET TECH | Moteur de recherche de fuites</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,13 +13,12 @@
         }
 
         body {
-            background-color: #0B0E14;
+            background: #0A0A0A;
             font-family: 'Inter', sans-serif;
-            color: #EDF2FF;
-            line-height: 1.4;
+            color: #FFFFFF;
         }
 
-        /* grille subtile / fond tech */
+        /* Grille technique de fond */
         body::before {
             content: "";
             position: fixed;
@@ -32,264 +26,269 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 15% 30%, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 32px 32px;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
 
         .container {
-            max-width: 1280px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 24px 32px;
+            padding: 30px 40px;
             position: relative;
             z-index: 2;
         }
 
-        /* HEADER type image : logo + nav recherche contact + compteur */
-        .top-bar {
+        /* HEADER */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 24px;
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            gap: 20px;
+            border-bottom: 1px solid #222;
             padding-bottom: 20px;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
+            margin-bottom: 40px;
         }
 
         .logo {
-            font-size: 1.9rem;
+            font-size: 28px;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #8B9EFF 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            letter-spacing: 2px;
+        }
+        .logo span {
+            color: #CCC;
+            font-weight: 400;
         }
 
-        .badge-count {
-            background: rgba(255,255,255,0.05);
-            border-radius: 60px;
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #8B9EFF;
-            border: 0.5px solid rgba(139,158,255,0.3);
-        }
-
-        .nav-links {
+        .nav-menu {
             display: flex;
-            gap: 32px;
-            font-weight: 500;
+            gap: 35px;
         }
-        .nav-links a {
-            color: #B0C4FF;
+        .nav-menu a {
+            color: #DDD;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-weight: 500;
+            font-size: 15px;
             transition: 0.2s;
         }
-        .nav-links a:hover { color: white; }
+        .nav-menu a:hover { color: white; }
 
-        .right-actions {
+        .header-right {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-        .lang-badge {
-            background: rgba(255,255,255,0.03);
-            padding: 6px 12px;
-            border-radius: 40px;
-            font-size: 0.8rem;
+        .lang {
+            font-size: 14px;
             font-weight: 500;
+            color: #AAA;
+            letter-spacing: 1px;
         }
         .login-btn {
             background: transparent;
-            border: 1px solid #3E4A6B;
+            border: 1px solid #333;
+            padding: 8px 24px;
+            border-radius: 30px;
             color: white;
-            padding: 8px 20px;
-            border-radius: 40px;
-            cursor: pointer;
             font-weight: 600;
+            cursor: pointer;
             transition: 0.2s;
         }
         .login-btn:hover {
-            background: #1E2A47;
-            border-color: #8B9EFF;
+            background: #1A1A1A;
+            border-color: #555;
         }
 
-        /* bannière centrale (héro) style image */
+        /* HERO */
         .hero {
             text-align: center;
-            margin: 60px 0 40px;
+            margin: 50px 0 40px;
         }
         .hero h1 {
-            font-size: 3.2rem;
+            font-size: 48px;
             font-weight: 800;
-            background: linear-gradient(to right, #FFFFFF, #A0B4FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            letter-spacing: -0.5px;
             margin-bottom: 16px;
         }
         .hero p {
-            font-size: 1.2rem;
-            color: #8E9DB3;
-            max-width: 700px;
-            margin: 0 auto 32px;
+            color: #999;
+            font-size: 18px;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.5;
         }
-        .stats-row {
+
+        .stats {
             display: flex;
             justify-content: center;
-            gap: 48px;
-            margin-top: 30px;
+            gap: 60px;
+            margin-top: 40px;
         }
-        .stat {
+        .stat-item {
             text-align: center;
         }
         .stat-number {
-            font-size: 2rem;
+            font-size: 28px;
             font-weight: 800;
-            color: white;
         }
         .stat-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
+            font-size: 13px;
+            color: #777;
             letter-spacing: 1px;
-            color: #6F7C91;
+            margin-top: 5px;
         }
 
-        /* catégories (style image) */
-        .categories-wrapper {
+        /* CATEGORIES (Discord / Tarif / Tech) */
+        .categories {
             display: flex;
             justify-content: center;
-            gap: 16px;
-            margin: 48px 0 32px;
-            flex-wrap: wrap;
+            gap: 15px;
+            margin: 50px 0 35px;
         }
         .cat-btn {
-            background: #121724;
-            border: 1px solid #262F3F;
+            background: #111;
+            border: 1px solid #2A2A2A;
             padding: 12px 32px;
-            border-radius: 60px;
-            font-family: 'Inter', sans-serif;
+            border-radius: 40px;
+            font-size: 15px;
             font-weight: 600;
-            font-size: 1rem;
-            color: #DBE7FF;
+            color: #DDD;
             cursor: pointer;
             transition: all 0.2s;
         }
         .cat-btn.active {
-            background: #FFFFFF;
-            color: #0B0E14;
+            background: white;
+            color: black;
             border-color: white;
-            box-shadow: 0 0 12px rgba(255,255,255,0.2);
         }
         .cat-btn:hover:not(.active) {
-            background: #1E2A3A;
-            border-color: #5A6E91;
+            background: #1C1C1C;
+            border-color: #444;
         }
 
-        /* Panneaux de contenu */
-        .content-panel {
+        /* PANELS */
+        .panel {
             display: none;
-            animation: fadeIn 0.3s ease;
-            background: rgba(18, 23, 36, 0.6);
-            backdrop-filter: blur(2px);
-            border-radius: 32px;
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 32px;
-            margin-top: 8px;
+            animation: fade 0.25s ease;
         }
-        .content-panel.active {
+        .panel.active {
             display: block;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px);}
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(8px);}
             to { opacity: 1; transform: translateY(0);}
         }
 
-        /* Grille tech (cartes) */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-        }
-        .tech-card {
-            background: #0F1622;
+        .card {
+            background: #0F0F0F;
+            border: 1px solid #222;
             border-radius: 24px;
-            border: 1px solid #232B39;
-            padding: 24px;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        .tech-card:hover {
-            border-color: #8B9EFF;
-            transform: translateY(-3px);
-        }
-        .tech-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-        .tech-card p {
-            color: #9AA9C2;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            padding: 35px;
+            text-align: center;
         }
 
-        /* zone clé / activation */
-        .key-section {
-            background: #0B111C;
-            border-radius: 28px;
-            padding: 28px;
-            text-align: center;
-            border: 1px solid #232B39;
+        /* Discord */
+        .discord-btn {
+            display: inline-block;
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 14px 40px;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: 0.2s;
         }
+        .discord-btn:hover {
+            background: #4752C4;
+            transform: scale(0.98);
+        }
+
+        /* Tarif / Clé */
         .key-input-group {
             display: flex;
-            gap: 12px;
             justify-content: center;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 25px 0;
             flex-wrap: wrap;
         }
         .key-input {
-            background: #070C15;
-            border: 1px solid #2E3A4E;
-            padding: 14px 20px;
+            background: #050505;
+            border: 1px solid #2C2C2C;
+            padding: 14px 24px;
             border-radius: 60px;
             width: 280px;
             color: white;
-            font-family: 'Inter', monospace;
+            font-family: monospace;
+            font-size: 14px;
         }
         .btn-primary {
             background: white;
             border: none;
-            padding: 14px 28px;
+            padding: 14px 32px;
             border-radius: 60px;
             font-weight: 700;
-            font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: 0.2s;
-            color: #0B0E14;
+            color: black;
         }
         .btn-primary:hover {
-            background: #E0E7FF;
-            transform: scale(0.97);
+            background: #E0E0E0;
         }
 
-        /* Modal */
-        .modal-overlay {
+        /* TECH GRID */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+        }
+        .tech-card {
+            background: #0C0C0C;
+            border: 1px solid #262626;
+            border-radius: 20px;
+            padding: 24px;
+            transition: 0.2s;
+            backdrop-filter: blur(2px);
+        }
+        .tech-card.locked {
+            filter: blur(4px);
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .tech-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .tech-card p {
+            color: #AAAAAA;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .lock-badge {
+            display: inline-block;
+            font-size: 12px;
+            background: #1A1A1A;
+            padding: 4px 12px;
+            border-radius: 30px;
+            margin-top: 12px;
+            color: #888;
+        }
+
+        /* MODAL AUTH */
+        .modal {
             position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -298,27 +297,68 @@
             opacity: 0;
             transition: 0.2s;
         }
-        .modal-overlay.active {
+        .modal.active {
             visibility: visible;
             opacity: 1;
         }
-        .modal-card {
-            background: #111927;
+        .modal-box {
+            background: #111;
+            border: 1px solid #2A2A2A;
             border-radius: 32px;
-            max-width: 480px;
-            width: 90%;
-            padding: 32px;
-            border: 1px solid #2D374B;
+            padding: 35px;
+            width: 420px;
+            max-width: 90%;
+        }
+        .modal-box h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .modal-input {
+            width: 100%;
+            background: #050505;
+            border: 1px solid #2C2C2C;
+            padding: 14px;
+            border-radius: 30px;
+            color: white;
+            margin: 12px 0;
+        }
+        .auth-switch {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .auth-switch button {
+            background: transparent;
+            border: none;
+            color: #AAA;
+            cursor: pointer;
+            font-weight: 500;
+            padding-bottom: 6px;
+        }
+        .auth-switch button.active {
+            color: white;
+            border-bottom: 2px solid white;
+        }
+        .google-btn {
+            width: 100%;
+            background: #1A1A1A;
+            border: 1px solid #333;
+            padding: 12px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 15px;
         }
 
-        /* Admin panel */
+        /* ADMIN PANEL */
         .admin-panel {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #05080F;
+            background: #070707;
             z-index: 1100;
             overflow-y: auto;
             display: none;
@@ -330,393 +370,478 @@
             display: flex;
             justify-content: space-between;
             padding: 20px 30px;
-            background: #0C111C;
-            border-bottom: 1px solid #232B39;
+            background: #0F0F0F;
+            border-bottom: 1px solid #222;
         }
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 24px;
+            gap: 25px;
             padding: 30px;
         }
         .admin-card {
-            background: #0F1622;
+            background: #0C0C0C;
+            border: 1px solid #252525;
             border-radius: 24px;
             padding: 24px;
-            border: 1px solid #232B39;
+        }
+        .admin-card h3 {
+            margin-bottom: 18px;
+            font-size: 18px;
+        }
+        .admin-input {
+            background: #010101;
+            border: 1px solid #2E2E2E;
+            padding: 12px;
+            border-radius: 30px;
+            width: 100%;
+            color: white;
+            margin: 8px 0;
+        }
+        .admin-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px 5px 0 0;
+        }
+        .key-row {
+            background: #020202;
+            padding: 10px;
+            margin: 8px 0;
+            border-left: 3px solid white;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
         }
 
-        /* petites animations et toasts */
-        .toast-msg {
+        .toast {
             position: fixed;
-            bottom: 24px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1F2A40;
-            backdrop-filter: blur(12px);
+            background: #1A1A1A;
+            border: 1px solid #333;
             padding: 10px 24px;
             border-radius: 60px;
             color: white;
-            font-weight: 500;
             z-index: 1200;
-            border-left: 4px solid #8B9EFF;
+            font-size: 14px;
         }
 
-        button, .cat-btn, .login-btn { cursor: pointer; }
-        hr { border-color: #202838; }
+        button { cursor: pointer; }
+        hr { border-color: #222; margin: 20px 0; }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <!-- Header inspiré de l'image : Accueil / Recherche / Contact + 31 FR FR connexion -->
-    <div class="top-bar">
-        <div class="logo-area">
-            <div class="logo">XEYES</div>
-            <div class="badge-count">β</div>
-        </div>
-        <div class="nav-links">
+    <!-- HEADER style image -->
+    <div class="header">
+        <div class="logo">NET TECH</div>
+        <div class="nav-menu">
             <a href="#">Accueil</a>
-            <a href="#">Recherche</a>
-            <a href="#">Contact</a>
+            <a href="#" id="fakeSearchLink">Recherche</a>
+            <a href="#" id="fakeContactLink">Contact</a>
         </div>
-        <div class="right-actions">
-            <div class="lang-badge">31 FR FR</div>
-            <button class="login-btn" id="mainLoginBtn">Connexion</button>
+        <div class="header-right">
+            <div class="lang">31 FR FR</div>
+            <button class="login-btn" id="openAuthBtn">Connexion</button>
         </div>
     </div>
 
+    <!-- Hero section avec stats -->
     <div class="hero">
         <h1>Moteur de recherche de fuites de données</h1>
-        <p>L'outil de recherche pour identités et ... Accédez à des milliards d'enregistrements.<br>Recherche avancée par email, username, téléphone et +15 critères.</p>
-        <div class="stats-row">
-            <div class="stat"><div class="stat-number">2B+</div><div class="stat-label">enregistrements</div></div>
-            <div class="stat"><div class="stat-number">Instantané</div><div class="stat-label">Résultats</div></div>
-            <div class="stat"><div class="stat-number">15+</div><div class="stat-label">critères</div></div>
+        <p>L'outil de recherche pour identités et ... Accédez à des milliards d'enregistrements. Recherche avancée par email, username, téléphone et +15 critères.</p>
+        <div class="stats">
+            <div class="stat-item"><div class="stat-number">2B+</div><div class="stat-label">enregistrements</div></div>
+            <div class="stat-item"><div class="stat-number">Instantané</div><div class="stat-label">Résultats</div></div>
+            <div class="stat-item"><div class="stat-number">15+</div><div class="stat-label">critères</div></div>
         </div>
     </div>
 
-    <!-- Catégories (discord / tarif / tech) reprenant l'idée image -->
-    <div class="categories-wrapper">
-        <button class="cat-btn active" data-tab="discord">🔐 Discord</button>
-        <button class="cat-btn" data-tab="tarif">⚡ Activer une clé</button>
-        <button class="cat-btn" data-tab="tech">📡 Tech Vault</button>
+    <!-- CATEGORIES (Discord / Tarif / Tech) -->
+    <div class="categories">
+        <button class="cat-btn active" data-panel="discord">🔓 Discord</button>
+        <button class="cat-btn" data-panel="tarif">⚡ Tarif / Clé</button>
+        <button class="cat-btn" data-panel="tech">🛡️ Tech Vault</button>
     </div>
 
-    <!-- CONTENU DISCORD -->
-    <div id="discord-panel" class="content-panel active">
-        <div class="key-section" style="text-align: center;">
-            <h2 style="margin-bottom: 12px;">Rejoignez notre QG</h2>
-            <p style="margin-bottom: 24px; color:#9AA9C2">Accès support, mises à jour et communauté d'experts.</p>
-            <a href="https://discord.gg/Cpd8ZPkWsM" target="_blank" style="background:#5865F2; padding:14px 42px; border-radius:60px; text-decoration:none; color:white; font-weight:bold; display:inline-block;">REJOINDRE LE DISCORD →</a>
+    <!-- PANEL DISCORD -->
+    <div id="panel-discord" class="panel active">
+        <div class="card">
+            <h2 style="margin-bottom: 12px;">Rejoignez notre communauté</h2>
+            <p style="color: #888;">Support, updates et accès aux clés premium</p>
+            <a href="https://discord.gg/Cpd8ZPkWsM" target="_blank" class="discord-btn">REJOINDRE LE DISCORD</a>
         </div>
     </div>
 
-    <!-- TARIF / Activation clé -->
-    <div id="tarif-panel" class="content-panel">
-        <div class="key-section">
+    <!-- PANEL TARIF / ACTIVATION CLÉ -->
+    <div id="panel-tarif" class="panel">
+        <div class="card">
             <h2>Activation de clé unique</h2>
-            <p style="margin: 8px 0 12px;">Chaque clé est à usage unique et donne accès à la section <strong>Tech Vault</strong>.</p>
+            <p style="color:#aaa; margin: 10px 0;">Les clés sont disponibles sur Discord · usage unique</p>
             <div class="key-input-group">
-                <input type="text" id="activationKeyInput" class="key-input" placeholder="Entrez votre clé (ex: XEYES-9F3A)" autocomplete="off">
-                <button class="btn-primary" id="submitKeyBtn">Activer la clé</button>
+                <input type="text" id="activationKeyInput" class="key-input" placeholder="Entrez votre clé (ex: NET-XXXX)" autocomplete="off">
+                <button id="activateKeyBtn" class="btn-primary">Activer la clé</button>
             </div>
-            <div id="keyFeedback" style="font-size:0.85rem; margin-top: 8px;"></div>
-            <hr style="margin: 24px 0;">
-            <p style="font-size:0.85rem;">💡 Les clés sont disponibles sur notre Discord (canal #keys). Après activation, vous pourrez visualiser toutes les "Tech" confidentielles.</p>
+            <div id="keyMessage" style="font-size: 14px; margin-top: 10px;"></div>
+            <hr>
+            <p style="font-size: 13px; color:#555;">💡 Une fois activée, débloquez l'accès complet aux "Tech Vault"</p>
         </div>
     </div>
 
-    <!-- TECH VAULT (protégé par clé active) -->
-    <div id="tech-panel" class="content-panel">
-        <div id="techLockedMsg" style="text-align:center; padding:40px;">
-            🔒 Contenu verrouillé. Activez une clé valide depuis l'onglet "Activer une clé".
-        </div>
-        <div id="techUnlockedContent" style="display:none;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                <h2>⚡ Base de données techniques</h2>
-                <span id="activeKeyBadge" style="background:#1E2A47; padding:6px 14px; border-radius:60px; font-size:0.75rem;">✅ Clé active</span>
+    <!-- PANEL TECH VAULT (verrouillé sans clé active) -->
+    <div id="panel-tech" class="panel">
+        <div class="card" style="padding: 25px;">
+            <div id="techLockedInfo" style="text-align:center; padding: 30px;">
+                🔒 <strong>Zone sécurisée</strong><br><br>
+                Vous devez posséder une <strong>clé active</strong> (valide et à usage unique) pour visualiser le contenu technique.<br>
+                Rendez-vous dans l'onglet "Tarif / Clé" pour activer votre clé.
             </div>
-            <div class="tech-grid" id="dynamicTechGrid"></div>
+            <div id="techUnlockedContent" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>📡 Données techniques (Tech Vault)</h2>
+                    <span style="background: #1A1A1A; padding: 5px 15px; border-radius: 30px; font-size: 12px;" id="activeKeyDisplay">Aucune clé</span>
+                </div>
+                <div class="tech-grid" id="techGridContainer"></div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL CONNEXION / COMPTE -->
-<div id="authModal" class="modal-overlay">
-    <div class="modal-card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>🔑 Compte XEYES</h3>
-            <button id="closeAuthModal" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+<!-- MODAL AUTH (Connexion / Inscription / Google) -->
+<div id="authModal" class="modal">
+    <div class="modal-box">
+        <div style="display: flex; justify-content: space-between;">
+            <h3>🔐 Compte NET TECH</h3>
+            <button id="closeModalBtn" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer;">&times;</button>
         </div>
-        <div id="authTabs" style="display:flex; gap:12px; margin:20px 0;">
-            <button id="tabLoginBtn" style="background:#1E2A47; border:none; padding:8px 16px; border-radius:60px; color:white;">Connexion</button>
-            <button id="tabSignupBtn" style="background:transparent; border:1px solid #3E4A6B; padding:8px 16px; border-radius:60px;">Inscription</button>
+        <div class="auth-switch">
+            <button id="showLoginTab" class="active">Connexion</button>
+            <button id="showSignupTab">Inscription</button>
         </div>
         <div id="loginForm">
-            <input type="email" id="loginEmail" placeholder="Email" class="key-input" style="width:100%; margin-bottom:16px;">
-            <input type="password" id="loginPassword" placeholder="Mot de passe" class="key-input" style="width:100%; margin-bottom:20px;">
-            <button id="doLoginBtn" class="btn-primary" style="width:100%;">Se connecter</button>
-            <button id="googleLoginBtn" style="width:100%; margin-top:12px; background:#1A253B; border:1px solid #5865F2; padding:12px; border-radius:60px; color:white;">🌐 Continuer avec Google</button>
+            <input type="email" id="loginEmail" class="modal-input" placeholder="Email">
+            <input type="password" id="loginPassword" class="modal-input" placeholder="Mot de passe">
+            <button id="doLogin" class="btn-primary" style="width:100%;">Se connecter</button>
+            <button id="googleAuthBtn" class="google-btn">🌐 Continuer avec Google</button>
         </div>
         <div id="signupForm" style="display:none;">
-            <input type="email" id="signupEmail" placeholder="Email" class="key-input" style="width:100%; margin-bottom:16px;">
-            <input type="password" id="signupPassword" placeholder="Mot de passe (min 6)" class="key-input" style="width:100%; margin-bottom:20px;">
-            <button id="doSignupBtn" class="btn-primary" style="width:100%;">Créer un compte</button>
+            <input type="email" id="signupEmail" class="modal-input" placeholder="Email">
+            <input type="password" id="signupPassword" class="modal-input" placeholder="Mot de passe (min 6)">
+            <button id="doSignup" class="btn-primary" style="width:100%;">Créer mon compte</button>
         </div>
-        <div id="authMessage" style="margin-top:16px; font-size:0.85rem; text-align:center;"></div>
+        <div id="authMessage" style="margin-top: 18px; font-size: 13px; text-align: center; color: #aaa;"></div>
     </div>
 </div>
 
-<!-- PANEL ADMIN (Ctrl+Shift+A + mot de passe: adminxeyes) -->
+<!-- ADMIN PANEL (Ctrl+Shift+A) mot de passe: nitro06 -->
 <div id="adminPanel" class="admin-panel">
     <div class="admin-header">
-        <h2>🛠️ ADMIN — Contrôle total</h2>
-        <button id="closeAdminBtn" style="background:#1E2A47; border:none; padding:8px 20px; border-radius:40px; color:white;">Fermer</button>
+        <h2>⚙️ PANEL ADMIN - NET TECH</h2>
+        <button id="closeAdminBtn" style="background:#1A1A1A; border:1px solid #333; padding: 8px 20px; border-radius:40px; color:white;">Fermer</button>
     </div>
     <div class="admin-grid">
         <div class="admin-card">
-            <h3>➕ Générer une clé (usage unique)</h3>
-            <input type="text" id="adminKeyValue" placeholder="Clé (ex: XEYES-A1B2)" class="key-input" style="width:100%; margin:10px 0;">
-            <button id="adminCreateKeyBtn" class="btn-primary">Créer clé unique</button>
-            <div id="adminKeyList" style="margin-top:20px; max-height:200px; overflow:auto;"></div>
+            <h3>🔑 Gestion des clés (usage unique)</h3>
+            <input type="text" id="newKeyInput" class="admin-input" placeholder="Nouvelle clé (ex: NET-9F3A)">
+            <button id="adminCreateKey" class="admin-btn">➕ Créer clé</button>
+            <div id="adminKeyList" style="margin-top: 20px; max-height: 220px; overflow: auto;"></div>
         </div>
         <div class="admin-card">
-            <h3>📝 Modifier les fiches TECH</h3>
-            <p style="font-size:0.75rem;">Chaque tech possède titre + description (max 180c)</p>
-            <select id="techSelectIndex" style="width:100%; background:#070C15; border:1px solid #2E3A4E; color:white; padding:10px; border-radius:40px;"></select>
-            <input type="text" id="techEditTitle" placeholder="Nouveau titre" class="key-input" style="width:100%; margin:8px 0;">
-            <textarea id="techEditDesc" rows="3" placeholder="Nouvelle description" class="key-input" style="width:100%;"></textarea>
-            <button id="saveTechBtn" class="btn-primary" style="margin-top:8px;">💾 Sauvegarder modifications</button>
+            <h3>📝 Modifier les 6 cartes TECH</h3>
+            <select id="techSelectIndex" class="admin-input"></select>
+            <input type="text" id="techEditTitle" class="admin-input" placeholder="Nouveau titre">
+            <textarea id="techEditDesc" rows="2" class="admin-input" placeholder="Nouvelle description"></textarea>
+            <button id="saveTechModif" class="admin-btn">💾 Sauvegarder modification</button>
         </div>
         <div class="admin-card">
-            <h3>👥 Utilisateurs & logs</h3>
-            <button id="refreshUsersBtn" class="btn-primary" style="background:#2A3750;">Rafraîchir utilisateurs</button>
-            <div id="userListDisplay" style="margin-top:16px; max-height:200px; overflow-y:auto; font-size:0.8rem;"></div>
-            <hr>
-            <h4>Logs d'activation</h4>
-            <div id="adminLogs" style="max-height:180px; overflow:auto;"></div>
+            <h3>👥 Utilisateurs inscrits (local)</h3>
+            <button id="refreshUsersList" class="admin-btn">Rafraîchir</button>
+            <div id="usersListDisplay" style="margin-top: 15px; font-size: 13px; max-height: 180px; overflow: auto;"></div>
         </div>
     </div>
 </div>
 
-<script type="module">
-    // ---------- CONFIG FIREBASE ----------
-    const firebaseConfig = {
-        apiKey: "AIzaSyDummyKeyReplaceWithRealButForDemoUsePlaceholder", 
-        authDomain: "xeyes-demo.firebaseapp.com",
-        projectId: "xeyes-demo",
-        storageBucket: "xeyes-demo.appspot.com",
-        messagingSenderId: "000000000001",
-        appId: "1:000000000001:web:abcdef"
-    };
-    // Pour que le demo fonctionne local, on simulera si firebase fail ? Non on initialise réel.
-    // Mais attention, pour démo locale on va utiliser un mock + localstorage si pas de config?
-    // Afin d'être fonctionnel sans clef API valide, on utilise un fallback "fake auth + firestore simulé" car apiKey invalide.
-    // Version robuste : simulation locale complète (gestion compte local + clés) → plus fiable pour démo.
-    console.log("Mode démonstration : stockage LOCAL (pas de firebase externe requis)");
-    // Implémentation locale complète (IndexedDB/localStorage) pour comptes, sessions, clés à usage unique.
-    // car la clé API n'est pas réelle, on simule un backend parfait.
-    class LocalAuthManager {
-        constructor() {
-            this.users = JSON.parse(localStorage.getItem('xeyes_users') || '[]');
-            this.sessions = JSON.parse(localStorage.getItem('xeyes_sessions') || '{}');
-            this.currentUser = null;
-            this.loadSession();
-        }
-        loadSession() {
-            const saved = localStorage.getItem('xeyes_current_user');
-            if(saved) this.currentUser = JSON.parse(saved);
-        }
-        saveSession(user) {
-            this.currentUser = user;
-            localStorage.setItem('xeyes_current_user', JSON.stringify(user));
-        }
-        async signUp(email, password) {
-            if(this.users.find(u => u.email === email)) throw new Error("Email déjà utilisé");
-            const newUser = { uid: 'uid_'+Date.now(), email, password: btoa(password), createdAt: new Date().toISOString() };
-            this.users.push(newUser);
-            localStorage.setItem('xeyes_users', JSON.stringify(this.users));
-            this.saveSession({ email: newUser.email, uid: newUser.uid });
-            return newUser;
-        }
-        async signIn(email, password) {
-            const user = this.users.find(u => u.email === email && atob(u.password) === password);
-            if(!user) throw new Error("Identifiants invalides");
-            this.saveSession({ email: user.email, uid: user.uid });
-            return user;
-        }
-        async signInWithGoogle() { // simulation google
-            const fakeGoogleUser = { email: "google_"+Math.floor(Math.random()*9999)+"@temp.com", uid: "google_"+Date.now() };
-            if(!this.users.find(u => u.email === fakeGoogleUser.email)) {
-                this.users.push({ ...fakeGoogleUser, password: btoa("google_auth") });
-                localStorage.setItem('xeyes_users', JSON.stringify(this.users));
-            }
-            this.saveSession(fakeGoogleUser);
-            return fakeGoogleUser;
-        }
-        signOut() { this.currentUser = null; localStorage.removeItem('xeyes_current_user'); }
-        isLogged() { return !!this.currentUser; }
-        getUser() { return this.currentUser; }
-    }
-    const authManager = new LocalAuthManager();
+<script>
+    // ------------------------------------------------------------------
+    // STOCKAGE LOCAL : clés (usage unique) + utilisateurs + techs + session
+    // ------------------------------------------------------------------
+    let usedKeys = JSON.parse(localStorage.getItem('nettech_used_keys') || '[]');
+    let availableKeys = JSON.parse(localStorage.getItem('nettech_available_keys') || '[]');
+    let currentUser = JSON.parse(localStorage.getItem('nettech_current_user') || 'null');
+    let activeUserKey = localStorage.getItem('nettech_active_key') || null;
 
-    // Gestion clés à usage unique
-    let usedKeys = JSON.parse(localStorage.getItem('xeyes_used_keys') || '[]');
-    let availableKeys = JSON.parse(localStorage.getItem('xeyes_available_keys') || '[]');
-    let activeUserKey = null; // la clé activée par l'utilisateur courant (session)
-    let techItems = JSON.parse(localStorage.getItem('xeyes_tech_items')) || [
-        { title: "🔍 Data Leak Index", description: "Accès à l'index global de fuites 2025, emails et mots de passe hashés." },
-        { title: "📡 IP Scanner", description: "Recherche inversée par adresse IP, localisation approximative." },
-        { title: "🧬 Username Tracker", description: "Traçage cross-platform d'identifiants pseudonymes." },
-        { title: "📞 Phone OSINT", description: "Base de correspondance téléphone → comptes en ligne." },
-        { title: "🌐 Darkweb Crawler", description: "Extraction de fuites récentes depuis le darknet." },
-        { title: "⚙️ Hash Decrypt", description: "Décryptage MD5/SHA1 via rainbow tables interne." }
+    // Contenu par défaut des 6 techs ( titre + description )
+    let techItems = JSON.parse(localStorage.getItem('nettech_tech_items')) || [
+        { title: "🔍 Data Leak Index", description: "Base de données massive d'emails / mots de passe compromises, mise à jour quotidienne." },
+        { title: "📡 IP Scanner v2", description: "Recherche avancée par adresse IP, localisation et FAI." },
+        { title: "🧬 Username OSINT", description: "Traçage d'identifiants sur +200 plateformes." },
+        { title: "📞 Phone2ID", description: "Corrélation numéro de téléphone → comptes全网." },
+        { title: "🌐 Darknet Crawler", description: "Extraction de données récentes depuis le dark web." },
+        { title: "⚙️ Hash Decryptor", description: "Décryptage MD5/SHA1 avec rainbow tables interne." }
     ];
 
-    function saveTechs() { localStorage.setItem('xeyes_tech_items', JSON.stringify(techItems)); }
-    function saveKeys() { localStorage.setItem('xeyes_available_keys', JSON.stringify(availableKeys)); localStorage.setItem('xeyes_used_keys', JSON.stringify(usedKeys)); }
+    // Utilisateurs stockés localement (email + password hash simple)
+    let users = JSON.parse(localStorage.getItem('nettech_users')) || [];
 
-    function addLogAdmin(message) {
-        let logs = JSON.parse(localStorage.getItem('xeyes_admin_logs') || '[]');
-        logs.unshift({msg: message, time: new Date().toLocaleString()});
-        if(logs.length>30) logs.pop();
-        localStorage.setItem('xeyes_admin_logs', JSON.stringify(logs));
-        renderAdminLogs();
+    // Helper sauvegardes
+    function saveKeys() {
+        localStorage.setItem('nettech_available_keys', JSON.stringify(availableKeys));
+        localStorage.setItem('nettech_used_keys', JSON.stringify(usedKeys));
     }
-    function renderAdminLogs() {
-        const container = document.getElementById('adminLogs');
-        if(container){
-            let logs = JSON.parse(localStorage.getItem('xeyes_admin_logs') || '[]');
-            container.innerHTML = logs.map(l=>`<div style="border-left:2px solid #8B9EFF; padding:4px 8px; margin:6px 0;">[${l.time}] ${l.msg}</div>`).join('');
-        }
+    function saveUsers() { localStorage.setItem('nettech_users', JSON.stringify(users)); }
+    function saveTechs() { localStorage.setItem('nettech_tech_items', JSON.stringify(techItems)); }
+    function setSession(user) { currentUser = user; localStorage.setItem('nettech_current_user', JSON.stringify(user)); }
+    function setActiveKey(key) { activeUserKey = key; if(key) localStorage.setItem('nettech_active_key', key); else localStorage.removeItem('nettech_active_key'); }
+
+    // Vérifier si la clé est encore valide (non utilisée)
+    function isKeyValid(key) {
+        return availableKeys.includes(key) && !usedKeys.includes(key);
     }
-    function renderKeyListAdmin() {
-        const container = document.getElementById('adminKeyList');
-        if(container){
-            let allKeys = availableKeys.filter(k => !usedKeys.includes(k));
-            container.innerHTML = `<strong>Clés disponibles (${allKeys.length}) :</strong>` + allKeys.map(k=>`<div style="background:#000; margin:4px; padding:6px; border-radius:12px;">🔑 ${k} <button class="deleteKeyAdminBtn" data-key="${k}" style="float:right; background:red; border:none; border-radius:20px; padding:2px 10px;">Supprimer</button></div>`).join('');
-            document.querySelectorAll('.deleteKeyAdminBtn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    let key = btn.getAttribute('data-key');
-                    availableKeys = availableKeys.filter(k => k !== key);
-                    saveKeys(); renderKeyListAdmin(); addLogAdmin(`Clé supprimée: ${key}`);
-                });
-            });
-        }
-    }
-    function generateKey(plainKey) {
-        if(availableKeys.includes(plainKey) || usedKeys.includes(plainKey)) return false;
-        availableKeys.push(plainKey);
-        saveKeys();
-        renderKeyListAdmin();
-        addLogAdmin(`Clé créée: ${plainKey}`);
-        return true;
-    }
-    function activateKeyForUser(key) {
-        if(usedKeys.includes(key)) return { success: false, msg: "Clé déjà utilisée" };
-        if(!availableKeys.includes(key)) return { success: false, msg: "Clé invalide" };
+
+    // Activer une clé (usage unique)
+    function activateKey(key, userId) {
+        if(!isKeyValid(key)) return { success: false, message: "Clé invalide ou déjà utilisée." };
         availableKeys = availableKeys.filter(k => k !== key);
         usedKeys.push(key);
         saveKeys();
-        activeUserKey = key;
-        localStorage.setItem('xeyes_active_key', key);
-        addLogAdmin(`Utilisateur ${authManager.getUser()?.email} a activé clé ${key}`);
-        return { success: true };
+        setActiveKey(key);
+        return { success: true, message: "Clé activée avec succès ! Accès Tech débloqué." };
     }
-    function loadActiveKeyFromStorage() { activeUserKey = localStorage.getItem('xeyes_active_key'); if(activeUserKey && usedKeys.includes(activeUserKey)) { return activeUserKey; } else if(activeUserKey && !usedKeys.includes(activeUserKey)){ activeUserKey=null; localStorage.removeItem('xeyes_active_key'); } return activeUserKey; }
 
-    // UI interactions
-    function updateTechUI() {
-        const grid = document.getElementById('dynamicTechGrid');
-        if(grid) grid.innerHTML = techItems.map((t,idx) => `<div class="tech-card"><h3>${t.title}</h3><p>${t.description}</p></div>`).join('');
-        const select = document.getElementById('techSelectIndex');
-        if(select){
-            select.innerHTML = techItems.map((t,idx)=>`<option value="${idx}">[${idx+1}] ${t.title}</option>`).join('');
+    // Vérifier si l'utilisateur a une clé active
+    function hasActiveKey() {
+        return activeUserKey && usedKeys.includes(activeUserKey);
+    }
+
+    // Mise à jour UI des techs (visible ou floutée selon clé)
+    function renderTechGrid() {
+        const container = document.getElementById('techGridContainer');
+        if(!container) return;
+        const hasAccess = hasActiveKey() && currentUser !== null;
+        if(hasAccess) {
+            container.innerHTML = techItems.map((item, idx) => `
+                <div class="tech-card">
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p>${escapeHtml(item.description)}</p>
+                </div>
+            `).join('');
+        } else {
+            // Contenu verrouillé : on voit les cartes mais floutées + badge lock
+            container.innerHTML = techItems.map((item, idx) => `
+                <div class="tech-card locked">
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p>${escapeHtml(item.description)}</p>
+                    <div class="lock-badge">🔒 Verrouillé · clé requise</div>
+                </div>
+            `).join('');
         }
     }
-    function refreshTechLockedStatus() {
-        const hasActive = !!loadActiveKeyFromStorage() && authManager.isLogged();
-        const lockedDiv = document.getElementById('techLockedMsg');
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // Mise à jour des panels TECH selon accès
+    function updateTechPanelUI() {
+        const lockedDiv = document.getElementById('techLockedInfo');
         const unlockedDiv = document.getElementById('techUnlockedContent');
-        if(hasActive && authManager.isLogged()){
+        const hasAccess = hasActiveKey() && currentUser !== null;
+        if(hasAccess && currentUser) {
             lockedDiv.style.display = 'none';
             unlockedDiv.style.display = 'block';
-            document.getElementById('activeKeyBadge').innerText = `✅ Clé active : ${activeUserKey}`;
-            updateTechUI();
+            document.getElementById('activeKeyDisplay').innerText = `🔑 Clé: ${activeUserKey}`;
         } else {
             lockedDiv.style.display = 'block';
             unlockedDiv.style.display = 'none';
         }
+        renderTechGrid();
     }
-    document.getElementById('submitKeyBtn')?.addEventListener('click', () => {
-        if(!authManager.isLogged()) { document.getElementById('keyFeedback').innerHTML = '<span style="color:#F97373;">🔐 Veuillez vous connecter avant d’activer une clé.</span>'; return; }
-        const keyVal = document.getElementById('activationKeyInput').value.trim();
-        if(!keyVal) return;
-        const res = activateKeyForUser(keyVal);
-        if(res.success){
-            document.getElementById('keyFeedback').innerHTML = '<span style="color:#7DF9FF;">✅ Clé activée ! Accès à Tech Vault débloqué.</span>';
-            refreshTechLockedStatus();
-        } else {
-            document.getElementById('keyFeedback').innerHTML = `<span style="color:#F97373;">❌ ${res.msg}</span>`;
+
+    // Remplir le select admin des techs
+    function populateTechSelect() {
+        const select = document.getElementById('techSelectIndex');
+        if(select) {
+            select.innerHTML = techItems.map((t, idx) => `<option value="${idx}">${idx+1} - ${t.title.substring(0,40)}</option>`).join('');
         }
+    }
+
+    // Admin : afficher liste clés disponibles
+    function renderAdminKeyList() {
+        const container = document.getElementById('adminKeyList');
+        if(!container) return;
+        const validKeys = availableKeys.filter(k => !usedKeys.includes(k));
+        container.innerHTML = `<strong>Clés disponibles (${validKeys.length}) :</strong>` + 
+            validKeys.map(k => `<div class="key-row">🔑 ${k} <button class="deleteKeyBtn" data-key="${k}" style="background:#333; border:none; color:white; padding:2px 12px; border-radius:30px;">Supprimer</button></div>`).join('');
+        document.querySelectorAll('.deleteKeyBtn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const key = btn.getAttribute('data-key');
+                availableKeys = availableKeys.filter(k => k !== key);
+                saveKeys();
+                renderAdminKeyList();
+                showToast(`Clé ${key} supprimée`);
+            });
+        });
+    }
+
+    // Créer une clé (admin)
+    function createAdminKey(keyValue) {
+        let newKey = keyValue.trim();
+        if(!newKey) newKey = "NET-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+        if(availableKeys.includes(newKey) || usedKeys.includes(newKey)) { showToast("Clé déjà existante"); return false; }
+        availableKeys.push(newKey);
+        saveKeys();
+        renderAdminKeyList();
+        showToast(`Clé créée: ${newKey}`);
+        return true;
+    }
+
+    // Gestion utilisateurs (inscription / connexion)
+    function signup(email, password) {
+        if(password.length < 6) return { success: false, msg: "Mot de passe min 6 caractères" };
+        if(users.find(u => u.email === email)) return { success: false, msg: "Email déjà utilisé" };
+        const newUser = { email, password: btoa(password), uid: Date.now().toString() };
+        users.push(newUser);
+        saveUsers();
+        setSession({ email, uid: newUser.uid });
+        return { success: true };
+    }
+    function login(email, password) {
+        const user = users.find(u => u.email === email && atob(u.password) === password);
+        if(!user) return { success: false, msg: "Email ou mot de passe incorrect" };
+        setSession({ email: user.email, uid: user.uid });
+        return { success: true };
+    }
+    function googleMockLogin() {
+        const fakeEmail = "google_" + Math.floor(Math.random()*90000) + "@user.net";
+        if(!users.find(u => u.email === fakeEmail)) {
+            users.push({ email: fakeEmail, password: btoa("google_auth_fake"), uid: "g_"+Date.now() });
+            saveUsers();
+        }
+        setSession({ email: fakeEmail, uid: "g_"+Date.now() });
+        return true;
+    }
+    function logout() { setSession(null); setActiveKey(null); updateTechPanelUI(); showToast("Déconnecté"); }
+
+    // Mettre à jour bouton login en header
+    function updateLoginButton() {
+        const btn = document.getElementById('openAuthBtn');
+        if(currentUser) {
+            btn.innerText = currentUser.email.split('@')[0] + " ▼";
+            btn.style.borderColor = "#555";
+        } else {
+            btn.innerText = "Connexion";
+        }
+    }
+
+    // Afficher la liste des utilisateurs dans admin
+    function renderUserListAdmin() {
+        const container = document.getElementById('usersListDisplay');
+        if(container) {
+            container.innerHTML = users.map(u => `<div style="padding:6px; border-bottom:1px solid #222;">📧 ${u.email}</div>`).join('') || "<div>Aucun utilisateur</div>";
+        }
+    }
+
+    // Toast rapide
+    function showToast(msg) {
+        let t = document.createElement('div');
+        t.className = 'toast';
+        t.innerText = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
+    }
+
+    // EVENT LISTENERS UI
+    document.getElementById('activateKeyBtn')?.addEventListener('click', () => {
+        if(!currentUser) { document.getElementById('keyMessage').innerHTML = '<span style="color:#ff8888;">❌ Vous devez être connecté pour activer une clé.</span>'; return; }
+        const keyVal = document.getElementById('activationKeyInput').value.trim();
+        if(!keyVal) { document.getElementById('keyMessage').innerHTML = '<span style="color:#ff8888;">Entrez une clé</span>'; return; }
+        const result = activateKey(keyVal, currentUser.uid);
+        document.getElementById('keyMessage').innerHTML = result.success ? `<span style="color:#8aff8a;">✅ ${result.message}</span>` : `<span style="color:#ff8888;">❌ ${result.message}</span>`;
+        if(result.success) {
+            document.getElementById('activationKeyInput').value = '';
+            updateTechPanelUI();
+        }
+        renderAdminKeyList();
     });
-    // tabs categories
+
+    // CATEGORIES switching
     document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            document.querySelectorAll('.content-panel').forEach(p=>p.classList.remove('active'));
-            const tab = btn.getAttribute('data-tab');
-            document.getElementById(`${tab}-panel`).classList.add('active');
+            const panelId = btn.getAttribute('data-panel');
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`panel-${panelId}`).classList.add('active');
         });
     });
-    // auth modal
+
+    // Auth modal
     const modal = document.getElementById('authModal');
-    document.getElementById('mainLoginBtn').addEventListener('click',()=>modal.classList.add('active'));
-    document.getElementById('closeAuthModal').addEventListener('click',()=>modal.classList.remove('active'));
-    let loginMode = true;
-    document.getElementById('tabLoginBtn').addEventListener('click',()=>{ loginMode=true; document.getElementById('loginForm').style.display='block'; document.getElementById('signupForm').style.display='none'; });
-    document.getElementById('tabSignupBtn').addEventListener('click',()=>{ loginMode=false; document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='block'; });
-    document.getElementById('doLoginBtn').addEventListener('click', async()=>{
+    document.getElementById('openAuthBtn').addEventListener('click', () => { if(currentUser) logout(); else modal.classList.add('active'); });
+    document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.remove('active'));
+    document.getElementById('showLoginTab').addEventListener('click', () => { document.getElementById('loginForm').style.display='block'; document.getElementById('signupForm').style.display='none'; document.getElementById('showLoginTab').classList.add('active'); document.getElementById('showSignupTab').classList.remove('active'); });
+    document.getElementById('showSignupTab').addEventListener('click', () => { document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='block'; document.getElementById('showSignupTab').classList.add('active'); document.getElementById('showLoginTab').classList.remove('active'); });
+    document.getElementById('doLogin').addEventListener('click', () => {
         const email = document.getElementById('loginEmail').value, pwd = document.getElementById('loginPassword').value;
-        try{ await authManager.signIn(email,pwd); modal.classList.remove('active'); document.getElementById('mainLoginBtn').innerText = authManager.getUser().email.split('@')[0]; refreshTechLockedStatus(); addLogAdmin(`Connexion: ${email}`);} catch(e){ document.getElementById('authMessage').innerText = e.message; }
+        const res = login(email, pwd);
+        if(res.success) { modal.classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast(`Bienvenue ${email}`); } else document.getElementById('authMessage').innerText = res.msg;
     });
-    document.getElementById('doSignupBtn').addEventListener('click', async()=>{
+    document.getElementById('doSignup').addEventListener('click', () => {
         const email = document.getElementById('signupEmail').value, pwd = document.getElementById('signupPassword').value;
-        if(pwd.length<6){ document.getElementById('authMessage').innerText = 'Mot de passe min 6 caractères'; return; }
-        try{ await authManager.signUp(email,pwd); modal.classList.remove('active'); document.getElementById('mainLoginBtn').innerText = email.split('@')[0]; refreshTechLockedStatus(); addLogAdmin(`Inscription: ${email}`);} catch(e){ document.getElementById('authMessage').innerText = e.message; }
+        const res = signup(email, pwd);
+        if(res.success) { modal.classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast(`Compte créé`); } else document.getElementById('authMessage').innerText = res.msg;
     });
-    document.getElementById('googleLoginBtn').addEventListener('click', async()=>{
-        await authManager.signInWithGoogle(); modal.classList.remove('active'); document.getElementById('mainLoginBtn').innerHTML = "👤 Google"; refreshTechLockedStatus(); addLogAdmin("Connexion Google");
+    document.getElementById('googleAuthBtn').addEventListener('click', () => {
+        googleMockLogin(); modal.classList.remove('active'); updateLoginButton(); updateTechPanelUI(); showToast("Connexion Google (mode démo)");
     });
-    // Admin panel ctrl+shift+A
-    document.addEventListener('keydown', (e)=>{
-        if(e.ctrlKey && e.shiftKey && e.key === 'A'){ e.preventDefault(); const pwd = prompt("Admin access"); if(pwd === 'adminxeyes'){ document.getElementById('adminPanel').classList.add('open'); renderKeyListAdmin(); renderAdminLogs(); updateTechUI(); listUsers();} else alert('Accès refusé');}
+
+    // Admin panel (Ctrl+Shift+A, mdp: nitro06)
+    document.addEventListener('keydown', (e) => {
+        if(e.ctrlKey && e.shiftKey && e.key === 'A') {
+            e.preventDefault();
+            const pwd = prompt("Mot de passe admin:");
+            if(pwd === 'nitro06') {
+                document.getElementById('adminPanel').classList.add('open');
+                renderAdminKeyList();
+                renderUserListAdmin();
+                populateTechSelect();
+            } else alert("Accès refusé");
+        }
     });
-    document.getElementById('closeAdminBtn').addEventListener('click',()=>document.getElementById('adminPanel').classList.remove('open'));
-    document.getElementById('adminCreateKeyBtn').addEventListener('click',()=>{
-        let key = document.getElementById('adminKeyValue').value.trim();
-        if(!key) key = "XEYES-"+Math.random().toString(36).substring(2,8).toUpperCase();
-        generateKey(key); document.getElementById('adminKeyValue').value = '';
+    document.getElementById('closeAdminBtn').addEventListener('click', () => document.getElementById('adminPanel').classList.remove('open'));
+    document.getElementById('adminCreateKey').addEventListener('click', () => {
+        const keyRaw = document.getElementById('newKeyInput').value;
+        createAdminKey(keyRaw);
+        document.getElementById('newKeyInput').value = '';
     });
-    document.getElementById('saveTechBtn').addEventListener('click',()=>{
-        let idx = parseInt(document.getElementById('techSelectIndex').value);
-        let newTitle = document.getElementById('techEditTitle').value.trim();
-        let newDesc = document.getElementById('techEditDesc').value.trim();
+    document.getElementById('saveTechModif').addEventListener('click', () => {
+        const idx = parseInt(document.getElementById('techSelectIndex').value);
+        const newTitle = document.getElementById('techEditTitle').value.trim();
+        const newDesc = document.getElementById('techEditDesc').value.trim();
         if(newTitle) techItems[idx].title = newTitle;
         if(newDesc) techItems[idx].description = newDesc;
-        saveTechs(); updateTechUI(); refreshTechLockedStatus(); addLogAdmin(`Tech modifiée index ${idx}`);
+        saveTechs();
+        renderTechGrid();
+        populateTechSelect();
+        showToast("Tech mise à jour");
     });
-    function listUsers() { const ulist = authManager.users; document.getElementById('userListDisplay').innerHTML = `<strong>${ulist.length} membres</strong><br>`+ulist.map(u=>`📧 ${u.email}<br>`).join(''); }
-    document.getElementById('refreshUsersBtn')?.addEventListener('click',listUsers);
-    // initial refresh
-    loadActiveKeyFromStorage();
-    refreshTechLockedStatus();
-    updateTechUI();
-    if(authManager.isLogged()) document.getElementById('mainLoginBtn').innerHTML = authManager.getUser().email.split('@')[0];
-    else document.getElementById('mainLoginBtn').innerHTML = "Connexion";
-    setInterval(()=>{if(authManager.isLogged()) refreshTechLockedStatus();},2000);
-    addLogAdmin("Système prêt");
+    document.getElementById('refreshUsersList')?.addEventListener('click', renderUserListAdmin);
+    document.getElementById('fakeSearchLink')?.addEventListener('click', (e) => { e.preventDefault(); showToast("🔍 Recherche : bientôt disponible"); });
+    document.getElementById('fakeContactLink')?.addEventListener('click', (e) => { e.preventDefault(); showToast("📧 Contactez-nous sur Discord"); });
+
+    // initialisation
+    function init() {
+        updateLoginButton();
+        updateTechPanelUI();
+        renderTechGrid();
+        renderAdminKeyList();
+    }
+    init();
 </script>
 </body>
 </html>
