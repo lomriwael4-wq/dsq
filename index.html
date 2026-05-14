@@ -452,7 +452,7 @@ function toggleTechDescription(cardId, event) {
 }
  
 function renderTech(){
-  const items=DB.getArr('tech_items');
+  const items = DB.getArr('tech_items');
   const hasAccess = hasValidKey();
   const grid = document.getElementById('tech-grid');
   
@@ -467,7 +467,7 @@ function renderTech(){
         <div class="tech-card locked" style="cursor:default;">
           <div class="tech-tag">${i.tag}</div>
           <h3>${i.title}</h3>
-          <p style="display:block; filter:blur(4px); transition:filter 0.3s ease;" onmouseover="this.style.filter='blur(0px)'" onmouseout="this.style.filter='blur(4px)'">🔒 Contenu protégé - Passez la souris pour déflouter</p>
+          <p style="display:block;">🔒 Contenu protégé - Activez votre clé pour voir la description</p>
         </div>
       `).join('')}
     `;
@@ -481,7 +481,7 @@ function renderTech(){
           <div class="tech-card locked" style="cursor:default;">
             <div class="tech-tag">${i.tag}</div>
             <h3>${i.title}</h3>
-            <p style="display:block; filter:blur(4px); transition:filter 0.3s ease;" onmouseover="this.style.filter='blur(0px)'" onmouseout="this.style.filter='blur(4px)'">🔒 Non inclus dans votre formule - Passez la souris pour voir</p>
+            <p style="display:block;">🔒 Non inclus dans votre formule</p>
           </div>
         `;
       }
@@ -490,7 +490,7 @@ function renderTech(){
         <div class="tech-card ${isComingSoon ? 'coming-soon' : ''}" onclick="toggleTechDescription(${i.id}, event)">
           <div class="tech-tag">${i.tag}</div>
           <h3>${i.title}${isComingSoon ? ' 🚧' : ''}</h3>
-          <p id="desc-${i.id}" class="tech-description" style="${!isComingSoon ? 'filter:blur(4px); transition:filter 0.3s ease;' : ''}" onmouseover="${!isComingSoon ? 'this.style.filter=\\'blur(0px)\\'' : ''}" onmouseout="${!isComingSoon ? 'this.style.filter=\\'blur(4px)\\'' : ''}">${isComingSoon ? '🚧 Cet outil arrive très bientôt sur Net Tech. Restez connecté ! 🚧' : i.desc}</p>
+          <p id="desc-${i.id}" class="tech-description">${isComingSoon ? '🚧 Cet outil arrive très bientôt sur Net Tech. Restez connecté ! 🚧' : i.desc}</p>
         </div>
       `;
     }).join('');
