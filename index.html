@@ -34,7 +34,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:64px;
 .page{display:none;min-height:100vh;padding-top:64px;}
 .page.active{display:block;}
  
-/* HOME — seule page avec le gros titre */
+/* HOME */
 #page-home{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:64px 20px 40px;}
 .home-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--border);border-radius:100px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:36px;letter-spacing:1px;}
 .home-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;}
@@ -50,7 +50,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:64px;
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;}
 .stat-label{font-size:10px;color:var(--muted);letter-spacing:1px;font-family:'DM Mono',monospace;}
  
-/* SECTION HEADER (autres pages) */
+/* SECTION HEADER */
 .page-content{max-width:960px;margin:0 auto;padding:56px 40px;}
 .page-header{margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border);}
 .page-header h1{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:3px;margin-bottom:6px;}
@@ -93,9 +93,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:64px;
 .tech-card h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:6px;}
 .tech-card p{color:var(--muted);font-size:13px;line-height:1.6;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none;}
 .tech-card p.show{display:block;}
-.tech-card.expanded p{display:block;}
-.tech-card.blur-effect p{filter:blur(4px);transition:filter 0.3s ease;}
-.tech-card.blur-effect:hover p{filter:blur(0);}
+.tech-card.coming-soon{position:relative;overflow:hidden;}
+.tech-card.coming-soon::before{content:'ARRIVE BIENTÔT';position:absolute;top:10px;right:-30px;background:var(--warn);color:#000;font-size:10px;font-weight:bold;padding:4px 30px;transform:rotate(45deg);z-index:1;}
 .tech-lock-message{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;grid-column:1/-1;}
 .tech-lock-message p{color:var(--muted);margin-bottom:20px;}
  
@@ -304,20 +303,21 @@ const DB={
 // ===== INIT DATA =====
 function initData(){
   if(!DB.get('initialized')){
-    // Admins par défaut : owner nitro06
     DB.set('admins',[
       {id:1,username:'owner',password:'nitro06',role:'owner',created:new Date().toLocaleString('fr-FR')}
     ]);
     DB.set('users',[]);
-    DB.set('keys',[{key:'DEMO-TEST-1234-ABCD',duration:'lifetime',used:false,usedBy:null,created:Date.now()}]);
+    DB.set('keys',[
+      {id:Date.now(),key:'DEMO-TEST-1234-ABCD',duration:'lifetime',used:false,usedBy:null,created:Date.now(),allowedTechs:[1,2,3,4]}
+    ]);
     DB.set('logs',[]);
     DB.set('conn_logs',[]);
     DB.set('forgot_requests',[]);
     DB.set('tech_items',[
-      {id:1,tag:'OUTIL 01',title:'Tech Pro Scanner',desc:'Scanner avancé avec détection IA, analyse réseau complète et rapports détaillés. Cet outil vous permet de détecter les vulnérabilités de votre infrastructure.'},
-      {id:2,tag:'OUTIL 02',title:'Tech Optimizer',desc:'Optimiseur de performances système, nettoie et booste votre PC en un clic. Améliore considérablement la rapidité de votre système.'},
-      {id:3,tag:'OUTIL 03',title:'Tech Security',desc:'Suite de sécurité avancée avec firewall intelligent et anti-malware temps réel. Protection complète contre les menaces.'},
-      {id:4,tag:'OUTIL 04',title:'Tech Network',desc:'Analyseur réseau professionnel, surveillance des paquets et diagnostic complet. Idéal pour les administrateurs système.'},
+      {id:1,tag:'OUTIL 01',title:'Tech Pro Scanner',desc:'Scanner avancé avec détection IA, analyse réseau complète et rapports détaillés.',status:'active'},
+      {id:2,tag:'OUTIL 02',title:'Tech Optimizer',desc:'Optimiseur de performances système, nettoie et booste votre PC en un clic.',status:'active'},
+      {id:3,tag:'OUTIL 03',title:'Tech Security',desc:'Suite de sécurité avancée avec firewall intelligent et anti-malware temps réel.',status:'active'},
+      {id:4,tag:'OUTIL 04',title:'Tech Network',desc:'Analyseur réseau professionnel, surveillance des paquets et diagnostic complet.',status:'coming_soon'},
     ]);
     DB.set('site_settings',{
       badge:'Plateforme Tech Avancée',
@@ -361,17 +361,10 @@ function refreshOnline(){
   document.getElementById('online-num').textContent=c;
 }
  
-// Sauvegarde de la position de défilement par page
-let scrollPositions = {
-  home: 0,
-  discord: 0,
-  tarifs: 0,
-  tech: 0
-};
+// Sauvegarde des positions
+let scrollPositions = {home:0,discord:0,tarifs:0,tech:0};
 
-// ===== PAGES =====
 function showPage(name){
-  // Sauvegarde la position actuelle avant de changer
   const currentActive = document.querySelector('.page.active');
   if(currentActive) {
     const currentId = currentActive.id.replace('page-', '');
@@ -384,31 +377,77 @@ function showPage(name){
   const lnk=document.querySelector('[data-page="'+name+'"]');
   if(lnk)lnk.classList.add('active');
   
-  // Restaure la position de défilement
   setTimeout(() => {
-    if(scrollPositions[name]) {
-      window.scrollTo(0, scrollPositions[name]);
-    }
+    if(scrollPositions[name]) window.scrollTo(0, scrollPositions[name]);
   }, 10);
   
-  if(name==='tech')renderTech();
+  if(name==='tech') renderTech();
   logVisit(name);
 }
  
-// ===== TECH (avec protection clé) =====
+// ===== VÉRIFICATION ACCÈS CLÉ =====
 function hasValidKey() {
   if(currentAdmin) return true;
   if(!currentUser) return false;
+  
+  // Vérifier si la clé existe encore dans la DB
+  const keys = DB.getArr('keys');
+  const userKey = keys.find(k => k.usedBy === currentUser.username && k.used === true);
+  
+  // Si la clé n'existe plus ou a été supprimée, révoquer l'accès
+  if(currentUser.keyActive === true && !userKey) {
+    const users = DB.getArr('users');
+    const ui = users.findIndex(u => u.username === currentUser.username);
+    if(ui > -1) {
+      users[ui].keyActive = false;
+      users[ui].keyId = null;
+      DB.set('users', users);
+      currentUser = users[ui];
+      DB.set('current_user', currentUser);
+      renderAuthArea();
+      showToast('⚠️ Votre clé a été révoquée par un administrateur.','error');
+    }
+    return false;
+  }
+  
+  // Vérifier expiration
+  if(currentUser.keyExpiryDate && currentUser.keyExpiryDate < Date.now()) {
+    const users = DB.getArr('users');
+    const ui = users.findIndex(u => u.username === currentUser.username);
+    if(ui > -1) {
+      users[ui].keyActive = false;
+      users[ui].keyExpired = true;
+      DB.set('users', users);
+      currentUser = users[ui];
+      DB.set('current_user', currentUser);
+      renderAuthArea();
+      showToast('⚠️ Votre clé a expiré.','error');
+      if(document.getElementById('page-tech').classList.contains('active')) renderTech();
+    }
+    return false;
+  }
+  
   return currentUser.keyActive === true;
 }
  
+function getTechAccess(techId) {
+  if(currentAdmin) return true;
+  if(!currentUser || !currentUser.keyActive) return false;
+  
+  const keys = DB.getArr('keys');
+  const userKey = keys.find(k => k.usedBy === currentUser.username && k.used === true);
+  
+  if(!userKey) return false;
+  if(!userKey.allowedTechs || userKey.allowedTechs.length === 0) return true;
+  
+  return userKey.allowedTechs.includes(techId);
+}
+ 
 function toggleTechDescription(cardId, event) {
-  event.stopPropagation();
+  if(event) event.stopPropagation();
   const desc = document.getElementById('desc-'+cardId);
   if(desc) {
     desc.classList.toggle('show');
-    const card = desc.closest('.tech-card');
-    if(card) card.classList.toggle('expanded');
   }
 }
  
@@ -418,7 +457,6 @@ function renderTech(){
   const grid = document.getElementById('tech-grid');
   
   if(!hasAccess) {
-    // Affiche un aperçu verrouillé
     grid.innerHTML = `
       <div class="tech-lock-message">
         <p>🔒 Contenu verrouillé - Clé d'accès requise</p>
@@ -428,20 +466,34 @@ function renderTech(){
       ${items.map(i => `
         <div class="tech-card locked" style="cursor:default;">
           <div class="tech-tag">${i.tag}</div>
-          <h3>${i.title}</h3>
-          <p style="display:block; filter:blur(4px);">🔒 Contenu protégé - Activez votre clé pour voir la description</p>
+          <h3>${i.title}${i.status === 'coming_soon' ? ' 🚧' : ''}</h3>
+          <p style="display:block; filter:blur(4px);">🔒 Contenu protégé</p>
         </div>
       `).join('')}
     `;
   } else {
-    // Affiche le contenu complet avec effet flou au survol et clic pour afficher
-    grid.innerHTML = items.map((i, idx) => `
-      <div class="tech-card unlocked blur-effect" onclick="toggleTechDescription(${i.id}, event)">
-        <div class="tech-tag">${i.tag}</div>
-        <h3>${i.title}</h3>
-        <p id="desc-${i.id}" class="tech-description">${i.desc}</p>
-      </div>
-    `).join('');
+    grid.innerHTML = items.map(i => {
+      const canAccess = getTechAccess(i.id);
+      const isComingSoon = i.status === 'coming_soon';
+      
+      if(!canAccess) {
+        return `
+          <div class="tech-card locked" style="cursor:default;">
+            <div class="tech-tag">${i.tag}</div>
+            <h3>${i.title}</h3>
+            <p style="display:block; filter:blur(4px);">🔒 Non inclus dans votre formule</p>
+          </div>
+        `;
+      }
+      
+      return `
+        <div class="tech-card ${isComingSoon ? 'coming-soon' : ''}" onclick="toggleTechDescription(${i.id}, event)">
+          <div class="tech-tag">${i.tag}</div>
+          <h3>${i.title}${isComingSoon ? ' 🚧' : ''}</h3>
+          <p id="desc-${i.id}" class="tech-description">${isComingSoon ? '🚧 Cet outil arrive très bientôt sur Net Tech. Restez connecté ! 🚧' : i.desc}</p>
+        </div>
+      `;
+    }).join('');
   }
 }
  
@@ -467,19 +519,13 @@ function renderAuthArea(){
       </div>
     </div>`;
   } else if(currentUser){
-    // Récupérer le statut de la clé depuis la DB
-    const users = DB.getArr('users');
-    const userData = users.find(u => u.username === currentUser.username);
-    const hasKey = userData?.keyActive === true;
-    
-    // Récupérer le code de la clé (optionnel)
+    const hasKey = currentUser.keyActive === true;
     let keyCode = '';
     if(hasKey) {
       const keys = DB.getArr('keys');
       const foundKey = keys.find(k => k.usedBy === currentUser.username && k.used === true);
       if(foundKey) {
         keyCode = foundKey.key;
-        // Afficher seulement les 8 premiers et 4 derniers caractères
         if(keyCode.length > 12) {
           keyCode = keyCode.substring(0, 8) + '...' + keyCode.substring(keyCode.length - 4);
         }
@@ -490,7 +536,7 @@ function renderAuthArea(){
       <button class="user-btn" onclick="toggleMenu()" style="display:flex; align-items:center; gap:8px;">
         ${hasKey ? '<span style="color:var(--success); font-size:14px;">🔑</span>' : '<span style="color:var(--danger); font-size:14px;">🔒</span>'}
         <span style="font-weight:600;">${currentUser.username}</span>
-        ${keyCode ? `<span style="font-size:10px; font-family:\'DM Mono\'; background:var(--surface2); padding:2px 6px; border-radius:4px; color:var(--muted);">${keyCode}</span>` : ''}
+        ${keyCode ? `<span style="font-size:9px; font-family:'DM Mono'; background:var(--surface2); padding:2px 6px; border-radius:4px; color:var(--muted);">${keyCode}</span>` : ''}
         ${hasKey ? '<span style="font-size:10px; color:var(--success);">✓</span>' : '<span style="font-size:10px; color:var(--danger);">✗</span>'}
         <span style="margin-left:4px;">▾</span>
       </button>
@@ -507,7 +553,6 @@ function toggleMenu(){document.getElementById('user-dd').classList.toggle('open'
 document.addEventListener('click',e=>{if(!e.target.closest('.user-menu'))document.getElementById('user-dd')?.classList.remove('open');});
  
 function goAdmin(){window.location.href='admin.html';}
- 
 function openAuthModal(){document.getElementById('modal-auth').classList.add('open');}
 function closeAuthModal(){document.getElementById('modal-auth').classList.remove('open');}
 function showLogin(){
@@ -534,7 +579,6 @@ function doLogin(){
   err.textContent='';
   if(!u||!p){err.textContent='Remplis tous les champs.';return;}
  
-  // Vérifie d'abord si c'est un admin/owner
   const admins=DB.getArr('admins');
   const foundAdmin=admins.find(a=>a.username===u&&a.password===p);
   if(foundAdmin){
@@ -549,7 +593,6 @@ function doLogin(){
     return;
   }
  
-  // Vérifie utilisateur normal
   const users=DB.getArr('users');
   const found=users.find(x=>x.username===u&&x.password===p);
   if(!found){err.textContent='Identifiants incorrects.';return;}
@@ -576,7 +619,7 @@ function doRegister(){
   if(users.find(x=>x.username===u)){err.textContent='Username déjà pris.';return;}
   const admins=DB.getArr('admins');
   if(admins.find(a=>a.username===u)){err.textContent='Username déjà pris.';return;}
-  const nu={id:Date.now(),username:u,email:e,password:p,created:new Date().toLocaleString('fr-FR'),ip:userIP,keyActive:false,keyExpiry:null,keyActivatedAt:null};
+  const nu={id:Date.now(),username:u,email:e,password:p,created:new Date().toLocaleString('fr-FR'),ip:userIP,keyActive:false,keyExpiry:null,keyActivatedAt:null,keyId:null};
   users.push(nu);
   DB.set('users',users);
   sendWebhook('register',{username:u,email:e,ip:userIP});
@@ -611,34 +654,30 @@ function logoutAdmin(){
   if(document.getElementById('page-tech').classList.contains('active')) renderTech();
 }
  
-// ===== KEY ACTIVATION avec expiration =====
 function activateKey(){
   const val=document.getElementById('key-input').value.trim().toUpperCase();
   const msg=document.getElementById('key-msg');
   if(!val){showMsg(msg,'Entre une clé.','ko');return;}
   if(!currentUser&&!currentAdmin){showMsg(msg,'Tu dois être connecté pour activer une clé.','ko');return;}
+  
   const keys=DB.getArr('keys');
   const idx=keys.findIndex(k=>k.key===val&&!k.used);
   if(idx===-1){showMsg(msg,'Clé invalide ou déjà utilisée.','ko');return;}
-  const who=currentUser?currentUser.username:currentAdmin.username;
   
-  // Vérifier si la clé a expiré (si elle a une date d'expiration)
+  const who=currentUser?currentUser.username:currentAdmin.username;
   const now = Date.now();
-  if(keys[idx].expiryDate && keys[idx].expiryDate < now) {
-    showMsg(msg,'Cette clé a expiré.','ko');
-    return;
-  }
   
   keys[idx].used=true;
   keys[idx].usedBy=who;
   keys[idx].usedAt=new Date().toLocaleString('fr-FR');
   keys[idx].activatedAt=now;
   
-  // Définir une date d'expiration (par exemple 30 jours si pas déjà défini)
-  if(!keys[idx].expiryDate && keys[idx].duration !== 'lifetime') {
-    let durationDays = 30; // durée par défaut
-    if(keys[idx].duration === 'monthly') durationDays = 30;
-    else if(keys[idx].duration === 'yearly') durationDays = 365;
+  let durationDays = 0;
+  if(keys[idx].duration === 'monthly') durationDays = 30;
+  else if(keys[idx].duration === 'yearly') durationDays = 365;
+  else if(keys[idx].duration === 'lifetime') durationDays = 0;
+  
+  if(durationDays > 0) {
     keys[idx].expiryDate = now + (durationDays * 24 * 60 * 60 * 1000);
   }
   
@@ -651,43 +690,22 @@ function activateKey(){
       users[ui].keyActive=true;
       users[ui].keyExpiry=keys[idx].duration;
       users[ui].keyActivatedAt=now;
-      users[ui].keyExpiryDate=keys[idx].expiryDate;
+      users[ui].keyId=keys[idx].id;
+      if(durationDays > 0) users[ui].keyExpiryDate = keys[idx].expiryDate;
       DB.set('users',users);
       currentUser=users[ui];
       DB.set('current_user',currentUser);
     }
   }
+  
   sendWebhook('key_activated',{username:who,key:val,duration:keys[idx].duration,ip:userIP});
   showMsg(msg,'✓ Clé activée ! Durée : '+keys[idx].duration,'ok');
+  renderAuthArea();
   if(document.getElementById('page-tech').classList.contains('active')) renderTech();
-}
- 
-// Vérifier et révoquer les clés expirées
-function checkAndRevokeExpiredKeys() {
-  if(!currentUser || currentUser.keyActive !== true) return;
-  
-  const now = Date.now();
-  if(currentUser.keyExpiryDate && currentUser.keyExpiryDate < now) {
-    // La clé a expiré
-    const users=DB.getArr('users');
-    const ui=users.findIndex(u=>u.username===currentUser.username);
-    if(ui>-1){
-      users[ui].keyActive=false;
-      users[ui].keyExpired=true;
-      users[ui].keyExpiredAt=now;
-      DB.set('users',users);
-      currentUser=users[ui];
-      DB.set('current_user',currentUser);
-      renderAuthArea();
-      showToast('⚠️ Votre clé d\'accès a expiré. Veuillez en obtenir une nouvelle sur Discord.','error');
-      if(document.getElementById('page-tech').classList.contains('active')) renderTech();
-    }
-  }
 }
  
 function showMsg(el,txt,cls){el.textContent=txt;el.className='key-msg '+cls;el.style.display='block';}
  
-// ===== WEBHOOK =====
 async function sendWebhook(event,data){
   const ws=DB.get('webhook_settings')||{};
   if(!ws.enabled||!ws.url)return;
@@ -714,7 +732,6 @@ async function sendWebhook(event,data){
   }catch{}
 }
  
-// ===== SETTINGS =====
 function applySettings(){
   const s=DB.get('site_settings')||{};
   if(s.badge)document.getElementById('home-badge').textContent=s.badge;
@@ -730,7 +747,6 @@ function applySettings(){
   if(s.key_desc)document.getElementById('key-desc').textContent=s.key_desc;
 }
  
-// ===== TOAST =====
 function showToast(msg,type=''){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast '+type+' show';
@@ -745,9 +761,11 @@ const su=DB.get('current_user');if(su&&!currentAdmin)currentUser=su;
 renderAuthArea();
 getIP();
 setInterval(refreshOnline,30000);
-setInterval(checkAndRevokeExpiredKeys, 60000); // Vérifie toutes les minutes
+setInterval(() => {
+  if(hasValidKey()) renderTech();
+  renderAuthArea();
+}, 30000);
 
-// Sauvegarde des positions avant de quitter la page
 window.addEventListener('beforeunload', () => {
   const currentActive = document.querySelector('.page.active');
   if(currentActive) {
@@ -756,7 +774,6 @@ window.addEventListener('beforeunload', () => {
   }
 });
 
-// Fermer modal en cliquant dehors
 document.getElementById('modal-auth').addEventListener('click',e=>{if(e.target===document.getElementById('modal-auth'))closeAuthModal();});
 </script>
 </body>
