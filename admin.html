@@ -13,7 +13,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
- 
+
 #login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;}
 .login-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px;width:100%;max-width:380px;text-align:center;}
 .login-logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:4px;margin-bottom:4px;}
@@ -25,7 +25,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-he
 .login-btn{width:100%;padding:12px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
 .login-btn:hover{background:#ddd;}
 .login-err{color:var(--danger);font-size:12px;font-family:'DM Mono',monospace;margin-top:10px;display:none;}
- 
+
 #admin-app{display:none;flex:1;flex-direction:column;}
 .top-bar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;}
 .top-bar-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;}
@@ -40,9 +40,9 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-he
 .chip-admin{background:rgba(68,170,255,.15);color:var(--info);border:1px solid rgba(68,170,255,.3);}
 .btn-bar{padding:5px 12px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;border-radius:4px;transition:all .2s;}
 .btn-bar:hover{color:var(--text);border-color:#555;}
- 
+
 .admin-body{display:flex;flex:1;}
- 
+
 .sidebar{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;min-height:calc(100vh - 56px);}
 .sidebar-section{padding:0 12px;margin-bottom:22px;}
 .sidebar-label{font-size:10px;color:var(--muted);letter-spacing:2px;font-family:'DM Mono',monospace;padding:0 8px;margin-bottom:8px;}
@@ -52,11 +52,11 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-he
 .sidebar-item .icon{font-size:14px;width:18px;text-align:center;}
 .sidebar-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:10px;padding:2px 6px;border-radius:100px;font-family:'DM Mono',monospace;}
 .owner-only{display:none;}
- 
+
 .main{flex:1;overflow-y:auto;padding:24px;}
 .panel{display:none;}
 .panel.active{display:block;}
- 
+
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:24px;}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;}
 .stat-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px;}
@@ -65,7 +65,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-he
 .stat-val.red{color:var(--danger);}
 .stat-val.blue{color:var(--info);}
 .stat-val.warn{color:var(--warn);}
- 
+
 .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
 .panel-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;}
 .btn-add{padding:9px 18px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
@@ -80,7 +80,7 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-he
 .btn-sm.green:hover{background:rgba(68,255,136,.1);}
 .btn-sm.blue{border-color:rgba(68,170,255,.4);color:var(--info);}
 .btn-sm.blue:hover{background:rgba(68,170,255,.1);}
- 
+
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
 table{width:100%;border-collapse:collapse;}
 th{padding:11px 16px;text-align:left;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;border-bottom:1px solid var(--border);background:var(--surface2);}
@@ -94,7 +94,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .badge.warn{background:rgba(255,170,68,.08);color:var(--warn);border:1px solid rgba(255,170,68,.2);}
 .mono{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);}
 .acell{display:flex;gap:6px;flex-wrap:wrap;}
- 
+
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
 .modal-overlay.open{display:flex;}
 .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
@@ -108,17 +108,17 @@ tr:hover td{background:rgba(255,255,255,.015);}
 select.fi{cursor:pointer;}
 textarea.fi{resize:vertical;min-height:80px;}
 .ma{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
- 
+
 .settings-section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px;}
 .settings-section h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:16px;color:var(--muted);}
 .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .btn-save{padding:10px 22px;background:#fff;color:#000;border:none;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
 .btn-save:hover{background:#ddd;}
- 
+
 .search-bar{width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:16px;}
 .search-bar:focus{border-color:#444;}
 .search-bar::placeholder{color:var(--muted);}
- 
+
 .wh-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);}
 .wh-row:last-child{border-bottom:none;}
 .wh-info h4{font-size:13px;font-weight:700;margin-bottom:3px;}
@@ -129,15 +129,15 @@ textarea.fi{resize:vertical;min-height:80px;}
 .tslider::before{content:'';position:absolute;height:16px;width:16px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.3s;}
 .toggle input:checked+.tslider{background:rgba(68,255,136,.15);border-color:rgba(68,255,136,.4);}
 .toggle input:checked+.tslider::before{transform:translateX(18px);background:var(--success);}
- 
+
 .log-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:12px;}
 .log-row:last-child{border-bottom:none;}
- 
+
 .toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 18px;font-size:13px;z-index:9998;transform:translateY(100px);opacity:0;transition:all .3s;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast.success{border-color:rgba(68,255,136,.4);color:var(--success);}
 .toast.error{border-color:rgba(255,68,68,.4);color:var(--danger);}
- 
+
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--border);}
@@ -145,7 +145,7 @@ textarea.fi{resize:vertical;min-height:80px;}
 </style>
 </head>
 <body>
- 
+
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">NET<span>TECH</span></div>
@@ -156,7 +156,7 @@ textarea.fi{resize:vertical;min-height:80px;}
     <div class="login-err" id="login-err">Identifiants incorrects.</div>
   </div>
 </div>
- 
+
 <div id="admin-app">
   <div class="top-bar">
     <div class="top-bar-logo">NET<span>TECH</span> <span style="font-size:10px;letter-spacing:2px;font-family:'DM Mono',monospace;">ADMIN</span></div>
@@ -167,7 +167,7 @@ textarea.fi{resize:vertical;min-height:80px;}
       <button class="btn-bar" onclick="adminLogout()">Déconnexion</button>
     </div>
   </div>
- 
+
   <div class="admin-body">
     <div class="sidebar">
       <div class="sidebar-section">
@@ -190,9 +190,9 @@ textarea.fi{resize:vertical;min-height:80px;}
         <div class="sidebar-item owner-only" onclick="showPanel('settings')" id="nav-settings"><span class="icon">🎨</span> Personnaliser</div>
       </div>
     </div>
- 
+
     <div class="main">
- 
+
       <!-- DASHBOARD -->
       <div class="panel active" id="panel-dashboard">
         <div class="stats-row" id="dash-stats"></div>
@@ -207,7 +207,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           </div>
         </div>
       </div>
- 
+
       <!-- LOGS IP -->
       <div class="panel" id="panel-logs">
         <div class="panel-header">
@@ -219,7 +219,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>IP</th><th>PAGE</th><th>USER-AGENT</th><th>HEURE</th></tr></thead><tbody id="logs-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- CONNEXIONS -->
       <div class="panel" id="panel-connlogs">
         <div class="panel-header">
@@ -230,7 +230,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>USERNAME</th><th>RÔLE</th><th>ACTION</th><th>IP</th><th>HEURE</th></tr></thead><tbody id="conn-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- USERS -->
       <div class="panel" id="panel-users">
         <div class="panel-header"><div class="panel-title">UTILISATEURS</div></div>
@@ -239,7 +239,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>USERNAME</th><th>EMAIL</th><th>IP</th><th>CLÉ</th><th>CRÉÉ LE</th><th>ACTIONS</th></tr></thead><tbody id="users-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- KEYS -->
       <div class="panel" id="panel-keys">
         <div class="panel-header">
@@ -251,7 +251,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>CLÉ</th><th>DURÉE</th><th>STATUT</th><th>UTILISÉE PAR</th><th>DATE</th><th>ACTIONS</th></tr></thead><tbody id="keys-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- FORGOT -->
       <div class="panel" id="panel-forgot">
         <div class="panel-header"><div class="panel-title">MOTS DE PASSE OUBLIÉS</div></div>
@@ -259,7 +259,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>USERNAME</th><th>IP</th><th>HEURE</th><th>ACTIONS</th></tr></thead><tbody id="forgot-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- ADMINS -->
       <div class="panel" id="panel-admins">
         <div class="panel-header">
@@ -270,7 +270,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>USERNAME</th><th>RÔLE</th><th>CRÉÉ LE</th><th>ACTIONS</th></tr></thead><tbody id="admins-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- TECH -->
       <div class="panel" id="panel-tech">
         <div class="panel-header">
@@ -281,7 +281,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <table><thead><tr><th>TAG</th><th>TITRE</th><th>DESCRIPTION</th><th>ACTIONS</th></tr></thead><tbody id="tech-body"></tbody></table>
         </div>
       </div>
- 
+
       <!-- WEBHOOK -->
       <div class="panel" id="panel-webhook">
         <div class="panel-title" style="margin-bottom:20px;">WEBHOOK DISCORD</div>
@@ -326,7 +326,7 @@ textarea.fi{resize:vertical;min-height:80px;}
           <p style="color:var(--muted);font-size:13px;line-height:1.8;">1. Va dans les <strong style="color:var(--text);">Paramètres du serveur Discord</strong><br>2. Clique sur <strong style="color:var(--text);">Intégrations → Webhooks</strong><br>3. Crée un <strong style="color:var(--text);">Nouveau Webhook</strong>, choisis le salon<br>4. Copie l'URL et colle-la ci-dessus</p>
         </div>
       </div>
- 
+
       <!-- SETTINGS -->
       <div class="panel" id="panel-settings">
         <div class="panel-title" style="margin-bottom:20px;">PERSONNALISER LE SITE</div>
@@ -351,11 +351,11 @@ textarea.fi{resize:vertical;min-height:80px;}
         </div>
         <button class="btn-save" onclick="saveSettings()">💾 Sauvegarder</button>
       </div>
- 
+
     </div>
   </div>
 </div>
- 
+
 <!-- MODAL KEY -->
 <div class="modal-overlay" id="modal-key">
   <div class="modal-box">
@@ -374,7 +374,7 @@ textarea.fi{resize:vertical;min-height:80px;}
     <div class="ma"><button class="btn-sm" onclick="closeModal('modal-key')">Annuler</button><button class="btn-add" onclick="generateKeys()">Générer</button></div>
   </div>
 </div>
- 
+
 <!-- MODAL TECH -->
 <div class="modal-overlay" id="modal-tech">
   <div class="modal-box">
@@ -387,7 +387,7 @@ textarea.fi{resize:vertical;min-height:80px;}
     <div class="ma"><button class="btn-sm" onclick="closeModal('modal-tech')">Annuler</button><button class="btn-add" onclick="saveTechItem()">Sauvegarder</button></div>
   </div>
 </div>
- 
+
 <!-- MODAL USER -->
 <div class="modal-overlay" id="modal-user">
   <div class="modal-box">
@@ -402,7 +402,7 @@ textarea.fi{resize:vertical;min-height:80px;}
     <div class="ma"><button class="btn-sm" onclick="closeModal('modal-user')">Annuler</button><button class="btn-add" onclick="saveUser()">Sauvegarder</button></div>
   </div>
 </div>
- 
+
 <!-- MODAL ADMIN -->
 <div class="modal-overlay" id="modal-admin">
   <div class="modal-box">
@@ -420,18 +420,18 @@ textarea.fi{resize:vertical;min-height:80px;}
     <div class="ma"><button class="btn-sm" onclick="closeModal('modal-admin')">Annuler</button><button class="btn-add" onclick="saveAdmin()">Sauvegarder</button></div>
   </div>
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 const DB={
   get(k){try{return JSON.parse(localStorage.getItem('nt_'+k));}catch{return null;}},
   set(k,v){localStorage.setItem('nt_'+k,JSON.stringify(v));},
   getArr(k){return this.get(k)||[];}
 };
- 
+
 let currentAdmin=null;
- 
+
 // ===== INIT DATA (si pas encore fait) =====
 if(!DB.get('admins')||!DB.getArr('admins').length){
   DB.set('admins',[{id:1,username:'owner',password:'nitro06',role:'owner',created:new Date().toLocaleString('fr-FR')}]);
@@ -439,7 +439,7 @@ if(!DB.get('admins')||!DB.getArr('admins').length){
 if(!DB.get('webhook_settings')){
   DB.set('webhook_settings',{enabled:false,url:'',notif_login:true,notif_register:true,notif_key:true,notif_forgot:true,notif_keygen:true});
 }
- 
+
 // ===== LOGIN =====
 function adminLogin(){
   const u=document.getElementById('a-user').value.trim();
@@ -460,7 +460,7 @@ function adminLogin(){
   initAdmin();
 }
 document.getElementById('a-pass').addEventListener('keydown',e=>{if(e.key==='Enter')adminLogin();});
- 
+
 function adminLogout(){
   currentAdmin=null;
   document.getElementById('admin-app').style.display='none';
@@ -468,7 +468,7 @@ function adminLogout(){
   document.getElementById('a-user').value='';
   document.getElementById('a-pass').value='';
 }
- 
+
 function initAdmin(){
   const roleClass=currentAdmin.role==='owner'?'chip-owner':'chip-admin';
   document.getElementById('logged-chip').innerHTML=`<span class="chip-role ${roleClass}">${currentAdmin.role.toUpperCase()}</span>${currentAdmin.username}`;
@@ -477,13 +477,13 @@ function initAdmin(){
   const tick=()=>{const c=DB.get('online_count')||1;document.getElementById('online-display').textContent=c;};
   tick();setInterval(tick,5000);
 }
- 
+
 function updateBadges(){
   const n=DB.getArr('forgot_requests').length;
   const fb=document.getElementById('forgot-badge');
   fb.textContent=n;fb.style.display=n?'inline':'none';
 }
- 
+
 function showPanel(name){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
@@ -491,7 +491,7 @@ function showPanel(name){
   document.getElementById('nav-'+name).classList.add('active');
   ({dashboard:renderDashboard,logs:renderLogs,connlogs:renderConnLogs,users:renderUsers,keys:renderKeys,forgot:renderForgot,admins:renderAdmins,tech:renderTech,settings:loadSettings,webhook:loadWebhookSettings})[name]?.();
 }
- 
+
 // ===== DASHBOARD =====
 function renderDashboard(){
   const users=DB.getArr('users'),keys=DB.getArr('keys'),logs=DB.getArr('logs'),cl=DB.getArr('conn_logs'),forgot=DB.getArr('forgot_requests'),admins=DB.getArr('admins');
@@ -517,7 +517,7 @@ function renderDashboard(){
     return `<div class="log-row"><span style="font-size:12px;font-weight:600;min-width:80px;">${l.username}</span><span class="badge ${rc}" style="margin-right:6px;">${l.role}</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-left:auto;">${l.time}</span></div>`;
   }).join('')||'<div class="empty-state">Aucune connexion</div>';
 }
- 
+
 // ===== LOGS IP =====
 function renderLogs(){
   const f=(document.getElementById('log-search')||{}).value?.toLowerCase()||'';
@@ -530,7 +530,7 @@ function renderLogs(){
   </tr>`).join('')||`<tr><td colspan="4" class="empty-state">Aucun log</td></tr>`;
 }
 function clearLogs(){if(!confirm('Vider tous les logs IP ?'))return;DB.set('logs',[]);renderLogs();showToast('Logs IP vidés.','success');}
- 
+
 // ===== CONNEXIONS =====
 function renderConnLogs(){
   const logs=DB.getArr('conn_logs');
@@ -540,7 +540,7 @@ function renderConnLogs(){
   }).join('')||`<tr><td colspan="5" class="empty-state">Aucune connexion loggée</td></tr>`;
 }
 function clearConnLogs(){if(!confirm('Vider les logs connexions ?'))return;DB.set('conn_logs',[]);renderConnLogs();showToast('Logs connexions vidés.','success');}
- 
+
 // ===== USERS =====
 function renderUsers(){
   const f=(document.getElementById('user-search')||{}).value?.toLowerCase()||'';
@@ -553,7 +553,7 @@ function renderUsers(){
     <td class="acell"><button class="btn-sm" onclick="openUserEdit('${u.id}')">Modifier</button><button class="btn-sm red" onclick="deleteUser('${u.id}')">Suppr.</button></td>
   </tr>`).join('')||`<tr><td colspan="6" class="empty-state">Aucun utilisateur</td></tr>`;
 }
- 
+
 function openUserEdit(id){
   const u=DB.getArr('users').find(x=>String(x.id)===String(id));if(!u)return;
   document.getElementById('u-id').value=u.id;
@@ -564,7 +564,7 @@ function openUserEdit(id){
   document.getElementById('u-expiry').value=u.keyExpiry||'';
   openModal('modal-user');
 }
- 
+
 function saveUser(){
   const id=document.getElementById('u-id').value;
   const users=DB.getArr('users');
@@ -576,12 +576,12 @@ function saveUser(){
   users[idx].keyExpiry=document.getElementById('u-expiry').value;
   DB.set('users',users);closeModal('modal-user');renderUsers();showToast('Utilisateur mis à jour.','success');
 }
- 
+
 function deleteUser(id){
   if(!confirm('Supprimer cet utilisateur ?'))return;
   DB.set('users',DB.getArr('users').filter(u=>String(u.id)!==String(id)));renderUsers();showToast('Supprimé.','success');
 }
- 
+
 // ===== KEYS =====
 function renderKeys(){
   const f=(document.getElementById('key-search')||{}).value?.toLowerCase()||'';
@@ -595,7 +595,7 @@ function renderKeys(){
     <td class="acell">${!k.used?`<button class="btn-sm green" onclick="copyKey('${k.key}')">Copier</button>`:''}<button class="btn-sm red" onclick="deleteKey('${k.key}')">Suppr.</button></td>
   </tr>`).join('')||`<tr><td colspan="6" class="empty-state">Aucune clé</td></tr>`;
 }
- 
+
 function openKeyModal(){
   ['k-key','k-custom'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('k-dur').value='lifetime';
@@ -604,9 +604,9 @@ function openKeyModal(){
   openModal('modal-key');
 }
 document.getElementById('k-dur').addEventListener('change',function(){document.getElementById('k-custom-wrap').style.display=this.value==='custom'?'block':'none';});
- 
+
 function gk(){const s=()=>Math.random().toString(36).substring(2,6).toUpperCase();return`${s()}-${s()}-${s()}-${s()}`;}
- 
+
 function generateKeys(){
   const rawKey=document.getElementById('k-key').value.trim().toUpperCase();
   const dur=document.getElementById('k-dur').value;
@@ -618,10 +618,10 @@ function generateKeys(){
   showToast(`${added} clé(s) générée(s) !`,'success');
   wh_send('keygen',{admin:currentAdmin.username,quantite:added,duree:durF});
 }
- 
+
 function copyKey(k){navigator.clipboard.writeText(k).then(()=>showToast('Clé copiée !','success'));}
 function deleteKey(k){if(!confirm('Supprimer ?'))return;DB.set('keys',DB.getArr('keys').filter(x=>x.key!==k));renderKeys();showToast('Supprimée.','success');}
- 
+
 // ===== FORGOT =====
 function renderForgot(){
   const reqs=DB.getArr('forgot_requests');
@@ -636,17 +636,17 @@ function renderForgot(){
   </tr>`).join('')||`<tr><td colspan="4" class="empty-state">Aucune demande</td></tr>`;
   updateBadges();
 }
- 
+
 function resetPass(username,idx){
   const np=prompt(`Nouveau mot de passe pour ${username} :`);if(!np)return;
   const users=DB.getArr('users');const ui=users.findIndex(u=>u.username===username);
   if(ui>-1){users[ui].password=np;DB.set('users',users);dismissForgot(idx);showToast(`MDP de ${username} changé !`,'success');}
 }
- 
+
 function dismissForgot(idx){
   const r=DB.getArr('forgot_requests');r.splice(idx,1);DB.set('forgot_requests',r);renderForgot();
 }
- 
+
 // ===== ADMINS =====
 function renderAdmins(){
   const admins=DB.getArr('admins');
@@ -661,14 +661,14 @@ function renderAdmins(){
     </tr>`;
   }).join('')||`<tr><td colspan="4" class="empty-state">Aucun admin</td></tr>`;
 }
- 
+
 function openAdminModal(){
   document.getElementById('admin-modal-title').textContent='AJOUTER UN ADMIN';
   ['ad-id','ad-user','ad-pass'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ad-role').value='admin';
   openModal('modal-admin');
 }
- 
+
 function openAdminEdit(id){
   const a=DB.getArr('admins').find(x=>x.id===id);if(!a)return;
   document.getElementById('admin-modal-title').textContent='MODIFIER L\'ADMIN';
@@ -678,7 +678,7 @@ function openAdminEdit(id){
   document.getElementById('ad-role').value=a.role;
   openModal('modal-admin');
 }
- 
+
 function saveAdmin(){
   const id=document.getElementById('ad-id').value;
   const u=document.getElementById('ad-user').value.trim();
@@ -696,13 +696,13 @@ function saveAdmin(){
   }
   DB.set('admins',admins);closeModal('modal-admin');renderAdmins();showToast('Admin sauvegardé !','success');
 }
- 
+
 function deleteAdmin(id){
   if(id===currentAdmin.id){showToast('Tu ne peux pas te supprimer.','error');return;}
   if(!confirm('Supprimer cet admin ?'))return;
   DB.set('admins',DB.getArr('admins').filter(a=>a.id!==id));renderAdmins();showToast('Admin supprimé.','success');
 }
- 
+
 // ===== TECH =====
 function renderTech(){
   const items=DB.getArr('tech_items');
@@ -712,13 +712,13 @@ function renderTech(){
     <td class="acell"><button class="btn-sm" onclick="openTechEdit(${i.id})">Modifier</button><button class="btn-sm red" onclick="deleteTech(${i.id})">Suppr.</button></td>
   </tr>`).join('')||`<tr><td colspan="4" class="empty-state">Aucune carte</td></tr>`;
 }
- 
+
 function openTechModal(){
   document.getElementById('tech-modal-title').textContent='AJOUTER UNE CARTE';
   ['t-id','t-tag','t-title','t-desc'].forEach(id=>document.getElementById(id).value='');
   openModal('modal-tech');
 }
- 
+
 function openTechEdit(id){
   const item=DB.getArr('tech_items').find(i=>i.id===id);if(!item)return;
   document.getElementById('tech-modal-title').textContent='MODIFIER LA CARTE';
@@ -728,7 +728,7 @@ function openTechEdit(id){
   document.getElementById('t-desc').value=item.desc;
   openModal('modal-tech');
 }
- 
+
 function saveTechItem(){
   const id=document.getElementById('t-id').value;
   const tag=document.getElementById('t-tag').value.trim();
@@ -740,12 +740,12 @@ function saveTechItem(){
   else items.push({id:Date.now(),tag:tag||`OUTIL ${String(items.length+1).padStart(2,'0')}`,title,desc});
   DB.set('tech_items',items);closeModal('modal-tech');renderTech();showToast('Carte sauvegardée !','success');
 }
- 
+
 function deleteTech(id){
   if(!confirm('Supprimer ?'))return;
   DB.set('tech_items',DB.getArr('tech_items').filter(i=>i.id!==id));renderTech();showToast('Supprimée.','success');
 }
- 
+
 // ===== WEBHOOK =====
 function loadWebhookSettings(){
   const ws=DB.get('webhook_settings')||{};
@@ -757,14 +757,14 @@ function loadWebhookSettings(){
   document.getElementById('wh-forgot').checked=ws.notif_forgot!==false;
   document.getElementById('wh-keygen').checked=ws.notif_keygen!==false;
 }
- 
+
 function saveWebhook(){
   const ws=DB.get('webhook_settings')||{};
   ws.url=document.getElementById('wh-url').value.trim();
   ws.enabled=document.getElementById('wh-enabled').checked;
   DB.set('webhook_settings',ws);showToast('Webhook sauvegardé !','success');
 }
- 
+
 function saveWebhookNotifs(){
   const ws=DB.get('webhook_settings')||{};
   ws.notif_login=document.getElementById('wh-login').checked;
@@ -774,7 +774,7 @@ function saveWebhookNotifs(){
   ws.notif_keygen=document.getElementById('wh-keygen').checked;
   DB.set('webhook_settings',ws);showToast('Préférences sauvegardées !','success');
 }
- 
+
 async function testWebhook(){
   const ws=DB.get('webhook_settings')||{};
   if(!ws.url){showToast('Entre d\'abord l\'URL du webhook.','error');return;}
@@ -786,7 +786,7 @@ async function testWebhook(){
     r.ok?showToast('✓ Message envoyé sur Discord !','success'):showToast('Erreur '+r.status,'error');
   }catch{showToast('URL invalide ou Discord inaccessible.','error');}
 }
- 
+
 async function wh_send(event,data){
   const ws=DB.get('webhook_settings')||{};
   if(!ws.enabled||!ws.url)return;
@@ -801,25 +801,25 @@ async function wh_send(event,data){
   };
   try{await fetch(ws.url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'Net Tech',embeds:[embed]})});}catch{}
 }
- 
+
 // ===== SETTINGS =====
 function loadSettings(){
   const s=DB.get('site_settings')||{};
   ({badge:'s-badge',subtitle:'s-sub',stat1:'s-s1',stat1l:'s-s1l',stat2:'s-s2',stat2l:'s-s2l',stat3:'s-s3',stat3l:'s-s3l',discord_desc:'s-discord',tarifs_sub:'s-tarifs',key_desc:'s-keydesc'})
   &&Object.entries({badge:'s-badge',subtitle:'s-sub',stat1:'s-s1',stat1l:'s-s1l',stat2:'s-s2',stat2l:'s-s2l',stat3:'s-s3',stat3l:'s-s3l',discord_desc:'s-discord',tarifs_sub:'s-tarifs',key_desc:'s-keydesc'}).forEach(([k,id])=>{const el=document.getElementById(id);if(el&&s[k]!==undefined)el.value=s[k];});
 }
- 
+
 function saveSettings(){
   const s=DB.get('site_settings')||{};
   Object.entries({badge:'s-badge',subtitle:'s-sub',stat1:'s-s1',stat1l:'s-s1l',stat2:'s-s2',stat2l:'s-s2l',stat3:'s-s3',stat3l:'s-s3l',discord_desc:'s-discord',tarifs_sub:'s-tarifs',key_desc:'s-keydesc'}).forEach(([k,id])=>{const el=document.getElementById(id);if(el)s[k]=el.value;});
   DB.set('site_settings',s);showToast('Paramètres sauvegardés !','success');
 }
- 
+
 // ===== MODALS =====
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
- 
+
 // ===== TOAST =====
 function showToast(msg,type=''){
   const t=document.getElementById('toast');
