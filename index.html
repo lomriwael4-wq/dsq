@@ -84,16 +84,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:64px;
 .key-msg.ko{background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.25);color:var(--danger);}
  
 /* TECH GRID */
-.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
-.tech-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:26px;transition:all .2s;cursor:pointer;}
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.tech-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:26px;transition:all .3s ease;cursor:pointer;position:relative;}
 .tech-card:hover{border-color:#3a3a3a;transform:translateY(-2px);}
-.tech-card.locked{opacity:0.7;position:relative;overflow:hidden;}
+.tech-card.locked{opacity:0.7;}
 .tech-card.locked::after{content:'🔒';position:absolute;top:20px;right:20px;font-size:20px;opacity:0.5;}
-.tech-card.unlocked{opacity:1;}
-.tech-card.unlocked::after{content:'✓';position:absolute;top:20px;right:20px;font-size:20px;color:var(--success);opacity:0.8;}
 .tech-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:10px;}
 .tech-card h3{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;margin-bottom:6px;}
-.tech-card p{color:var(--muted);font-size:13px;line-height:1.6;}
+.tech-card p{color:var(--muted);font-size:13px;line-height:1.6;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none;}
+.tech-card p.show{display:block;}
+.tech-card.expanded p{display:block;}
+.tech-card.blur-effect p{filter:blur(4px);transition:filter 0.3s ease;}
+.tech-card.blur-effect:hover p{filter:blur(0);}
 .tech-lock-message{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;text-align:center;grid-column:1/-1;}
 .tech-lock-message p{color:var(--muted);margin-bottom:20px;}
  
@@ -233,7 +235,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 40px;height:64px;
   <div class="page-content">
     <div class="page-header">
       <h1>TECH</h1>
-      <p>Découvre tous nos outils et services disponibles sur la plateforme.</p>
+      <p>Découvre tous nos outils et services disponibles sur la plateforme. Clique sur un outil pour voir sa description.</p>
     </div>
     <div class="tech-grid" id="tech-grid"></div>
   </div>
@@ -312,10 +314,10 @@ function initData(){
     DB.set('conn_logs',[]);
     DB.set('forgot_requests',[]);
     DB.set('tech_items',[
-      {id:1,tag:'OUTIL 01',title:'Tech Pro Scanner',desc:'Scanner avancé avec détection IA, analyse réseau complète et rapports détaillés.'},
-      {id:2,tag:'OUTIL 02',title:'Tech Optimizer',desc:'Optimiseur de performances système, nettoie et booste votre PC en un clic.'},
-      {id:3,tag:'OUTIL 03',title:'Tech Security',desc:'Suite de sécurité avancée avec firewall intelligent et anti-malware temps réel.'},
-      {id:4,tag:'OUTIL 04',title:'Tech Network',desc:'Analyseur réseau professionnel, surveillance des paquets et diagnostic complet.'},
+      {id:1,tag:'OUTIL 01',title:'Tech Pro Scanner',desc:'Scanner avancé avec détection IA, analyse réseau complète et rapports détaillés. Cet outil vous permet de détecter les vulnérabilités de votre infrastructure.'},
+      {id:2,tag:'OUTIL 02',title:'Tech Optimizer',desc:'Optimiseur de performances système, nettoie et booste votre PC en un clic. Améliore considérablement la rapidité de votre système.'},
+      {id:3,tag:'OUTIL 03',title:'Tech Security',desc:'Suite de sécurité avancée avec firewall intelligent et anti-malware temps réel. Protection complète contre les menaces.'},
+      {id:4,tag:'OUTIL 04',title:'Tech Network',desc:'Analyseur réseau professionnel, surveillance des paquets et diagnostic complet. Idéal pour les administrateurs système.'},
     ]);
     DB.set('site_settings',{
       badge:'Plateforme Tech Avancée',
@@ -359,13 +361,36 @@ function refreshOnline(){
   document.getElementById('online-num').textContent=c;
 }
  
+// Sauvegarde de la position de défilement par page
+let scrollPositions = {
+  home: 0,
+  discord: 0,
+  tarifs: 0,
+  tech: 0
+};
+
 // ===== PAGES =====
 function showPage(name){
+  // Sauvegarde la position actuelle avant de changer
+  const currentActive = document.querySelector('.page.active');
+  if(currentActive) {
+    const currentId = currentActive.id.replace('page-', '');
+    scrollPositions[currentId] = window.scrollY;
+  }
+  
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   const lnk=document.querySelector('[data-page="'+name+'"]');
   if(lnk)lnk.classList.add('active');
+  
+  // Restaure la position de défilement
+  setTimeout(() => {
+    if(scrollPositions[name]) {
+      window.scrollTo(0, scrollPositions[name]);
+    }
+  }, 10);
+  
   if(name==='tech')renderTech();
   logVisit(name);
 }
@@ -375,6 +400,16 @@ function hasValidKey() {
   if(currentAdmin) return true;
   if(!currentUser) return false;
   return currentUser.keyActive === true;
+}
+ 
+function toggleTechDescription(cardId, event) {
+  event.stopPropagation();
+  const desc = document.getElementById('desc-'+cardId);
+  if(desc) {
+    desc.classList.toggle('show');
+    const card = desc.closest('.tech-card');
+    if(card) card.classList.toggle('expanded');
+  }
 }
  
 function renderTech(){
@@ -391,20 +426,20 @@ function renderTech(){
         <button class="btn-primary" onclick="showPage('tarifs')" style="margin-top:15px;">Activer ma clé</button>
       </div>
       ${items.map(i => `
-        <div class="tech-card locked">
+        <div class="tech-card locked" style="cursor:default;">
           <div class="tech-tag">${i.tag}</div>
           <h3>${i.title}</h3>
-          <p>🔒 Contenu protégé - Activez votre clé pour voir la description</p>
+          <p style="display:block; filter:blur(4px);">🔒 Contenu protégé - Activez votre clé pour voir la description</p>
         </div>
       `).join('')}
     `;
   } else {
-    // Affiche le contenu complet
-    grid.innerHTML = items.map(i => `
-      <div class="tech-card unlocked">
+    // Affiche le contenu complet avec effet flou au survol et clic pour afficher
+    grid.innerHTML = items.map((i, idx) => `
+      <div class="tech-card unlocked blur-effect" onclick="toggleTechDescription(${i.id}, event)">
         <div class="tech-tag">${i.tag}</div>
         <h3>${i.title}</h3>
-        <p>${i.desc}</p>
+        <p id="desc-${i.id}" class="tech-description">${i.desc}</p>
       </div>
     `).join('');
   }
@@ -432,8 +467,9 @@ function renderAuthArea(){
       </div>
     </div>`;
   } else if(currentUser){
+    const hasKey = currentUser.keyActive ? '🔑' : '';
     area.innerHTML=`<div class="user-menu">
-      <button class="user-btn" onclick="toggleMenu()">👤 ${currentUser.username} <span>▾</span></button>
+      <button class="user-btn" onclick="toggleMenu()">${hasKey} ${currentUser.username} <span>▾</span></button>
       <div class="user-dropdown" id="user-dd">
         <a onclick="logoutUser()">Déconnexion</a>
       </div>
@@ -516,7 +552,7 @@ function doRegister(){
   if(users.find(x=>x.username===u)){err.textContent='Username déjà pris.';return;}
   const admins=DB.getArr('admins');
   if(admins.find(a=>a.username===u)){err.textContent='Username déjà pris.';return;}
-  const nu={id:Date.now(),username:u,email:e,password:p,created:new Date().toLocaleString('fr-FR'),ip:userIP,keyActive:false,keyExpiry:null};
+  const nu={id:Date.now(),username:u,email:e,password:p,created:new Date().toLocaleString('fr-FR'),ip:userIP,keyActive:false,keyExpiry:null,keyActivatedAt:null};
   users.push(nu);
   DB.set('users',users);
   sendWebhook('register',{username:u,email:e,ip:userIP});
@@ -551,7 +587,7 @@ function logoutAdmin(){
   if(document.getElementById('page-tech').classList.contains('active')) renderTech();
 }
  
-// ===== KEY ACTIVATION =====
+// ===== KEY ACTIVATION avec expiration =====
 function activateKey(){
   const val=document.getElementById('key-input').value.trim().toUpperCase();
   const msg=document.getElementById('key-msg');
@@ -561,16 +597,68 @@ function activateKey(){
   const idx=keys.findIndex(k=>k.key===val&&!k.used);
   if(idx===-1){showMsg(msg,'Clé invalide ou déjà utilisée.','ko');return;}
   const who=currentUser?currentUser.username:currentAdmin.username;
-  keys[idx].used=true;keys[idx].usedBy=who;keys[idx].usedAt=new Date().toLocaleString('fr-FR');
+  
+  // Vérifier si la clé a expiré (si elle a une date d'expiration)
+  const now = Date.now();
+  if(keys[idx].expiryDate && keys[idx].expiryDate < now) {
+    showMsg(msg,'Cette clé a expiré.','ko');
+    return;
+  }
+  
+  keys[idx].used=true;
+  keys[idx].usedBy=who;
+  keys[idx].usedAt=new Date().toLocaleString('fr-FR');
+  keys[idx].activatedAt=now;
+  
+  // Définir une date d'expiration (par exemple 30 jours si pas déjà défini)
+  if(!keys[idx].expiryDate && keys[idx].duration !== 'lifetime') {
+    let durationDays = 30; // durée par défaut
+    if(keys[idx].duration === 'monthly') durationDays = 30;
+    else if(keys[idx].duration === 'yearly') durationDays = 365;
+    keys[idx].expiryDate = now + (durationDays * 24 * 60 * 60 * 1000);
+  }
+  
   DB.set('keys',keys);
+  
   if(currentUser){
     const users=DB.getArr('users');
     const ui=users.findIndex(u=>u.username===who);
-    if(ui>-1){users[ui].keyActive=true;users[ui].keyExpiry=keys[idx].duration;DB.set('users',users);currentUser=users[ui];DB.set('current_user',currentUser);}
+    if(ui>-1){
+      users[ui].keyActive=true;
+      users[ui].keyExpiry=keys[idx].duration;
+      users[ui].keyActivatedAt=now;
+      users[ui].keyExpiryDate=keys[idx].expiryDate;
+      DB.set('users',users);
+      currentUser=users[ui];
+      DB.set('current_user',currentUser);
+    }
   }
   sendWebhook('key_activated',{username:who,key:val,duration:keys[idx].duration,ip:userIP});
   showMsg(msg,'✓ Clé activée ! Durée : '+keys[idx].duration,'ok');
   if(document.getElementById('page-tech').classList.contains('active')) renderTech();
+}
+ 
+// Vérifier et révoquer les clés expirées
+function checkAndRevokeExpiredKeys() {
+  if(!currentUser || currentUser.keyActive !== true) return;
+  
+  const now = Date.now();
+  if(currentUser.keyExpiryDate && currentUser.keyExpiryDate < now) {
+    // La clé a expiré
+    const users=DB.getArr('users');
+    const ui=users.findIndex(u=>u.username===currentUser.username);
+    if(ui>-1){
+      users[ui].keyActive=false;
+      users[ui].keyExpired=true;
+      users[ui].keyExpiredAt=now;
+      DB.set('users',users);
+      currentUser=users[ui];
+      DB.set('current_user',currentUser);
+      renderAuthArea();
+      showToast('⚠️ Votre clé d\'accès a expiré. Veuillez en obtenir une nouvelle sur Discord.','error');
+      if(document.getElementById('page-tech').classList.contains('active')) renderTech();
+    }
+  }
 }
  
 function showMsg(el,txt,cls){el.textContent=txt;el.className='key-msg '+cls;el.style.display='block';}
@@ -633,7 +721,17 @@ const su=DB.get('current_user');if(su&&!currentAdmin)currentUser=su;
 renderAuthArea();
 getIP();
 setInterval(refreshOnline,30000);
- 
+setInterval(checkAndRevokeExpiredKeys, 60000); // Vérifie toutes les minutes
+
+// Sauvegarde des positions avant de quitter la page
+window.addEventListener('beforeunload', () => {
+  const currentActive = document.querySelector('.page.active');
+  if(currentActive) {
+    const currentId = currentActive.id.replace('page-', '');
+    scrollPositions[currentId] = window.scrollY;
+  }
+});
+
 // Fermer modal en cliquant dehors
 document.getElementById('modal-auth').addEventListener('click',e=>{if(e.target===document.getElementById('modal-auth'))closeAuthModal();});
 </script>
