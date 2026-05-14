@@ -487,21 +487,10 @@ function renderTech(){
       }
       
       return `
-        <div class="tech-card ${isComingSoon ? 'coming-soon' : 'blur-effect'}" onclick="toggleTechDescription(${i.id}, event)">
-          <div class="tech-tag">${i.tag}</div>
-          <h3>${i.title}${isComingSoon ? ' 🚧' : ''}</h3>
-          <p id="desc-${i.id}" class="tech-description" style="${!isComingSoon ? 'filter:blur(4px); transition:filter 0.3s ease;' : ''}" onmouseover="${!isComingSoon ? 'this.style.filter=\\'blur(0px)\\'' : ''}" onmouseout="${!isComingSoon ? 'this.style.filter=\\'blur(4px)\\'' : ''}">${isComingSoon ? '🚧 Cet outil arrive très bientôt sur Net Tech. Restez connecté ! 🚧' : i.desc}</p>
-        </div>
-      `;
-    }).join('');
-  }
-}
-      
-      return `
         <div class="tech-card ${isComingSoon ? 'coming-soon' : ''}" onclick="toggleTechDescription(${i.id}, event)">
           <div class="tech-tag">${i.tag}</div>
           <h3>${i.title}${isComingSoon ? ' 🚧' : ''}</h3>
-          <p id="desc-${i.id}" class="tech-description">${isComingSoon ? '🚧 Cet outil arrive très bientôt sur Net Tech. Restez connecté ! 🚧' : i.desc}</p>
+          <p id="desc-${i.id}" class="tech-description" style="${!isComingSoon ? 'filter:blur(4px); transition:filter 0.3s ease;' : ''}" onmouseover="${!isComingSoon ? 'this.style.filter=\\'blur(0px)\\'' : ''}" onmouseout="${!isComingSoon ? 'this.style.filter=\\'blur(4px)\\'' : ''}">${isComingSoon ? '🚧 Cet outil arrive très bientôt sur Net Tech. Restez connecté ! 🚧' : i.desc}</p>
         </div>
       `;
     }).join('');
